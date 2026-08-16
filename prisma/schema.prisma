@@ -9,5 +9,39 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum TaskStatus {
+  NEW
+  ACTIVE
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(EMPLOYEE)
+  tasks     Task[]
+  createdAt DateTime @default(now())
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  category    String
+  status      TaskStatus @default(NEW)
+  taskDate    DateTime
+  assignedTo  User       @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime   @default(now())
 }
