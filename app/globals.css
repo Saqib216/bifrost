@@ -1,26 +1,66 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Inter:wght@400..700&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base */
+  --black: #0a0a0a;
+  --near-black: #111111;
+  --card-bg: #161616;
+  --border-gray: #262626;
+  --border-gray-hover: #333333;
+
+  /* Text */
+  --white: #ededed;
+  --gray-300: #a1a1a1;
+  --gray-500: #737373;
+
+  /* Accent */
+  --accent-blue: #3291ff;
+  --accent-blue-hover: #52a8ff;
+
+  /* Status colors */
+  --status-success: #17c964;
+  --status-danger: #f31260;
+  --status-warning: #f5a524;
+  --status-info: #3291ff;
+
+  --focus-ring: #3d3d3d;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-inter: 'Geist Sans', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--black);
+  --color-card: var(--card-bg);
+  --color-border: var(--border-gray);
+  --color-border-hover: var(--border-gray-hover);
+
+  --color-primary: var(--white);
+  --color-secondary: var(--gray-300);
+  --color-muted: var(--gray-500);
+
+  --color-accent: var(--accent-blue);
+  --color-accent-hover: var(--accent-blue-hover);
+
+  --color-success: var(--status-success);
+  --color-danger: var(--status-danger);
+  --color-warning: var(--status-warning);
+  --color-info: var(--status-info);
+
+  --color-focus-ring: var(--focus-ring);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
 }
