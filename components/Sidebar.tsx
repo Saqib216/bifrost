@@ -1,3 +1,5 @@
+import Navlinks from "./Navlinks";
+
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
     return (
         <div className="flex flex-col gap-5 border-r-2 border-muted h-screen pr-4">
@@ -12,10 +14,11 @@ export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
             </span>
 
             {/* Navlinks: */}
-
+            <Navlinks role="ADMIN" />
+            
             {/* Logout */}
-            <button title="Logout" 
-            className="bg-surface border border-border rounded-md py-1 cursor-pointer hover:bg-card transition-all ease-in-out duration-300 font-semibold active:scale-95">
+            <button title="Logout"
+                className="bg-surface border border-border rounded-md py-1 cursor-pointer hover:bg-card transition-all ease-in-out duration-300 font-semibold active:scale-95">
                 Logout
             </button>
         </div>
