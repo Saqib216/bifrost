@@ -14,8 +14,8 @@ export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
             </span>
 
             {/* Navlinks: */}
-            <Navlinks role="ADMIN" />
-            
+            <Navlinks role={role} />
+
             {/* Logout */}
             <button title="Logout"
                 className="bg-surface border border-border rounded-md py-1 cursor-pointer hover:bg-card transition-all ease-in-out duration-300 font-semibold active:scale-95">
