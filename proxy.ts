@@ -25,8 +25,8 @@ export default auth((req) => {
         return NextResponse.redirect(new URL("/admin", req.url));
     }
 
-    // Already logged in, trying to visit login page again
-    if (isLoggedIn && isLoginPage) {
+    // Already logged in, trying to visit /login or root '/'
+    if (isLoggedIn && (isLoginPage || path === '/')) {
         const redirectPath = userRole === 'ADMIN' ? '/admin' : '/employee';
         return NextResponse.redirect(new URL(redirectPath, req.url));
     }
