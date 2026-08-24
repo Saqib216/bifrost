@@ -1,3 +1,4 @@
+import { signOut } from "@/auth";
 import Navlinks from "./Navlinks";
 
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
@@ -17,10 +18,17 @@ export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
             <Navlinks role={role} />
 
             {/* Logout */}
-            <button title="Logout"
-                className="bg-surface border border-border rounded-md py-1 cursor-pointer hover:bg-card transition-all ease-in-out duration-300 font-semibold active:scale-95">
-                Logout
-            </button>
+            <form action={
+                async () => {
+                    'use server';
+                    await signOut({ redirectTo: '/' });
+                }
+            }>
+                <button title="Logout"
+                    className="bg-surface border border-border rounded-md py-1 px-2.5 cursor-pointer hover:bg-card transition-all ease-in-out duration-300 font-semibold active:scale-95">
+                    Logout
+                </button>
+            </form>
         </div>
     )
 }
