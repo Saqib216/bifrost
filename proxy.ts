@@ -7,21 +7,28 @@ export default auth((req) => {
     const path = req.nextUrl.pathname;
 
     const isAdminRoute = path.startsWith("/admin");
+    const isEmployeeRoute = path.startsWith("/employee");
     const isLoginPage = path === "/login";
 
     // Not logged in, trying to access protected route
-    if (!isLoggedIn && !isLoginPage) {
+    if (!isLoggedIn && (isAdminRoute || isEmployeeRoute)) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    // Logged in but wrong role for admin routes 
+    // Logged in but wrong role for admin routes
     if (isAdminRoute && userRole !== 'ADMIN') {
-        return NextResponse.redirect(new URL("/dashboard", req.url));
+        return NextResponse.redirect(new URL("/employee", req.url));
+    }
+
+    // Logged in but wrong role for employee routes
+    if (isEmployeeRoute && userRole !== 'EMPLOYEE') {
+        return NextResponse.redirect(new URL("/admin", req.url));
     }
 
     // Already logged in, trying to visit login page again
     if (isLoggedIn && isLoginPage) {
-        return NextResponse.redirect(new URL("/dashboard", req.url));
+        const redirectPath = userRole === 'ADMIN' ? '/admin' : '/employee';
+        return NextResponse.redirect(new URL(redirectPath, req.url));
     }
 
     return NextResponse.next();
