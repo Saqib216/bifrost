@@ -56,10 +56,6 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-10">
                 {allTasks.map((task) => {
                     const statusStyle = getStatusStyle(task.status);
-                    const formattedDate = new Date(task.taskDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                    });
 
                     return (
                         <div
@@ -90,7 +86,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
                             {/* Footer: Date + Delete */}
                             <div className="flex items-center justify-between pt-2 border-t border-border">
-                                <span className="text-xs text-muted font-medium">{formattedDate}</span>
+                                <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
                                 <button
                                     title="Delete task"
                                     className="text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
