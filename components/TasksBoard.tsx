@@ -1,5 +1,6 @@
 "use client";
 
+import deleteTask from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
 import { useState } from "react";
 
@@ -119,6 +120,9 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                             <div className="flex items-center justify-between pt-2 border-t border-border">
                                 <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
                                 <button
+                                    onClick={() => {
+                                        deleteTask(task.id);
+                                    }}
                                     title="Delete task"
                                     className="text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
                                 >
