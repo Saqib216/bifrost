@@ -3,7 +3,7 @@ import Navlinks from "./Navlinks";
 
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
     return (
-        <div className="flex flex-col gap-5 border-r-2 border-muted h-screen pr-4">
+        <div className="flex flex-col gap-5 border-r-2 border-muted min-h-screen pr-4">
             <div className='flex items-center gap-2 sm:gap-3 group shrink-0'>
                 <div className='w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-card border border-border rounded-lg group-hover:border-border-hover transition-colors duration-150 ease-in-out'>
                     <span className='text-accent font-bold text-sm sm:text-base'>W</span>

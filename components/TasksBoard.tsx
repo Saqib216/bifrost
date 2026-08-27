@@ -1,6 +1,7 @@
 "use client";
 
 import { Task, TaskStatus } from "@prisma/client";
+import { useState } from "react";
 
 interface Employee {
     id: string;
@@ -10,15 +11,17 @@ interface Employee {
 }
 
 export default function TasksBoard({ employees }: { employees: Employee[] }) {
-    // 1. Combine all tasks from all employees
-    const allTasks = employees.flatMap((emp) => emp.tasks);
+    const [selectedEmployee, setSelectedEmployee] = useState<Employee>(employees[0]);
 
-    // 2. Compute dynamic stats from actual tasks
+    // saving the selected employee's tasks in a variable
+    const employeeTasks = selectedEmployee.tasks;
+
+    // Compute dynamic stats from actual tasks
     const stats = [
-        { label: 'New', count: allTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
-        { label: 'Active', count: allTasks.filter((t) => t.status === TaskStatus.ACTIVE).length, dot: 'bg-warning' },
-        { label: 'Completed', count: allTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
-        { label: 'Failed', count: allTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
+        { label: 'New', count: employeeTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
+        { label: 'Active', count: employeeTasks.filter((t) => t.status === TaskStatus.ACTIVE).length, dot: 'bg-warning' },
+        { label: 'Completed', count: employeeTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
+        { label: 'Failed', count: employeeTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
     ];
 
     const getStatusStyle = (status: TaskStatus) => {
@@ -36,8 +39,36 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
     return (
         <>
+            {/* Section Header */}
+            <div className='flex flex-col gap-1 mb-6'>
+                <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Employee Tasks</h2>
+                <p className='text-sm text-muted font-medium'>View and manage tasks assigned to each employee.</p>
+            </div>
+
+            {/* Employee Tab Pills */}
+            <div className="flex gap-5 mb-5 border-b border-border pb-3 overflow-x-auto no-scrollbar whitespace-nowrap">
+                {
+                    employees.map(emp => (
+                        <div
+                            key={emp.id}
+                            className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${selectedEmployee.email === emp.email ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
+                            onClick={() => {
+                                setSelectedEmployee(emp);
+                            }}
+                        >
+                            {emp.name.split(' ')[0]}
+                            <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold
+                            ${selectedEmployee.email === emp.email ? 'bg-primary/50 text-surface' : 'bg-surface text-muted'}`}>
+                                {emp.tasks.length}
+                            </span>
+                        </div>
+                    ))
+                }
+            </div>
+
+
             {/* Stat Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
                 {stats.map((stat) => (
                     <div
                         key={stat.label}
@@ -53,8 +84,8 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
             </div>
 
             {/* Tasks Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-10">
-                {allTasks.map((task) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {employeeTasks.map((task) => {
                     const statusStyle = getStatusStyle(task.status);
 
                     return (
