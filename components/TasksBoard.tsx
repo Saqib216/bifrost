@@ -12,10 +12,14 @@ interface Employee {
 }
 
 export default function TasksBoard({ employees }: { employees: Employee[] }) {
-    const [selectedEmployee, setSelectedEmployee] = useState<Employee>(employees[0]);
+    // 1. Store only the selected ID in state
+    const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>(employees[0]?.id);
 
-    // saving the selected employee's tasks in a variable
-    const employeeTasks = selectedEmployee.tasks;
+    // 2. Derive selectedEmployee dynamically from fresh `employees` prop
+    const selectedEmployee = employees.find(emp => emp.id === selectedEmployeeId) || employees[0];
+
+    // 3. `employeeTasks` now automatically gets fresh tasks on re-render:
+    const employeeTasks = selectedEmployee?.tasks || [];
 
     // Compute dynamic stats from actual tasks
     const stats = [
@@ -54,7 +58,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                             key={emp.id}
                             className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${selectedEmployee.email === emp.email ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
                             onClick={() => {
-                                setSelectedEmployee(emp);
+                                setSelectedEmployeeId(emp.id);
                             }}
                         >
                             {emp.name.split(' ')[0]}
