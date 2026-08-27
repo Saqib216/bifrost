@@ -1,54 +1,37 @@
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    status: string;
-    taskDate: string;
-}
+import { prisma } from "@/app/lib/prisma";
+import { auth } from "@/auth"
+import { TaskStatus } from "@prisma/client";
 
-export default function EmployeeTasksPage() {
-    const tasks: Task[] = [
-        {
-            id: 1,
-            title: 'Server migration',
-            description: 'Migrate legacy server infrastructure to new cloud provider.',
-            category: 'DevOps',
-            status: 'New',
-            taskDate: '2026-07-01',
-        },
-        {
-            id: 2,
-            title: 'Payment gateway integration',
-            description: 'Integrate Stripe payment gateway into checkout flow.',
-            category: 'Backend',
-            status: 'Completed',
-            taskDate: '2026-07-06',
-        },
-        {
-            id: 3,
-            title: 'Security audit',
-            description: 'Run a full security audit on the authentication system.',
-            category: 'Security',
-            status: 'Active',
-            taskDate: '2026-07-12',
-        },
-    ];
+export default async function EmployeeTasksPage() {
+    const session = await auth();
 
-    const getStatus = (task: Task) => {
-        if (task.status === 'New') return {
-            dot: 'bg-warning', text: 'text-warning'
+    const tasks = await prisma.task.findMany({
+        where: { userId: session?.user?.id },
+        orderBy: {
+            createdAt: 'desc'
         }
-        if (task.status === 'Completed') return {
-            dot: 'bg-success', text: 'text-success'
+    });
+
+    const getStatusStyle = (status: TaskStatus) => {
+        switch (status) {
+            case TaskStatus.NEW:
+                return {
+                    dot: 'bg-info', text: 'text-info'
+                };
+            case TaskStatus.ACTIVE:
+                return {
+                    dot: 'bg-warning', text: 'text-warning'
+                };
+            case TaskStatus.COMPLETED:
+                return {
+                    dot: 'bg-success', text: 'text-success'
+                };
+            case TaskStatus.FAILED:
+                return {
+                    dot: 'bg-danger', text: 'text-danger'
+                };
         }
-        if (task.status === 'Failed') return {
-            dot: 'bg-danger', text: 'text-danger'
-        }
-        return {
-            dot: 'bg-info', text: 'text-info'
-        }
-    }
+    };
 
     return (
         <div className='mx-4 sm:mx-10'>
@@ -59,7 +42,7 @@ export default function EmployeeTasksPage() {
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6'>
                 {tasks.map((task) => {
-                    const status = getStatus(task);
+                    const statusStyle = getStatusStyle(task.status);
                     return (
                         <div
                             key={task.id}
@@ -69,8 +52,8 @@ export default function EmployeeTasksPage() {
                             <div className="flex items-center justify-between">
                                 <span className="text-[11px] font-semibold uppercase tracking-wider text-muted px-2 py-0.5 bg-surface rounded-md border border-border">{task.category}</span>
 
-                                <span className={`flex items-center gap-1.5 text-xs font-medium ${status.text}`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`}></span>
+                                <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle?.text}`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${statusStyle?.dot}`}></span>
                                     {task.status}
                                 </span>
                             </div>
@@ -83,7 +66,7 @@ export default function EmployeeTasksPage() {
 
                             {/* Card Footer: Date + dummy action buttons  */}
                             <div className='flex items-center justify-between pt-2 border-t border-border'>
-                                <span className="text-xs text-muted font-medium">{task.taskDate}</span>
+                                <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
                                 <button
                                     className='text-xs font-medium px-3 py-1.5 rounded-md bg-info/10 text-info border border-info/20 hover:bg-info/20 cursor-pointer transition-colors'
                                     title="Accept task"
