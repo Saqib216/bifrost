@@ -3,6 +3,7 @@
 import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
 import { useState } from "react";
+import TasksModal from "./TasksModal";
 
 interface Employee {
     id: string;
@@ -137,6 +138,9 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                     );
                 })}
             </div>
+
+            {/* TasksModal */}
+            <TasksModal employees={employees} />
         </>
     );
 }
