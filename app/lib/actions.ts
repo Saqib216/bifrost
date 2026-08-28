@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
 
-export default async function deleteTask(taskId: string) {
+export async function deleteTask(taskId: string) {
     await prisma.task.delete({
         where: {
             id: taskId,
@@ -12,3 +12,16 @@ export default async function deleteTask(taskId: string) {
     );
     revalidatePath("/admin/tasks");
 }   
+
+export async function createTask(formData: FormData){
+    await prisma.task.create({
+        data:{
+            title: formData.get('title') as string,
+            description: formData.get('description') as string,
+            category: formData.get('category') as string,
+            taskDate: new Date(formData.get('taskDate') as string),
+            userId: formData.get('assignedTo') as string,
+        },
+    });
+    revalidatePath("/admin/tasks");
+}

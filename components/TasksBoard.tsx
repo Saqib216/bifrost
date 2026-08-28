@@ -1,6 +1,6 @@
 "use client";
 
-import deleteTask from "@/app/lib/actions";
+import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
 import { useState } from "react";
 
