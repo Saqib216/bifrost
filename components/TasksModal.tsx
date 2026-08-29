@@ -1,7 +1,7 @@
 "use client";
 
 import { createTask } from "@/app/lib/actions";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 interface Employee {
     id: string;
@@ -11,11 +11,14 @@ interface Employee {
 
 export default function TasksModal({ employees }: { employees: Employee[] }) {
     const [isOpen, setIsOpen] = useState(false);
+    
+    const [state, formAction] = useActionState(createTask, { errors: {} });
 
-    async function handleCreate(formData: FormData){
-        await createTask(formData);
-        setIsOpen(false);
-    }
+    useEffect(() => {
+        if (state.errors && Object.keys(state.errors).length === 0) {
+            setIsOpen(false);
+        }
+    }, [state]);
 
     return (
         <div className="mt-10">
@@ -40,7 +43,7 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
                     <div id='create-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
                         <div id="create-task-modal-content"
                             className="w-3/4 h-3/4 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out">
-                            <form action={handleCreate}>
+                            <form action={formAction}>
                                 {/* Modal header  */}
                                 <div className="flex justify-between">
                                     <h2 className='font-semibold text-lg sm:text-2xl tracking-tight text-primary'>Create a Task</h2>
@@ -57,8 +60,8 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
                                         <h3 className='flex gap-1 items-center'>Task Title <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span>
                                         </h3>
                                         <input
-                                        name="title"
-                                        type="text" placeholder='Make a Navbar component in react' className='border border-border rounded-md p-2 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm' />
+                                            name="title"
+                                            type="text" placeholder='Make a Navbar component in react' className='border border-border rounded-md p-2 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm' />
                                     </div>
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
@@ -79,8 +82,8 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
                                         <h3 className='flex gap-1 items-center'>Category <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span></h3>
                                         <input
-                                        name="category"
-                                        type="text" placeholder='programming, dev, design, etc...' className='outline-none border border-border rounded-md p-2 w-full placeholder:text-muted bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm' />
+                                            name="category"
+                                            type="text" placeholder='programming, dev, design, etc...' className='outline-none border border-border rounded-md p-2 w-full placeholder:text-muted bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm' />
                                     </div>
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
@@ -96,17 +99,17 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
 
                                     <div className='flex flex-col gap-1 col-span-5' id='taskDesc'>
                                         <h3>Description</h3>
-                                        <textarea 
-                                        name="description"
-                                        placeholder='Add Description' className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card
+                                        <textarea
+                                            name="description"
+                                            placeholder='Add Description' className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card
                         transition-colors duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm'></textarea>
                                     </div>
                                 </div>
 
                                 {/* Add Task Button */}
                                 <div className='flex justify-end mt-5'>
-                                    <button 
-                                    className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
+                                    <button
+                                        className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
                                         Add Task
                                     </button>
                                 </div>

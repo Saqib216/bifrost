@@ -22,7 +22,7 @@ export async function deleteTask(taskId: string) {
     revalidatePath("/admin/tasks");
 }
 
-export async function createTask(formData: FormData) {
+export async function createTask(prevState: any, formData: FormData) {
     const result = taskSchema.safeParse({
         title: formData.get('title'),
         description: formData.get('description'),
@@ -45,4 +45,6 @@ export async function createTask(formData: FormData) {
         },
     });
     revalidatePath("/admin/tasks");
+
+    return { error: {} };
 }
