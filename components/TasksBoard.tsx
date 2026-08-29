@@ -4,6 +4,7 @@ import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
 import { useState } from "react";
 import TasksModal from "./TasksModal";
+import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 
 interface Employee {
     id: string;
@@ -29,19 +30,6 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
         { label: 'Completed', count: employeeTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
         { label: 'Failed', count: employeeTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
     ];
-
-    const getStatusStyle = (status: TaskStatus) => {
-        switch (status) {
-            case TaskStatus.NEW:
-                return { dot: "bg-info", text: "text-info" };
-            case TaskStatus.ACTIVE:
-                return { dot: "bg-warning", text: "text-warning" };
-            case TaskStatus.COMPLETED:
-                return { dot: "bg-success", text: "text-success" };
-            case TaskStatus.FAILED:
-                return { dot: "bg-danger", text: "text-danger" };
-        }
-    };
 
     return (
         <>
@@ -105,8 +93,8 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                     {task.category}
                                 </span>
 
-                                <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle?.text}`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${statusStyle?.dot}`}></span>
+                                <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle.text}`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${statusStyle.dot}`}></span>
                                     {task.status}
                                 </span>
                             </div>

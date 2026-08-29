@@ -1,6 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { auth } from "@/auth"
-import { TaskStatus } from "@prisma/client";
+import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 
 export default async function EmployeeTasksPage() {
     const session = await auth();
@@ -11,27 +11,6 @@ export default async function EmployeeTasksPage() {
             createdAt: 'desc'
         }
     });
-
-    const getStatusStyle = (status: TaskStatus) => {
-        switch (status) {
-            case TaskStatus.NEW:
-                return {
-                    dot: 'bg-info', text: 'text-info'
-                };
-            case TaskStatus.ACTIVE:
-                return {
-                    dot: 'bg-warning', text: 'text-warning'
-                };
-            case TaskStatus.COMPLETED:
-                return {
-                    dot: 'bg-success', text: 'text-success'
-                };
-            case TaskStatus.FAILED:
-                return {
-                    dot: 'bg-danger', text: 'text-danger'
-                };
-        }
-    };
 
     return (
         <div className='mx-4 sm:mx-10'>
@@ -52,8 +31,8 @@ export default async function EmployeeTasksPage() {
                             <div className="flex items-center justify-between">
                                 <span className="text-[11px] font-semibold uppercase tracking-wider text-muted px-2 py-0.5 bg-surface rounded-md border border-border">{task.category}</span>
 
-                                <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle?.text}`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${statusStyle?.dot}`}></span>
+                                <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle.text}`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${statusStyle.dot}`}></span>
                                     {task.status}
                                 </span>
                             </div>
