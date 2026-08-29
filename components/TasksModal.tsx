@@ -1,5 +1,6 @@
 "use client";
 
+import { createTask } from "@/app/lib/actions";
 import { useState } from "react";
 
 interface Employee {
@@ -10,6 +11,11 @@ interface Employee {
 
 export default function TasksModal({ employees }: { employees: Employee[] }) {
     const [isOpen, setIsOpen] = useState(false);
+
+    async function handleCreate(formData: FormData){
+        await createTask(formData);
+        setIsOpen(false);
+    }
 
     return (
         <div className="mt-10">
@@ -34,7 +40,7 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
                     <div id='create-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
                         <div id="create-task-modal-content"
                             className="w-3/4 h-3/4 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out">
-                            <form>
+                            <form action={handleCreate}>
                                 {/* Modal header  */}
                                 <div className="flex justify-between">
                                     <h2 className='font-semibold text-lg sm:text-2xl tracking-tight text-primary'>Create a Task</h2>
@@ -62,8 +68,8 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
                                             id="employee-names"
                                             className='rounded-md p-2 w-full transition-all duration-150 ease-in-out sm:text-base'
                                         >
-                                            {employees.map((employee, idx) => (
-                                                <option className='text-base sm:text-sm' key={idx}>
+                                            {employees.map((employee) => (
+                                                <option className='text-base sm:text-sm' value={employee.id} key={employee.id}>
                                                     {employee.name}
                                                 </option>
                                             ))}
