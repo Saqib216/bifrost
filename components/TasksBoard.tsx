@@ -23,6 +23,8 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
     // 3. `employeeTasks` now automatically gets fresh tasks on re-render:
     const employeeTasks = selectedEmployee?.tasks || [];
 
+    const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
+
     // Compute dynamic stats from actual tasks
     const stats = [
         { label: 'New', count: employeeTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
@@ -114,7 +116,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                 <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
                                 <button
                                     onClick={() => {
-                                        deleteTask(task.id);
+                                        setTaskToDelete(task.id);
                                     }}
                                     title="Delete task"
                                     className="text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
@@ -122,6 +124,24 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                     Delete
                                 </button>
                             </div>
+
+                            {
+                                taskToDelete && (
+                                    <div id='delete-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
+                                        <div id="delete-task-modal-content"
+                                            className="w-1/2 h-1/2 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out flex flex-col gap-4">
+                                            <p className="text-secondary tracking-tight text-lg ">Are you sure you want to delete this task?</p>
+                                            <button onClick={() => setTaskToDelete(null)}>Cancel</button>
+                                            <button onClick={async () => {
+                                                await deleteTask(taskToDelete);
+                                                setTaskToDelete(null);
+                                            }}>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
                     );
                 })}
