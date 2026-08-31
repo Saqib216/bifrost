@@ -129,15 +129,17 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                 taskToDelete && (
                                     <div id='delete-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
                                         <div id="delete-task-modal-content"
-                                            className="w-1/2 h-1/2 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out flex flex-col gap-4">
-                                            <p className="text-secondary tracking-tight text-lg ">Are you sure you want to delete this task?</p>
-                                            <button onClick={() => setTaskToDelete(null)}>Cancel</button>
-                                            <button onClick={async () => {
-                                                await deleteTask(taskToDelete);
-                                                setTaskToDelete(null);
-                                            }}>
-                                                Delete
-                                            </button>
+                                            className="bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out flex flex-col justify-between">
+                                            <p className="text-secondary tracking-tight mb-5">Are you sure you want to delete this task?</p>
+                                            <div className="flex gap-4 justify-end">
+                                                <button className="text-muted cursor-pointer hover:text-primary transition-all duration-150 ease-in-out" onClick={() => setTaskToDelete(null)}>Cancel</button>
+                                                <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={async () => {
+                                                    await deleteTask(taskToDelete);
+                                                    setTaskToDelete(null);
+                                                }}>
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 )
