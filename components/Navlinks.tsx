@@ -4,30 +4,35 @@ import { usePathname } from "next/navigation";
 
 export default function Navlinks({ role }: { role: "ADMIN" | "EMPLOYEE" }) {
     const adminLinks = [
-        { href: "/admin", label: "Home" },
-        { href: "/admin/employees", label: "Employees" },
-        { href: "/admin/tasks", label: "Tasks" },
+        { href: "/admin", label: "Dashboard", icon: "fa-solid fa-gauge-high" },
+        { href: "/admin/employees", label: "Employees", icon: "fa-solid fa-users" },
+        { href: "/admin/tasks", label: "Tasks", icon: "fa-solid fa-list-check" },
     ];
 
     const employeeLinks = [
-        { href: "/employee", label: "Home" },
-        { href: "/employee/tasks", label: "Tasks" },
+        { href: "/employee", label: "Home", icon: "fa-solid fa-gauge-high" },
+        { href: "/employee/tasks", label: "Tasks", icon: "fa-solid fa-list-check" },
     ];
 
     const currentPath = usePathname();
     const links = role === "ADMIN" ? adminLinks : employeeLinks;
 
     return (
-        <div className="flex flex-col justify-between gap-2">
+        <div className="flex flex-col gap-1">
             {links.map((link) => (
                 <Link
                     key={link.href}
                     href={link.href}
-                    className={currentPath === link.href ? "text-accent font-semibold" : "text-secondary"}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ease-in-out ${
+                        currentPath === link.href
+                            ? "bg-accent/10 text-accent font-semibold border border-accent/20"
+                            : "text-secondary hover:text-primary hover:bg-card"
+                    }`}
                 >
-                    {link.label}
+                    <i className={`${link.icon} fa-fw text-[13px]`} />
+                    <span>{link.label}</span>
                 </Link>
             ))}
         </div>
-    )
+    );
 }
