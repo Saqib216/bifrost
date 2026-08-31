@@ -12,13 +12,13 @@ interface Employee {
 export default function TasksModal({ employees }: { employees: Employee[] }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const [state, formAction] = useActionState(createTask, { errors: {} });
+    const [state, formAction] = useActionState(createTask, { success: false, errors: {} });
 
     useEffect(() => {
-        if (state.errors && Object.keys(state.errors).length === 0) {
+        if (state.success) {
             setIsOpen(false);
         }
-    }, [state]);
+    }, [state.success]);
 
     return (
         <div className="mt-10">

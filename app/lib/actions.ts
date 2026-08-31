@@ -32,7 +32,7 @@ export async function createTask(prevState: any, formData: FormData) {
     });
 
     if (!result.success) {
-        return { errors: z.flattenError(result.error).fieldErrors };
+        return { success: false, errors: z.flattenError(result.error).fieldErrors };
     }
 
     await prisma.task.create({
@@ -46,5 +46,5 @@ export async function createTask(prevState: any, formData: FormData) {
     });
     revalidatePath("/admin/tasks");
 
-    return { error: {} };
+    return { success: true, errors: {} };
 }
