@@ -3,32 +3,39 @@ import Navlinks from "./Navlinks";
 
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
     return (
-        <div className="flex flex-col gap-5 border-r-2 border-muted min-h-screen pr-4">
-            <div className='flex items-center gap-2 sm:gap-3 group shrink-0'>
-                <div className='w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-card border border-border rounded-lg group-hover:border-border-hover transition-colors duration-150 ease-in-out'>
-                    <span className='text-accent font-bold text-sm sm:text-base'>W</span>
+        <div className="flex flex-col gap-1 border-r border-border min-h-screen w-56 px-3 py-5">
+
+            {/* Logo */}
+            <div className='flex items-center gap-3 shrink-0 px-1 mb-5'>
+                <div className='w-8 h-8 flex items-center justify-center bg-accent rounded-md shrink-0'>
+                    <span className='text-white font-bold text-sm'>W</span>
                 </div>
-                <h2 className='hidden sm:block text-sm font-semibold tracking-tight uppercase text-primary whitespace-nowrap'>Workforce Pro</h2>
+                <div className='flex flex-col'>
+                    <h2 className='text-lg font-bold tracking-tight text-primary whitespace-nowrap leading-tight'>Workforce</h2>
+                    <span className='text-[10px] font-semibold tracking-widest uppercase text-muted leading-tight'>{role}</span>
+                </div>
             </div>
-            <span className="px-2 py-1 bg-accent text-sm rounded-md font-semibold text-primary text-center tracking-wide">
-                {role}
-            </span>
 
             {/* Navlinks: */}
             <Navlinks role={role} />
 
             {/* Logout */}
-            <form action={
-                async () => {
-                    'use server';
-                    await signOut({ redirectTo: '/' });
-                }
-            }>
-                <button title="Logout"
-                    className="bg-surface border border-border rounded-md py-1 px-2.5 cursor-pointer hover:bg-card transition-all ease-in-out duration-300 font-semibold active:scale-95">
-                    Logout
-                </button>
-            </form>
+            <div className="mt-auto">
+                <form action={
+                    async () => {
+                        'use server';
+                        await signOut({ redirectTo: '/' });
+                    }
+                }>
+                    <button
+                        title="Logout"
+                        className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-secondary hover:text-danger hover:bg-danger/10 cursor-pointer transition-colors duration-150 ease-in-out"
+                    >
+                        <i className="fa-solid fa-right-from-bracket fa-fw text-[13px]" />
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
         </div>
     )
 }
