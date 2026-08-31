@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Inter:wght@400..700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -30,7 +29,7 @@
 @theme inline {
   --font-geist: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-space: var(--font-space-grotesk);
+  --font-display: var(--font-space-grotesk);
 
   --color-surface: var(--black);
   --color-card: var(--card-bg);
@@ -59,7 +58,8 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6{
-  font-family: var(--font-space), sans-serif;
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: 0.025em;
 }
 
 * {

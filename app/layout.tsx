@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import localFont from "next/font/local";
+import { Space_Grotesk } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,21 +13,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Define Space Grotesk locally
-const spaceGrotesk = localFont({
-  src: [
-    {
-      path: "./fonts/SpaceGrotesk-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    // {
-    //   path: "./fonts/SpaceGrotesk-Bold.woff2",
-    //   weight: "700",
-    //   style: "normal",
-    // },
-  ],
-  variable: "--font-space-grotesk", // CSS variable name
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], 
 });
 
 export const metadata: Metadata = {
