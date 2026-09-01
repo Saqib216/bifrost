@@ -57,6 +57,17 @@ export default async function EmployeeTasksPage() {
                     );
                 })}
             </div>
+
+            {tasks.length === 0 && (
+                <div className='col-span-3 flex flex-col items-center gap-3 py-20'>
+                    <div className='w-12 h-12 flex items-center justify-center bg-card border border-border rounded-md'>
+                        <i className='fa-regular fa-circle-check text-xl text-muted'></i>
+                    </div>
+                    <p className='text-lg font-semibold text-secondary'>No tasks assigned yet</p>
+                    <p className='text-xs text-muted'>Check back later or contact your admin.</p>
+                </div>
+            )
+            }
         </div>
     )
 }
