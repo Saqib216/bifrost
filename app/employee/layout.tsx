@@ -10,7 +10,7 @@ export default async function EmployeeLayout({ children }: { children: React.Rea
     }
 
     return (
-        <div className="flex justify-between mx-5">
+        <div className="flex">
             <Sidebar role="EMPLOYEE"/>
             <main className="flex-1 p-6">{children}</main>
         </div>

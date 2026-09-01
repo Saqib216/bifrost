@@ -10,7 +10,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     }
 
     return (
-        <div className="flex justify-between mx-5">
+        <div className="flex">
             <Sidebar role="ADMIN"/>
             <main className="flex-1 p-6">{children}</main>
         </div>
