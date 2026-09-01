@@ -12,6 +12,12 @@ const taskSchema = z.object({
     userId: z.string().min(1, "Please assign an employee"),
 });
 
+export type ActionState = {
+    success: boolean;
+    errors?: Record<string, string[]>;
+    message?: string;
+};
+
 export async function deleteTask(taskId: string) {
     await prisma.task.delete({
         where: {
@@ -22,7 +28,7 @@ export async function deleteTask(taskId: string) {
     revalidatePath("/admin/tasks");
 }
 
-export async function createTask(prevState: any, formData: FormData) {
+export async function createTask(prevState: ActionState, formData: FormData): Promise<ActionState> {
     const result = taskSchema.safeParse({
         title: formData.get('title'),
         description: formData.get('description'),
@@ -35,16 +41,19 @@ export async function createTask(prevState: any, formData: FormData) {
         return { success: false, errors: z.flattenError(result.error).fieldErrors };
     }
 
-    await prisma.task.create({
-        data: {
-            title: formData.get('title') as string,
-            description: formData.get('description') as string,
-            category: formData.get('category') as string,
-            taskDate: new Date(formData.get('taskDate') as string),
-            userId: formData.get('assignedTo') as string,
-        },
-    });
-    revalidatePath("/admin/tasks");
-
-    return { success: true, errors: {} };
+    try {
+        await prisma.task.create({
+            data: {
+                title: formData.get('title') as string,
+                description: formData.get('description') as string,
+                category: formData.get('category') as string,
+                taskDate: new Date(formData.get('taskDate') as string),
+                userId: formData.get('assignedTo') as string,
+            },
+        });
+        revalidatePath("/admin/tasks");
+        return { success: true, errors: {} };
+    } catch {
+        return { success: false, errors: {}, message: "Something went wrong, try again" };
+    }
 }

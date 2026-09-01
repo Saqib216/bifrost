@@ -20,7 +20,10 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
             setIsOpen(false);
             toast.success("New Task created");
         }
-    }, [state.success]);
+        else if(state.message){
+            toast.error(state.message);
+        }
+    }, [state]);
 
     return (
         <div className="mt-10">
