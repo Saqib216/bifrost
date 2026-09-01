@@ -12,12 +12,25 @@ interface Employee {
 
 export default function TasksModal({ employees }: { employees: Employee[] }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+
+    const openModal = () => {
+        setIsOpen(true);
+        requestAnimationFrame(() => setIsVisible(true));
+    };
+
+    const closeModal = () => {
+        setIsVisible(false);
+        setTimeout(() => {
+            setIsOpen(false);
+        }, 200);
+    }
 
     const [state, formAction] = useActionState(createTask, { success: false, errors: {} });
 
     useEffect(() => {
         if (state.success) {
-            setIsOpen(false);
+            closeModal();
             toast.success("New Task created");
         }
         else if (state.message) {
@@ -36,9 +49,7 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
             {/* Add Task button */}
             <div className="flex justify-center">
                 <button
-                    onClick={() => {
-                        setIsOpen(true);
-                    }}
+                    onClick={openModal}
                     className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
                     Add Task
                 </button>
@@ -47,17 +58,15 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
             {/* Create Task Modal */}
             {
                 isOpen && (
-                    <div id='create-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
+                    <div id='create-task-modal-overlay' className={`bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center transition-opacity duration-200 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
                         <div id="create-task-modal-content"
-                            className="w-3/4 h-3/4 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out">
+                            className={`w-3/4 h-3/4 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
                             <form action={formAction}>
                                 {/* Modal header  */}
                                 <div className="flex justify-between">
                                     <h2 className='font-semibold text-lg sm:text-2xl tracking-tight text-primary'>Create a Task</h2>
                                     <span
-                                        onClick={() => {
-                                            setIsOpen(false);
-                                        }}
+                                        onClick={closeModal}
                                         className="text-xl cursor-pointer px-2">
                                         <i className="fa-solid fa-xmark"></i>
                                     </span>
