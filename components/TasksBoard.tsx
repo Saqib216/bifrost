@@ -126,6 +126,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                 </button>
                             </div>
 
+                            {/* Task deletion confirmation dialog box */}
                             {
                                 taskToDelete && (
                                     <div id='delete-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
@@ -150,6 +151,17 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                     );
                 })}
             </div>
+
+            {/* Empty State */}
+            {selectedEmployee.tasks.length === 0 && (
+                <div className='flex flex-col items-center justify-center gap-3 py-20 text-center'>
+                    <div className='w-12 h-12 flex items-center justify-center bg-card border border-border rounded-md'>
+                        <i className='fa-regular fa-folder-open text-xl text-muted'></i>
+                    </div>
+                    <h3 className='text-lg font-semibold text-secondary'>No tasks yet</h3>
+                    <p className='text-xs text-muted'>Assign a task to {selectedEmployee.name.split(' ')[0]} to get started.</p>
+                </div>
+            )}
 
             {/* TasksModal */}
             <TasksModal employees={employees} />
