@@ -88,7 +88,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                     return (
                         <div
                             key={task.id}
-                            className="flex flex-col gap-3 bg-card border border-border rounded-md p-4 hover:border-border-hover transition-colors duration-200"
+                            className="flex flex-col gap-3 bg-card border border-border rounded-md p-4 hover:border-border-hover hover:-translate-y-0.5 transition-all duration-250"
                         >
                             {/* Header: Category + Status */}
                             <div className="flex items-center justify-between">
