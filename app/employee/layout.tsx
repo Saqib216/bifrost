@@ -10,9 +10,9 @@ export default async function EmployeeLayout({ children }: { children: React.Rea
     }
 
     return (
-        <div className="flex">
+        <div className="flex h-screen overflow-hidden">
             <Sidebar role="EMPLOYEE"/>
-            <main className="flex-1 p-6">{children}</main>
+            <main className="flex-1 h-full overflow-y-auto p-6">{children}</main>
         </div>
     )
 }

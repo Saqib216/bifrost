@@ -20,7 +20,7 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
             setIsOpen(false);
             toast.success("New Task created");
         }
-        else if(state.message){
+        else if (state.message) {
             toast.error(state.message);
         }
     }, [state]);
@@ -34,13 +34,15 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
             </div>
 
             {/* Add Task button */}
-            <button
-                onClick={() => {
-                    setIsOpen(true);
-                }}
-                className="absolute left-[50%] px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
-                Add Task
-            </button>
+            <div className="flex justify-center">
+                <button
+                    onClick={() => {
+                        setIsOpen(true);
+                    }}
+                    className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
+                    Add Task
+                </button>
+            </div>
 
             {/* Create Task Modal */}
             {

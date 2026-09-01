@@ -3,7 +3,7 @@ import Navlinks from "./Navlinks";
 
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
     return (
-        <div className="flex flex-col gap-1 border-r border-border min-h-screen w-56 px-3 py-5">
+        <div className="flex flex-col gap-1 border-r border-border h-full shrink-0 w-56 px-3 py-5">
 
             {/* Logo */}
             <div className='flex items-center gap-3 shrink-0 px-1 mb-5'>
