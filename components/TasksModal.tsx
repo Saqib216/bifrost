@@ -2,6 +2,7 @@
 
 import { createTask } from "@/app/lib/actions";
 import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface Employee {
     id: string;
@@ -17,6 +18,7 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
     useEffect(() => {
         if (state.success) {
             setIsOpen(false);
+            toast.success("New Task created");
         }
     }, [state.success]);
 

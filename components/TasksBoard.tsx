@@ -5,6 +5,7 @@ import { Task, TaskStatus } from "@prisma/client";
 import { useState } from "react";
 import TasksModal from "./TasksModal";
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
+import { toast } from "sonner";
 
 interface Employee {
     id: string;
@@ -136,6 +137,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                                 <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={async () => {
                                                     await deleteTask(taskToDelete);
                                                     setTaskToDelete(null);
+                                                    toast.success("Task deleted successfully.");
                                                 }}>
                                                     Delete
                                                 </button>
