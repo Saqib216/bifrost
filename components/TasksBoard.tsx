@@ -120,14 +120,19 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
                                 {/* Footer: Date + Delete */}
                                 <div className="flex items-center justify-between pt-2 border-t border-border">
-                                    <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
+                                    <span className='text-xs text-muted font-medium flex items-center gap-1.5'>
+                                        <i className='fa-regular fa-calendar text-[11px]'></i>
+                                        {task.taskDate.toLocaleDateString()}
+                                    </span>
+
                                     <button
                                         onClick={() => {
                                             setTaskToDelete(task.id);
                                         }}
                                         title="Delete task"
-                                        className="text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
+                                        className="flex items-center gap-1.5 text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
                                     >
+                                        <i className='fa-regular fa-trash-can text-[13px]'></i>
                                         Delete
                                     </button>
                                 </div>
