@@ -1,6 +1,6 @@
 "use client";
 
-import { createTask } from "@/app/lib/actions";
+import { createTask, updateTask } from "@/app/lib/actions";
 import { Task } from "@prisma/client";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -22,11 +22,11 @@ interface Props {
 export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdit }: Props) {
     const [isVisible, setIsVisible] = useState(false);
 
-    useEffect(() => { 
-        if(isOpen){
-            requestAnimationFrame(() => { setIsVisible(true)});
+    useEffect(() => {
+        if (isOpen) {
+            requestAnimationFrame(() => { setIsVisible(true) });
         }
-     }, [isOpen]);
+    }, [isOpen]);
 
     const closeModal = () => {
         setIsVisible(false);
@@ -35,7 +35,12 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
         }, 200);
     }
 
-    const [state, formAction] = useActionState(createTask, { success: false, errors: {} });
+    const updateTaskWithId = taskToEdit ? updateTask.bind(null, taskToEdit.id) : null;
+
+    const [state, formAction] = useActionState(
+        mode === 'edit' && updateTaskWithId ? updateTaskWithId : createTask,
+        { success: false, errors: {} }
+    );
 
     useEffect(() => {
         if (state.success) {

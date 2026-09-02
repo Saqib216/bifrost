@@ -55,3 +55,33 @@ export async function createTask(prevState: ActionState, formData: FormData): Pr
         return { success: false, errors: {}, message: "Something went wrong, try again" };
     }
 }
+
+export async function updateTask(taskId: string, prevState: ActionState, formData: FormData): Promise<ActionState> {
+    const result = taskSchema.safeParse({
+        title: formData.get('title'),
+        category: formData.get('category'),
+        taskDate: formData.get('taskDate'),
+        userId: formData.get('assignedTo'),
+    });
+
+    if (!result.success) {
+        return { success: false, errors: z.flattenError(result.error).fieldErrors };
+    }
+
+    try {
+        await prisma.task.update({
+            where: { id: taskId },
+            data: {
+                title: formData.get('title') as string,
+                description: formData.get('description') as string,
+                category: formData.get('category') as string,
+                taskDate: new Date(formData.get('taskDate') as string),
+                userId: formData.get('assignedTo') as string,
+            },
+        });
+        revalidatePath('/admin/tasks');
+        return { success: true, errors: {} };
+    } catch {
+        return { success: false, errors: {}, message: "Something went wrong, try again" };
+    }
+}
