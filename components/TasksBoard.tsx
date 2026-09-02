@@ -6,6 +6,7 @@ import { useState } from "react";
 import TasksModal from "./TasksModal";
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 import { toast } from "sonner";
+import { AnimatePresence, motion } from 'motion/react';
 
 interface Employee {
     id: string;
@@ -82,75 +83,81 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
             {/* Tasks Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {employeeTasks.map((task) => {
-                    const statusStyle = getStatusStyle(task.status);
+                <AnimatePresence mode="popLayout">
+                    {employeeTasks.map((task) => {
+                        const statusStyle = getStatusStyle(task.status);
 
-                    return (
-                        <div
-                            key={task.id}
-                            className="flex flex-col gap-3 bg-card border border-border rounded-md p-4 hover:border-border-hover hover:-translate-y-0.5 transition-all duration-250"
-                        >
-                            {/* Header: Category + Status */}
-                            <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted px-2 py-0.5 bg-surface rounded-md border border-border">
-                                    {task.category}
-                                </span>
+                        return (
+                            <motion.div
+                                key={task.id}
+                                layout
+                                initial={{ opacity: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                transition={{ duration: 0.25 }}
+                                className="flex flex-col gap-3 bg-card border border-border rounded-md p-4 hover:border-border-hover hover:-translate-y-0.5 transition-all duration-250"
+                            >
+                                {/* Header: Category + Status */}
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted px-2 py-0.5 bg-surface rounded-md border border-border">
+                                        {task.category}
+                                    </span>
 
-                                <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle.text}`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${statusStyle.dot}`}></span>
-                                    {task.status}
-                                </span>
-                            </div>
+                                    <span className={`flex items-center gap-1.5 text-xs font-medium ${statusStyle.text}`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${statusStyle.dot}`}></span>
+                                        {task.status}
+                                    </span>
+                                </div>
 
-                            {/* Title & Description */}
-                            <div className="flex flex-col gap-1 flex-1">
-                                <h3 className="text-base font-semibold tracking-tight text-primary leading-snug">
-                                    {task.title}
-                                </h3>
-                                <p className="text-xs text-muted line-clamp-2 leading-relaxed">
-                                    {task.description}
-                                </p>
-                            </div>
+                                {/* Title & Description */}
+                                <div className="flex flex-col gap-1 flex-1">
+                                    <h3 className="text-base font-semibold tracking-tight text-primary leading-snug">
+                                        {task.title}
+                                    </h3>
+                                    <p className="text-xs text-muted line-clamp-2 leading-relaxed">
+                                        {task.description}
+                                    </p>
+                                </div>
 
-                            {/* Footer: Date + Delete */}
-                            <div className="flex items-center justify-between pt-2 border-t border-border">
-                                <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
-                                <button
-                                    onClick={() => {
-                                        setTaskToDelete(task.id);
-                                    }}
-                                    title="Delete task"
-                                    className="text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
-                                >
+                                {/* Footer: Date + Delete */}
+                                <div className="flex items-center justify-between pt-2 border-t border-border">
+                                    <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
+                                    <button
+                                        onClick={() => {
+                                            setTaskToDelete(task.id);
+                                        }}
+                                        title="Delete task"
+                                        className="text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
+            </div>
+
+            {/* Task deletion confirmation dialog box */}
+            {
+                taskToDelete && (
+                    <div id='delete-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
+                        <div id="delete-task-modal-content"
+                            className="bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out flex flex-col justify-between">
+                            <p className="text-secondary tracking-tight mb-5">Are you sure you want to delete this task?</p>
+                            <div className="flex gap-4 justify-end">
+                                <button className="text-muted cursor-pointer hover:text-primary transition-all duration-150 ease-in-out" onClick={() => setTaskToDelete(null)}>Cancel</button>
+                                <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={async () => {
+                                    await deleteTask(taskToDelete);
+                                    setTaskToDelete(null);
+                                    toast.success("Task deleted successfully.");
+                                }}>
                                     Delete
                                 </button>
                             </div>
-
-                            {/* Task deletion confirmation dialog box */}
-                            {
-                                taskToDelete && (
-                                    <div id='delete-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
-                                        <div id="delete-task-modal-content"
-                                            className="bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out flex flex-col justify-between">
-                                            <p className="text-secondary tracking-tight mb-5">Are you sure you want to delete this task?</p>
-                                            <div className="flex gap-4 justify-end">
-                                                <button className="text-muted cursor-pointer hover:text-primary transition-all duration-150 ease-in-out" onClick={() => setTaskToDelete(null)}>Cancel</button>
-                                                <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={async () => {
-                                                    await deleteTask(taskToDelete);
-                                                    setTaskToDelete(null);
-                                                    toast.success("Task deleted successfully.");
-                                                }}>
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                            }
                         </div>
-                    );
-                })}
-            </div>
+                    </div>
+                )
+            }
 
             {/* Empty State */}
             {selectedEmployee.tasks.length === 0 && (
