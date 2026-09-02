@@ -43,13 +43,9 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
     );
 
     useEffect(() => {
-        if (state.success && mode==='create') {
+        if (state.success) {
             closeModal();
-            toast.success("New Task created");
-        }
-        else if(state.success && mode === 'edit'){
-            closeModal();
-            toast.success("Task updated successfully");
+            toast.success(mode === "edit" ? "Task updated successfully" : "New Task created");
         }
         else if (state.message) {
             toast.error(state.message);
