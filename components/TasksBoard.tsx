@@ -27,6 +27,22 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
     const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+    const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+
+    const openCreateModal = () => {
+        setModalMode('create');
+        setTaskToEdit(null);
+        setModalOpen(true);
+    };
+
+    const openEditModal = (task: Task) => {
+        setModalMode('edit');
+        setTaskToEdit(task);
+        setModalOpen(true);
+    };
+
     // Compute dynamic stats from actual tasks
     const stats = [
         { label: 'New', count: employeeTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
@@ -135,6 +151,15 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                         <i className='fa-regular fa-trash-can text-[13px]'></i>
                                         Delete
                                     </button>
+
+                                    <button
+                                        onClick={() => { openEditModal(task); }}
+                                        title="Edit task"
+                                        className="flex items-center gap-1.5 text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
+                                    >
+                                        <i className='fa-regular fa-edit text-[13px]'></i>
+                                        Edit
+                                    </button>
                                 </div>
                             </motion.div>
                         );
@@ -175,8 +200,30 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                 </div>
             )}
 
-            {/* TasksModal */}
-            <TasksModal employees={employees} />
+            {/* TasksModal Section */}
+            <div className="mt-10">
+                {/* Section Header */}
+                <div className='flex flex-col gap-1 mb-6'>
+                    <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Assign Tasks</h2>
+                    <p className='text-sm text-muted font-medium'>Want to assign more tasks to employees? Click the button below</p>
+                </div>
+
+                {/* Add Task button */}
+                <div className="flex justify-center">
+                    <button
+                        onClick={openCreateModal}
+                        className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
+                        Add Task
+                    </button>
+                </div>
+                <TasksModal
+                    employees={employees}
+                    isOpen={modalOpen}
+                    onClose={() => { setModalOpen(false) }}
+                    mode={modalMode}
+                    taskToEdit={taskToEdit}
+                />
+            </div>
         </>
     );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { createTask } from "@/app/lib/actions";
+import { Task } from "@prisma/client";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -10,19 +11,27 @@ interface Employee {
     email: string;
 }
 
-export default function TasksModal({ employees }: { employees: Employee[] }) {
-    const [isOpen, setIsOpen] = useState(false);
+interface Props {
+    employees: Employee[];
+    isOpen: boolean;
+    onClose: () => void;
+    mode: 'create' | 'edit';
+    taskToEdit: Task | null;
+}
+
+export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdit }: Props) {
     const [isVisible, setIsVisible] = useState(false);
 
-    const openModal = () => {
-        setIsOpen(true);
-        requestAnimationFrame(() => setIsVisible(true));
-    };
+    useEffect(() => { 
+        if(isOpen){
+            requestAnimationFrame(() => { setIsVisible(true)});
+        }
+     }, [isOpen]);
 
     const closeModal = () => {
         setIsVisible(false);
         setTimeout(() => {
-            setIsOpen(false);
+            onClose();
         }, 200);
     }
 
@@ -39,22 +48,7 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
     }, [state]);
 
     return (
-        <div className="mt-10">
-            {/* Section Header */}
-            <div className='flex flex-col gap-1 mb-6'>
-                <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Assign Tasks</h2>
-                <p className='text-sm text-muted font-medium'>Want to assign more tasks to employees? Click the button below</p>
-            </div>
-
-            {/* Add Task button */}
-            <div className="flex justify-center">
-                <button
-                    onClick={openModal}
-                    className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
-                    Add Task
-                </button>
-            </div>
-
+        <div>
             {/* Create Task Modal */}
             {
                 isOpen && (
@@ -142,11 +136,6 @@ export default function TasksModal({ employees }: { employees: Employee[] }) {
                                             name="description"
                                             placeholder='Add Description' className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card
                         transition-colors duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm'></textarea>
-                                        {
-                                            state.errors?.description && (
-                                                <p className="text-danger text-xs">{state.errors.description}</p>
-                                            )
-                                        }
                                     </div>
                                 </div>
 
