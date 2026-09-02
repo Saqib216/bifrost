@@ -155,7 +155,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                     <button
                                         onClick={() => { openEditModal(task); }}
                                         title="Edit task"
-                                        className="flex items-center gap-1.5 text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
+                                        className="flex items-center gap-1.5 text-xs text-muted hover:text-primary cursor-pointer transition-colors duration-150 font-medium"
                                     >
                                         <i className='fa-regular fa-edit text-[13px]'></i>
                                         Edit
