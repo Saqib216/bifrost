@@ -51,6 +51,7 @@ export default function LoginPage() {
                                 Email Address
                             </label>
                             <input
+                                autoFocus
                                 id="email"
                                 name="email"
                                 type="email"
