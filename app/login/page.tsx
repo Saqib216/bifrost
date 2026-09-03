@@ -1,37 +1,10 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation"
-import { useState } from "react";
+import { useActionState } from "react";
+import { authenticate } from "../lib/actions";
 
 export default function LoginPage() {
-    const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(Boolean);
-
-    const handleSubmit = async (e: React.SubmitEvent) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
-
-        const result = await signIn('credentials', {
-            email,
-            password,
-            redirect: false,
-        });
-
-        setLoading(false);
-
-        if (result?.error) {
-            setError('Invalid email or password');
-            return;
-        }
-
-        router.push("/");
-        router.refresh();
-    };
+    const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
 
     return (
         <div className="min-h-screen flex">
@@ -71,7 +44,8 @@ export default function LoginPage() {
                     </div>
 
 
-                    <form className="flex flex-col gap-5">
+                    <form action={formAction}
+                        className="flex flex-col gap-5">
                         <div className="flex flex-col gap-1.5">
                             <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-muted">
                                 Email Address
@@ -101,14 +75,14 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        {/* Error message placeholder */}
-                        {/* {error && <p className="text-danger text-xs">{error}</p>} */}
+                        {/* Error message */}
+                        {errorMessage && <p className="text-danger text-xs">{errorMessage}</p>}
 
                         <button
                             type="submit"
                             className="mt-2 px-4 py-2.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm"
                         >
-                            Continue
+                            {isPending ? 'Signing in...' : 'Continue'}
                         </button>
                     </form>
                 </div>
