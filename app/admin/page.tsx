@@ -21,9 +21,7 @@ export default async function AdminDashboardPage() {
         { label: 'Pending Tasks', count: getCount('ACTIVE'), dot: 'bg-danger', border: 'border-danger/30', text: 'text-danger/90', icon: 'fa-solid fa-hourglass-half' },
     ];
 
-    // const completionRate = tasksCount > 0
-    //     ? Math.round((getCount('COMPLETED') / tasksCount) * 100)
-    //     : 0;
+    const completionRate = tasksCount > 0 ? Math.round((getCount('COMPLETED') / tasksCount) * 100) : 0;
 
     return (
         <div>
@@ -34,7 +32,7 @@ export default async function AdminDashboardPage() {
             </div>
 
             {/* Stat Cards Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
                 {
                     globalStats.map((stat) => (
                         <div
@@ -52,13 +50,26 @@ export default async function AdminDashboardPage() {
             </div>
 
             {/* Completion Rate - Hero Card */}
-            {/* <div className="bg-card rounded-md border border-accent/30 p-5 flex flex-col gap-2 mb-3">
-                <span className="text-xs font-semibold tracking-wider text-muted uppercase">Completion Rate</span>
-                <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold font-mono text-accent">{completionRate}%</span>
-                    <span className="text-xs text-muted">({getCount('COMPLETED')} of {tasksCount} tasks)</span>
+            <div className="bg-card rounded-md border border-accent/30 p-5 flex flex-col gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                    <i className="fa-solid fa-chart-line text-accent/70 text-xs"></i>
+                    <span className="text-xs font-semibold tracking-wider text-muted uppercase">Completion Rate</span>
                 </div>
-            </div> */}
+
+                <div className="flex items-baseline ">
+                    <AnimatedNumber value={completionRate} className="text-4xl font-bold font-mono text-accent" />
+                    <span className="text-2xl font-bold text-accent">%</span>
+                    <span className="ml-2 text-xs text-muted">({getCount('COMPLETED')} of {tasksCount} tasks)</span>
+                </div>
+
+                {/* Progress bar */}
+                <div className="w-full h-1.5 bg-surface rounded-full overflow-hidden mt-1">
+                    <div
+                        className="h-full bg-accent rounded-full transition-all duration-700 ease-out"
+                        style={{ width: `${completionRate}%` }}
+                    ></div>
+                </div>
+            </div>
         </div>
     )
 }
