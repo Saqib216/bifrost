@@ -1,5 +1,6 @@
 import FeaturesGrid from "@/components/FeaturesGrid";
 import Hero from "@/components/Hero";
+import HowItWorks from "@/components/HowItWorks";
 import TrustStats from "@/components/TrustStats";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <TrustStats />
       <FeaturesGrid />
+      <HowItWorks />
     </main>
   );
 }
