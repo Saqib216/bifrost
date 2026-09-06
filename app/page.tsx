@@ -1,3 +1,4 @@
+import CTABand from "@/components/CTAband";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
@@ -10,6 +11,7 @@ export default function Home() {
       <TrustStats />
       <FeaturesGrid />
       <HowItWorks />
+      <CTABand />
     </main>
   );
 }

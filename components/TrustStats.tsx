@@ -17,7 +17,7 @@ export default function TrustStats() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="bg-card border border-border rounded-xl px-6 sm:px-10 py-8 sm:py-10 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border"
+                className="bg-card border border-border rounded-md px-6 sm:px-10 py-8 sm:py-10 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border"
             >
                 {stats.map((stat, i) => (
                     <motion.div

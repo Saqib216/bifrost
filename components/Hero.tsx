@@ -76,7 +76,7 @@ export default function Hero() {
                 <motion.div
                     animate={{ y: [0, -12, 0] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                    className="bg-card border border-border rounded-xl p-6 shadow-2xl"
+                    className="bg-card border border-border rounded-md p-6 shadow-2xl"
                 >
                     {/* Fake window bar */}
                     <div className="flex gap-1.5 mb-5">

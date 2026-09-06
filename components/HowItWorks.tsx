@@ -62,7 +62,7 @@ export default function HowItWorks() {
                                 <span className="text-lg font-bold font-mono text-accent">{step.number}</span>
                             </div>
 
-                            <div className="flex flex-col gap-1.5 max-w-[220px]">
+                            <div className="flex flex-col gap-1.5 max-w-55">
                                 <h3 className="text-base font-semibold tracking-tight text-primary">
                                     {step.title}
                                 </h3>

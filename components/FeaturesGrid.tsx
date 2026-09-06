@@ -49,7 +49,7 @@ export default function FeaturesGrid() {
                     <motion.div
                         key={feature.title}
                         variants={itemVariants}
-                        className="group bg-card border border-border rounded-xl p-6 flex flex-col gap-4 transition-all duration-250 hover:border-accent/50 hover:-translate-y-1"
+                        className="group bg-card border border-border rounded-md p-6 flex flex-col gap-4 transition-all duration-250 hover:border-accent/50 hover:-translate-y-1"
                     >
                         <div className="w-11 h-11 flex items-center justify-center bg-accent/10 rounded-md group-hover:bg-accent/20 transition-colors duration-250">
                             <i className={`fa-solid ${feature.icon} text-accent text-lg`}></i>
