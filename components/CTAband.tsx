@@ -21,7 +21,7 @@ export default function CTAband() {
                 </p>
                 <Link
                     href="/login"
-                    className="mt-2 px-8 py-3 bg-surface rounded-md font-semibold text-accent transition-all duration-200 hover:opacity-90 active:scale-95 text-sm"
+                    className="mt-2 inline-flex items-center justify-center px-8 py-3 bg-surface rounded-md font-semibold text-accent transition-all duration-200 hover:bg-surface/90 hover:scale-[1.02] active:scale-95 text-sm shadow-lg"
                 >
                     Get Started
                 </Link>
