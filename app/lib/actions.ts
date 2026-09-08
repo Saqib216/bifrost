@@ -90,6 +90,19 @@ export async function updateTask(taskId: string, prevState: ActionState, formDat
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
     try {
+        const email = formData.get('email') as string;
+
+        // Find user role to determine the right dashboard
+
+        const user = await prisma.user.findUnique({
+            where: { email },
+            select: { role: true },
+        });
+
+        const redirectTo = user?.role === 'ADMIN' ? '/admin' : '/employee';
+
+        formData.set('redirectTo', redirectTo);
+
         await signIn('credentials', formData);
     } catch (error) {
         if (error instanceof AuthError) {
