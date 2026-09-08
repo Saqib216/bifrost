@@ -3,6 +3,7 @@ import FeaturesGrid from "@/app/_components/FeaturesGrid";
 import Hero from "@/app/_components/Hero";
 import HowItWorks from "@/app/_components/HowItWorks";
 import TrustStats from "@/app/_components/TrustStats";
+import Footer from "./_components/Footer";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <FeaturesGrid />
       <HowItWorks />
       <CTABand />
+      <Footer />
     </main>
   );
 }
