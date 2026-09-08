@@ -1,8 +1,8 @@
-import CTABand from "@/components/CTAband";
-import FeaturesGrid from "@/components/FeaturesGrid";
-import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
-import TrustStats from "@/components/TrustStats";
+import CTABand from "@/app/_components/CTAband";
+import FeaturesGrid from "@/app/_components/FeaturesGrid";
+import Hero from "@/app/_components/Hero";
+import HowItWorks from "@/app/_components/HowItWorks";
+import TrustStats from "@/app/_components/TrustStats";
 
 export default function Home() {
   return (

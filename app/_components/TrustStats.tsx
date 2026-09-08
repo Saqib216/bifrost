@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from 'motion/react';
-import AnimatedNumber from './AnimatedNumber';
+import AnimatedNumber from '../../components/AnimatedNumber';
 
 const stats = [
     { value: 500, suffix: "+", label: "Tasks Managed" },

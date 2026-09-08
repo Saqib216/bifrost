@@ -1,5 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
-import TasksBoard from "@/components/TasksBoard";
+import TasksBoard from "@/app/admin/_components/TasksBoard";
 
 export default async function AdminTasksViewPage() {
     const employees = await prisma.user.findMany({

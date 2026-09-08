@@ -3,7 +3,7 @@
 import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
 import { useState } from "react";
-import TasksModal from "./TasksModal";
+import TasksModal from "@/app/admin/_components/TasksModal";
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from 'motion/react';
