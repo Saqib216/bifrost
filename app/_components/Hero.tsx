@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/Logo";
 import { motion, Variants } from "motion/react";
 import Link from "next/link";
 
@@ -31,8 +32,7 @@ export default function Hero() {
                 className="flex-1 flex flex-col gap-6 max-w-xl"
             >
                 <motion.div variants={itemVariants} className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-accent rounded-md"></div>
-                    <span className="font-bold text-lg tracking-tight text-primary font-display">WORKFORCE</span>
+                    <Logo size="text-2xl" />
                 </motion.div>
 
                 <motion.h1

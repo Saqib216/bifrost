@@ -1,5 +1,6 @@
 import { signOut } from "@/auth";
 import Navlinks from "./Navlinks";
+import Logo from "./Logo";
 
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
     return (
@@ -7,11 +8,8 @@ export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
 
             {/* Logo */}
             <div className='flex items-center gap-3 shrink-0 px-1 mb-5'>
-                <div className='w-8 h-8 flex items-center justify-center bg-accent rounded-md shrink-0'>
-                    <span className='text-white font-bold text-sm'>W</span>
-                </div>
                 <div className='flex flex-col'>
-                    <h2 className='text-lg font-bold tracking-tight text-primary whitespace-nowrap leading-tight'>Workforce</h2>
+                    <Logo />
                     <span className='text-[10px] font-semibold tracking-widest uppercase text-muted leading-tight'>{role}</span>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { authenticate } from "../lib/actions";
+import Logo from "@/components/Logo";
 
 export default function LoginPage() {
     const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
@@ -14,8 +15,7 @@ export default function LoginPage() {
 
                 {/* Logo/Brand mark top */}
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-accent rounded-md"></div>
-                    <span className="font-bold text-lg tracking-tight text-primary font-display">WORKFORCE</span>
+                    <Logo size="text-2xl" />
                 </div>
 
                 {/* Center content */}
