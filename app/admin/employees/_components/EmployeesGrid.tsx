@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "motion/react";
+import { motion, stagger, Variants } from "motion/react";
 import Link from "next/link";
 
 type Employee = {
@@ -13,7 +13,7 @@ type Employee = {
 
 const containerVariants: Variants = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.08 } },
+    visible: { transition: { delayChildren: stagger(0.08) } },
 };
 
 const itemVariants: Variants = {
@@ -37,7 +37,7 @@ export default function EmployeesGrid({ employees }: { employees: Employee[] }) 
                 <motion.div key={employee.id} variants={itemVariants}>
                     <Link
                         href={`/admin/employees/${employee.id}`}
-                        className="group bg-card border border-border rounded-md px-4 py-4 flex flex-col gap-3 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5 block"
+                        className="group bg-card border border-border rounded-md px-4 py-4 flex flex-col gap-3 transition-all duration-200 hover:border-accent/50 hover:-translate-y-0.5"
                     >
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-accent/15 text-accent font-bold text-sm">
