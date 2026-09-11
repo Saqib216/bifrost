@@ -1,7 +1,10 @@
 import { prisma } from "@/app/lib/prisma";
 import EmployeesGrid from "./_components/EmployeesGrid";
+import EmployeeSearch from "./_components/EmployeeSearch";
 
-export default async function EmployeesOfAdmin() {
+export default async function EmployeesOfAdmin({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
+    const { search } = await searchParams;
+
     const employees = await prisma.user.findMany({
         where: { role: 'EMPLOYEE' },
         select: {
@@ -24,6 +27,8 @@ export default async function EmployeesOfAdmin() {
         }
     ));
 
+    const filteredEmployees = search ? employeesWithStats.filter((emp) => emp.name.toLowerCase().includes(search.toLowerCase())) : employeesWithStats;
+
     return (
         <div className="mx-10 mb-10">
             <div className="flex flex-col gap-1 mb-6">
@@ -31,7 +36,8 @@ export default async function EmployeesOfAdmin() {
                 <p className="text-sm text-muted font-medium">Browse your team and view individual task activity.</p>
             </div>
 
-            <EmployeesGrid employees={employeesWithStats} />
+            <EmployeeSearch />
+            <EmployeesGrid employees={filteredEmployees} />
         </div>
     )
 }
