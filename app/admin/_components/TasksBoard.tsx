@@ -31,6 +31,18 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
     const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
+    // For search/filter
+    const [statusFilter, setStatusFilter] = useState<TaskStatus | ''>('');
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // filtered version
+    const filteredTasks = employeeTasks.filter((task) => {
+        const matchesStatus = statusFilter ? task.status === statusFilter : true;
+        const matchesSearch = searchQuery ? task.title.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+
+        return matchesStatus && matchesSearch;
+    })
+
     const openCreateModal = () => {
         setModalMode('create');
         setTaskToEdit(null);
@@ -80,6 +92,32 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                 }
             </div>
 
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                <div className="relative flex-1">
+                    <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-muted text-xs" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search tasks by title..."
+                        className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
+                    />
+                </div>
+
+                <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value as TaskStatus | "")}
+                    className="bg-card border border-border rounded-md px-3 py-2 text-sm text-primary focus:outline-none focus:border-accent/50 transition-colors cursor-pointer"
+                >
+                    <option value="">All Status</option>
+                    <option value={TaskStatus.NEW}>New</option>
+                    <option value={TaskStatus.ACTIVE}>Active</option>
+                    <option value={TaskStatus.COMPLETED}>Completed</option>
+                    <option value={TaskStatus.FAILED}>Failed</option>
+                </select>
+            </div>
+
 
             {/* Stat Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
@@ -100,7 +138,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
             {/* Tasks Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 <AnimatePresence mode="popLayout">
-                    {employeeTasks.map((task) => {
+                    {filteredTasks.map((task) => {
                         const statusStyle = getStatusStyle(task.status);
 
                         return (
@@ -190,7 +228,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
             }
 
             {/* Empty State */}
-            {selectedEmployee.tasks.length === 0 && (
+            {filteredTasks.length === 0 && (
                 <div className='flex flex-col items-center justify-center gap-3 py-20 text-center'>
                     <div className='w-12 h-12 flex items-center justify-center bg-card border border-border rounded-md'>
                         <i className='fa-regular fa-folder-open text-xl text-muted'></i>
