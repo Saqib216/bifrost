@@ -8,6 +8,7 @@ export default function Navlinks({ role }: { role: "ADMIN" | "EMPLOYEE" }) {
         { href: "/admin", label: "Dashboard", icon: "fa-solid fa-gauge-high" },
         { href: "/admin/employees", label: "Employees", icon: "fa-solid fa-users" },
         { href: "/admin/tasks", label: "Tasks", icon: "fa-solid fa-list-check" },
+        { href: "/admin/analytics", label: "Analytics", icon: "fa-solid fa-chart-line" },
     ];
 
     const employeeLinks = [
