@@ -1,8 +1,10 @@
 import { prisma } from "@/app/lib/prisma";
 import { notFound } from "next/navigation";
+import TaskFilters from "../_components/TaskFilters";
 
-export default async function SpecificEmployeePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EmployeeProfilePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string; search?: string }>; }) {
     const { id } = await params;
+    const { status, search } = await searchParams;
 
     const employee = await prisma.user.findUnique({
         where: { id },
@@ -52,6 +54,14 @@ export default async function SpecificEmployeePage({ params }: { params: Promise
         FAILED: { label: "Failed", dot: "bg-danger", text: "text-danger" },
     } as const;
 
+    // Filtering Logic
+    const filteredTasks = employee.tasks.filter((task) => {
+        const matchesStatus = status ? task.status === status : true;
+        const matchesSearch = search ? task.title.toLowerCase().includes(search.toLowerCase()) : true;
+
+        return matchesStatus && matchesSearch;
+    });
+
     return (
         <div className="mx-4 sm:mx-10 mb-10">
 
@@ -89,19 +99,22 @@ export default async function SpecificEmployeePage({ params }: { params: Promise
                 </div>
             )}
 
+            {/* Filters */}
+            <TaskFilters />
+
             {/* Task Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {employee.tasks.map((task) => {
-                    const status = statusMap[task.status];
+                {filteredTasks.map((task) => {
+                    const taskStatus = statusMap[task.status];
                     return (
                         <div key={task.id} className="flex flex-col gap-3 bg-card border border-border rounded-md p-3 sm:p-4 hover:border-border-hover transition-colors duration-200">
                             <div className="flex items-center justify-between">
                                 <span className="text-[11px] font-semibold uppercase tracking-wider text-muted px-2 py-0.5 bg-surface rounded-md border border-border">
                                     {task.category}
                                 </span>
-                                <span className={`flex items-center gap-1.5 text-xs font-medium ${status.text}`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`}></span>
-                                    {status.label}
+                                <span className={`flex items-center gap-1.5 text-xs font-medium ${taskStatus.text}`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${taskStatus.dot}`}></span>
+                                    {taskStatus.label}
                                 </span>
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
@@ -120,12 +133,14 @@ export default async function SpecificEmployeePage({ params }: { params: Promise
             </div>
 
             {/* Empty State */}
-            {employee.tasks.length === 0 && (
+            {filteredTasks.length === 0 && (
                 <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
                     <div className="w-12 h-12 flex items-center justify-center bg-card border border-border rounded-md">
                         <i className="fa-regular fa-folder-open text-xl text-muted" />
                     </div>
-                    <p className="text-sm font-medium text-secondary">No tasks assigned yet</p>
+                    <p className="text-sm font-medium text-secondary">
+                        {employee.tasks.length === 0 ? "No tasks assigned yet" : "No tasks match your filters"}
+                    </p>
                 </div>
             )}
 
