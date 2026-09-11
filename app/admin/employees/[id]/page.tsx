@@ -1,6 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { notFound } from "next/navigation";
-import TaskFilters from "../_components/TaskFilters";
+import TaskFilters from "./_components/TaskFilters";
 
 export default async function EmployeeProfilePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string; search?: string }>; }) {
     const { id } = await params;
