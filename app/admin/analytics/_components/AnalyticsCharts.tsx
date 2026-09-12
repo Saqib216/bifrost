@@ -1,7 +1,7 @@
 'use client';
 
 import AnimatedNumber from "@/components/AnimatedNumber";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Sector, Tooltip, XAxis, YAxis } from "recharts";
 
 interface AnalyticsChartsProps {
     statusData: { status: string, count: number }[];
@@ -49,45 +49,54 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                 </div>
             </div>
 
-            {/* Hero Chart - Timeline, full width */}
-            <div className="bg-card border border-border rounded-lg p-5">
-                <h3 className="text-sm font-semibold text-secondary mb-4">Tasks Over Time</h3>
-                <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={timelineData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-                        <XAxis dataKey="date" stroke="var(--color-muted)" fontSize={12} />
-                        <YAxis stroke="var(--color-muted)" fontSize={12} allowDecimals={false} />
-                        <Tooltip contentStyle={tooltipStyle} />
-                        <Line type="linear" dataKey="count" stroke="#F2266E" strokeWidth={2} dot={{ fill: "#F2266E", r: 3 }} />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
-
-            {/* Secondary charts - 3 column grid */}
+            {/* charts */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-                <div className="bg-card border border-border rounded-lg p-5">
-                    <h3 className="text-sm font-semibold text-secondary mb-4">Tasks by Status</h3>
-                    <ResponsiveContainer width="100%" height={240}>
-                        <BarChart data={statusData} margin={{ bottom: 20 }}>
+                {/* Hero Chart - Timeline, full width */}
+                <div className="lg:col-span-2 bg-card border border-border rounded-lg p-5">
+                    <h3 className="text-sm font-semibold text-secondary mb-4">Tasks Over Time</h3>
+                    <ResponsiveContainer width="100%" height={280}>
+                        <LineChart data={timelineData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-                            <XAxis dataKey="status" tick={{ fontSize: 12, fill: "var(--color-muted)" }} />
+                            <XAxis dataKey="date" stroke="var(--color-muted)" fontSize={12} />
                             <YAxis stroke="var(--color-muted)" fontSize={12} allowDecimals={false} />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Bar
-                                dataKey="count"
-                                radius={[4, 4, 0, 0]}
-                                shape={(props) => (
-                                    <Rectangle
-                                        {...props}
-                                        fill={statusColors[props.payload?.status] ?? "var(--color-primary)"}
-                                    />
-                                )}
-                            />
-                        </BarChart>
+                            <Line type="linear" dataKey="count" stroke="#F2266E" strokeWidth={2} dot={{ fill: "#F2266E", r: 3 }} />
+                        </LineChart>
                     </ResponsiveContainer>
                 </div>
 
+                <div className="bg-card border border-border rounded-lg p-5">
+                    <h3 className="text-sm font-semibold text-secondary mb-4">Tasks by Status</h3>
+                    <ResponsiveContainer width="100%" height={280}>
+                        <PieChart>
+                            <Pie
+                                data={statusData.map((entry) => ({
+                                    ...entry,
+                                    fill: statusColors[entry.status],
+                                }))}
+                                dataKey="count"
+                                nameKey="status"
+                                innerRadius={60}
+                                outerRadius={90}
+                                paddingAngle={3}
+                                shape={(props) => (
+                                    <Sector
+                                        {...props}
+                                        fill={statusColors[props.payload?.status] ?? props.fill}
+                                    />
+                                )}
+                            />
+                            <Tooltip contentStyle={tooltipStyle} />
+                            <Legend
+                                iconType="circle"
+                                formatter={(value) => <span style={{ color: "var(--color-muted)", fontSize: 12 }}>{value}</span>}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="bg-card border border-border rounded-lg p-5">
                     <h3 className="text-sm font-semibold text-secondary mb-4">Tasks per Employee</h3>
                     <ResponsiveContainer width="100%" height={240}>
@@ -113,7 +122,6 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
-
             </div>
         </div>
     );
