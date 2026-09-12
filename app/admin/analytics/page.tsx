@@ -26,6 +26,16 @@ export default async function AnalyticsPage() {
 
     const employeeData = Object.entries(employeeGroups).map(([name, count]) => ({ name, count }));
 
+    // 3. Tasks Over Time (data bucketing)
+    const dateGroups = tasks.reduce((acc, task) => {
+        const dateKey = task.taskDate.toISOString().split('T')[0];
+        acc[dateKey] = (acc[dateKey] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+
+    const timelineData = Object.entries(dateGroups).map(([date, count]) => ({ date, count })).sort((a, b) => a.date.localeCompare(b.date));
+    
+
     return (
         <div className="mx-10 mb-10">
             <div className="flex flex-col gap-1 mb-6">
@@ -35,6 +45,7 @@ export default async function AnalyticsPage() {
             <AnalyticsCharts
                 statusData={statusData}
                 employeeData={employeeData}
+                timelineData={timelineData}
             />
         </div>
     );
