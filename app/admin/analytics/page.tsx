@@ -34,7 +34,20 @@ export default async function AnalyticsPage() {
     }, {} as Record<string, number>);
 
     const timelineData = Object.entries(dateGroups).map(([date, count]) => ({ date, count })).sort((a, b) => a.date.localeCompare(b.date));
-    
+
+    // 4. Completion Rate per Employee
+    const employeeStats = tasks.reduce((acc, task) => {
+        const name = task.assignedTo.name;
+        if (!acc[name]) acc[name] = { total: 0, completed: 0 };
+        acc[name].total += 1;
+        if (task.status === 'COMPLETED') acc[name].completed += 1;
+        return acc;
+    }, {} as Record<string, { total: number; completed: number }>);
+
+    const completionData = Object.entries(employeeStats).map(([name, { total, completed }]) => ({
+        name,
+        rate: total > 0 ? Math.round((completed / total) * 100) : 0,
+    }));
 
     return (
         <div className="mx-10 mb-10">
@@ -46,6 +59,7 @@ export default async function AnalyticsPage() {
                 statusData={statusData}
                 employeeData={employeeData}
                 timelineData={timelineData}
+                completionData={completionData}
             />
         </div>
     );

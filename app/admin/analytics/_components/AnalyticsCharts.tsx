@@ -6,6 +6,7 @@ interface AnalyticsChartsProps {
     statusData: { status: string, count: number }[];
     employeeData: { name: string; count: number }[];
     timelineData: { date: string; count: number }[];
+    completionData: { name: string; rate: number }[];
 }
 
 const tooltipStyle = {
@@ -14,7 +15,7 @@ const tooltipStyle = {
     borderRadius: '6px',
 }
 
-export default function AnalyticsCharts({ statusData, employeeData, timelineData }: AnalyticsChartsProps) {
+export default function AnalyticsCharts({ statusData, employeeData, timelineData, completionData }: AnalyticsChartsProps) {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
@@ -57,6 +58,20 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                         <Tooltip contentStyle={tooltipStyle} />
                         <Line type="monotone" dataKey="count" stroke="#F2266E" strokeWidth={2} dot={false} />
                     </LineChart>
+                </ResponsiveContainer>
+            </div>
+
+            {/* Completion Rate per Employee */}
+            <div className="bg-card border border-border rounded-md p-4">
+                <h3 className="text-sm font-semibold text-secondary mb-4">Completion Rate (%)</h3>
+                <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={completionData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+                        <XAxis dataKey="name" stroke="var(--color-muted)" fontSize={12} />
+                        <YAxis stroke="var(--color-muted)" fontSize={12} domain={[0, 100]} />
+                        <Tooltip contentStyle={tooltipStyle} />
+                        <Bar dataKey="rate" fill="#F2266E" radius={[4, 4, 0, 0]} />
+                    </BarChart>
                 </ResponsiveContainer>
             </div>
         </div>
