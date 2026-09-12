@@ -17,13 +17,25 @@ export default async function AnalyticsPage() {
         { status: "Failed", count: tasks.filter(t => t.status === "FAILED").length },
     ];
 
+    // 2. Tasks per employee
+    const employeeGroups = tasks.reduce((acc, task) => {
+        const name = task.assignedTo.name;
+        acc[name] = (acc[name] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+
+    const employeeData = Object.entries(employeeGroups).map(([name, count]) => ({ name, count }));
+
     return (
         <div className="mx-10 mb-10">
             <div className="flex flex-col gap-1 mb-6">
                 <h2 className="font-semibold text-xl sm:text-2xl tracking-tight text-primary">Analytics</h2>
                 <p className="text-sm text-muted font-medium">Team performance and task trends at a glance.</p>
             </div>
-            <AnalyticsCharts statusData={statusData} />
+            <AnalyticsCharts
+                statusData={statusData}
+                employeeData={employeeData}
+            />
         </div>
     );
 }
