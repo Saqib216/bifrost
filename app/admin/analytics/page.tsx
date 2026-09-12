@@ -49,6 +49,12 @@ export default async function AnalyticsPage() {
         rate: total > 0 ? Math.round((completed / total) * 100) : 0,
     }));
 
+    // KPI strip data
+    const totalTasks = tasks.length;
+    const completedCount = tasks.filter(t => t.status === "COMPLETED").length;
+    const overallCompletionRate = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
+    const activeEmployees = employeeData.length;
+
     return (
         <div className="mx-10 mb-10">
             <div className="flex flex-col gap-1 mb-6">
@@ -60,6 +66,7 @@ export default async function AnalyticsPage() {
                 employeeData={employeeData}
                 timelineData={timelineData}
                 completionData={completionData}
+                kpis={{ totalTasks, overallCompletionRate, activeEmployees }}
             />
         </div>
     );
