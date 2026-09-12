@@ -1,7 +1,7 @@
 'use client';
 
 import AnimatedNumber from "@/components/AnimatedNumber";
-import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Line, LineChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 interface AnalyticsChartsProps {
     statusData: { status: string, count: number }[];
@@ -74,11 +74,16 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                             <XAxis dataKey="status" tick={{ fontSize: 12, fill: "var(--color-muted)" }} />
                             <YAxis stroke="var(--color-muted)" fontSize={12} allowDecimals={false} />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                                {statusData.map((entry) => (
-                                    <Cell key={entry.status} fill={statusColors[entry.status]} />
-                                ))}
-                            </Bar>
+                            <Bar
+                                dataKey="count"
+                                radius={[4, 4, 0, 0]}
+                                shape={(props) => (
+                                    <Rectangle
+                                        {...props}
+                                        fill={statusColors[props.payload?.status] ?? "var(--color-primary)"}
+                                    />
+                                )}
+                            />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
