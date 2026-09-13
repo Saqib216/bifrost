@@ -2,7 +2,7 @@
 
 import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
-import { useState } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import TasksModal from "@/app/admin/_components/TasksModal";
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 import { toast } from "sonner";
@@ -25,6 +25,10 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
     // 3. `employeeTasks` now automatically gets fresh tasks on re-render:
     const employeeTasks = selectedEmployee?.tasks || [];
 
+    const [isPending, startTransition] = useTransition();
+
+    const [optimisticTasks, deleteOptimisticTask] = useOptimistic(employeeTasks, (currentTasks, taskIdToDelete) => currentTasks.filter(t => t.id !== taskIdToDelete));
+
     const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -36,7 +40,7 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
     const [searchQuery, setSearchQuery] = useState('');
 
     // filtered version
-    const filteredTasks = employeeTasks.filter((task) => {
+    const filteredTasks = optimisticTasks.filter((task) => {
         const matchesStatus = statusFilter ? task.status === statusFilter : true;
         const matchesSearch = searchQuery ? task.title.toLowerCase().includes(searchQuery.toLowerCase()) : true;
 
@@ -57,10 +61,10 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
     // Compute dynamic stats from actual tasks
     const stats = [
-        { label: 'New', count: employeeTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
-        { label: 'Active', count: employeeTasks.filter((t) => t.status === TaskStatus.ACTIVE).length, dot: 'bg-warning' },
-        { label: 'Completed', count: employeeTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
-        { label: 'Failed', count: employeeTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
+        { label: 'New', count: optimisticTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
+        { label: 'Active', count: optimisticTasks.filter((t) => t.status === TaskStatus.ACTIVE).length, dot: 'bg-warning' },
+        { label: 'Completed', count: optimisticTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
+        { label: 'Failed', count: optimisticTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
     ];
 
     return (
@@ -214,10 +218,14 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                             <p className="text-secondary tracking-tight mb-5">Are you sure you want to delete this task?</p>
                             <div className="flex gap-4 justify-end">
                                 <button className="text-muted cursor-pointer hover:text-primary transition-all duration-150 ease-in-out" onClick={() => setTaskToDelete(null)}>Cancel</button>
-                                <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={async () => {
-                                    await deleteTask(taskToDelete);
+                                <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={() => {
+                                    const id = taskToDelete;
                                     setTaskToDelete(null);
-                                    toast.success("Task deleted successfully.");
+                                    startTransition(async () => {
+                                        deleteOptimisticTask(id!);
+                                        await deleteTask(id!);
+                                        toast.success("Task deleted successfully.");
+                                    });
                                 }}>
                                     Delete
                                 </button>
