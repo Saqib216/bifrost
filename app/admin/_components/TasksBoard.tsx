@@ -3,6 +3,7 @@
 import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
 import { useOptimistic, useState, useTransition } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import TasksModal from "@/app/admin/_components/TasksModal";
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 import { toast } from "sonner";
@@ -15,7 +16,31 @@ interface Employee {
     tasks: Task[];
 }
 
-export default function TasksBoard({ employees }: { employees: Employee[] }) {
+interface AssignedTo {
+    id: string;
+    name: string;
+    email: string;
+}
+
+interface AllTasksData {
+    tasks: (Task & { assignedTo: AssignedTo })[];
+    totalPages: number;
+    currentPage: number;
+}
+
+export default function TasksBoard({
+    employees,
+    allTasksData,
+}: {
+    employees: Employee[];
+    allTasksData: AllTasksData | null;
+}) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const isAllView = searchParams.get('tab') === 'all';
+
     // 1. Store only the selected ID in state
     const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>(employees[0]?.id);
 
@@ -25,9 +50,8 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
     // 3. `employeeTasks` now automatically gets fresh tasks on re-render:
     const employeeTasks = selectedEmployee?.tasks || [];
 
-    const [isPending, startTransition] = useTransition();
-
-    const [optimisticTasks, deleteOptimisticTask] = useOptimistic(employeeTasks, (currentTasks, taskIdToDelete) => currentTasks.filter(t => t.id !== taskIdToDelete));
+    // 4. Pick which task list is "active" based on view mode
+    const sourceTasks = isAllView ? (allTasksData?.tasks ?? []) : employeeTasks;
 
     const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
@@ -38,6 +62,13 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
     // For search/filter
     const [statusFilter, setStatusFilter] = useState<TaskStatus | ''>('');
     const [searchQuery, setSearchQuery] = useState('');
+
+    const [isPending, startTransition] = useTransition();
+
+    const [optimisticTasks, deleteOptimisticTask] = useOptimistic(
+        sourceTasks,
+        (currentTasks, taskIdToDelete: string) => currentTasks.filter((t) => t.id !== taskIdToDelete)
+    );
 
     // filtered version
     const filteredTasks = optimisticTasks.filter((task) => {
@@ -59,12 +90,28 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
         setModalOpen(true);
     };
 
-    // Compute dynamic stats from actual tasks
+    const goToAllTab = () => {
+        router.push(`${pathname}?tab=all&page=1`);
+    };
+
+    const goToEmployeeTab = (empId: string) => {
+        setSelectedEmployeeId(empId);
+        if (isAllView) {
+            router.push(pathname); // clears tab/page params
+        }
+    };
+
+    const goToPage = (page: number) => {
+        router.push(`${pathname}?tab=all&page=${page}`);
+    };
+
+    // Compute dynamic stats - only meaningful in employee view,
+    // since "All" view only holds one page of tasks, not the full dataset.
     const stats = [
-        { label: 'New', count: optimisticTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
-        { label: 'Active', count: optimisticTasks.filter((t) => t.status === TaskStatus.ACTIVE).length, dot: 'bg-warning' },
-        { label: 'Completed', count: optimisticTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
-        { label: 'Failed', count: optimisticTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
+        { label: 'New', count: employeeTasks.filter((t) => t.status === TaskStatus.NEW).length, dot: 'bg-info' },
+        { label: 'Active', count: employeeTasks.filter((t) => t.status === TaskStatus.ACTIVE).length, dot: 'bg-warning' },
+        { label: 'Completed', count: employeeTasks.filter((t) => t.status === TaskStatus.COMPLETED).length, dot: 'bg-success' },
+        { label: 'Failed', count: employeeTasks.filter((t) => t.status === TaskStatus.FAILED).length, dot: 'bg-danger' },
     ];
 
     return (
@@ -77,18 +124,22 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
 
             {/* Employee Tab Pills */}
             <div className="flex gap-5 mb-5 border-b border-border pb-3 overflow-x-auto no-scrollbar whitespace-nowrap">
+                <div
+                    className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${isAllView ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
+                    onClick={goToAllTab}
+                >
+                    All
+                </div>
                 {
                     employees.map(emp => (
                         <div
                             key={emp.id}
-                            className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${selectedEmployee.email === emp.email ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
-                            onClick={() => {
-                                setSelectedEmployeeId(emp.id);
-                            }}
+                            className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${!isAllView && selectedEmployee.email === emp.email ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
+                            onClick={() => goToEmployeeTab(emp.id)}
                         >
                             {emp.name.split(' ')[0]}
                             <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold
-                            ${selectedEmployee.email === emp.email ? 'bg-primary/50 text-surface' : 'bg-surface text-muted'}`}>
+                            ${!isAllView && selectedEmployee.email === emp.email ? 'bg-primary/50 text-surface' : 'bg-surface text-muted'}`}>
                                 {emp.tasks.length}
                             </span>
                         </div>
@@ -122,28 +173,30 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                 </select>
             </div>
 
-
-            {/* Stat Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
-                {stats.map((stat) => (
-                    <div
-                        key={stat.label}
-                        className="bg-card rounded-md border border-border p-4 flex flex-col gap-2"
-                    >
-                        <div className="flex items-center gap-2">
-                            <span className={`${stat.dot} w-1.5 h-1.5 rounded-full`}></span>
-                            <span className="text-xs font-semibold tracking-wider text-muted uppercase">{stat.label}</span>
+            {/* Stat Cards - hidden in All view (page-level data can't give accurate totals) */}
+            {!isAllView && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+                    {stats.map((stat) => (
+                        <div
+                            key={stat.label}
+                            className="bg-card rounded-md border border-border p-4 flex flex-col gap-2"
+                        >
+                            <div className="flex items-center gap-2">
+                                <span className={`${stat.dot} w-1.5 h-1.5 rounded-full`}></span>
+                                <span className="text-xs font-semibold tracking-wider text-muted uppercase">{stat.label}</span>
+                            </div>
+                            <span className="text-3xl font-bold font-mono">{stat.count}</span>
                         </div>
-                        <span className="text-3xl font-bold font-mono">{stat.count}</span>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
 
             {/* Tasks Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 <AnimatePresence mode="popLayout">
                     {filteredTasks.map((task) => {
                         const statusStyle = getStatusStyle(task.status);
+                        const assignedTo = isAllView ? (task as Task & { assignedTo: AssignedTo }).assignedTo : null;
 
                         return (
                             <motion.div
@@ -171,9 +224,15 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                                     <h3 className="text-base font-semibold tracking-tight text-primary leading-snug">
                                         {task.title}
                                     </h3>
-                                    <p className="text-xs text-muted line-clamp-2 leading-relaxed">
+                                    <p className="text-xs text-muted line-clamp-2 leading-relaxed flex-1">
                                         {task.description}
                                     </p>
+                                    {assignedTo && (
+                                        <span className="text-[11px] text-accent font-medium mt-1 flex items-center gap-1">
+                                            <i className="fa-regular fa-user text-[10px]"></i>
+                                            {assignedTo.name}
+                                        </span>
+                                    )}
                                 </div>
 
                                 {/* Footer: Date + Delete */}
@@ -209,6 +268,29 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                 </AnimatePresence>
             </div>
 
+            {/* Pagination - only in All view */}
+            {isAllView && allTasksData && allTasksData.totalPages > 1 && (
+                <div className="flex items-center justify-center gap-3 mt-8">
+                    <button
+                        disabled={allTasksData.currentPage <= 1}
+                        onClick={() => goToPage(allTasksData.currentPage - 1)}
+                        className="px-3 py-1.5 text-sm rounded-md border border-border text-secondary disabled:opacity-40 disabled:cursor-not-allowed hover:border-border-hover cursor-pointer"
+                    >
+                        Prev
+                    </button>
+                    <span className="text-sm text-muted font-medium">
+                        Page {allTasksData.currentPage} of {allTasksData.totalPages}
+                    </span>
+                    <button
+                        disabled={allTasksData.currentPage >= allTasksData.totalPages}
+                        onClick={() => goToPage(allTasksData.currentPage + 1)}
+                        className="px-3 py-1.5 text-sm rounded-md border border-border text-secondary disabled:opacity-40 disabled:cursor-not-allowed hover:border-border-hover cursor-pointer"
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
+
             {/* Task deletion confirmation dialog box */}
             {
                 taskToDelete && (
@@ -242,7 +324,9 @@ export default function TasksBoard({ employees }: { employees: Employee[] }) {
                         <i className='fa-regular fa-folder-open text-xl text-muted'></i>
                     </div>
                     <h3 className='text-lg font-semibold text-secondary'>No tasks yet</h3>
-                    <p className='text-xs text-muted'>Assign a task to {selectedEmployee.name.split(' ')[0]} to get started.</p>
+                    <p className='text-xs text-muted'>
+                        {isAllView ? 'No tasks found.' : `Assign a task to ${selectedEmployee.name.split(' ')[0]} to get started.`}
+                    </p>
                 </div>
             )}
 
