@@ -150,8 +150,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             name="description"
                                             defaultValue={taskToEdit?.description}
                                             placeholder='Add Description'
-                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card
-                        transition-colors duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm'>
+                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm'>
                                         </textarea>
                                     </div>
                                 </div>
