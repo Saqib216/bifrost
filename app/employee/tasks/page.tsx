@@ -1,6 +1,7 @@
 import { prisma } from "@/app/lib/prisma";
 import { auth } from "@/auth"
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
+import TaskStatusActions from "../_components/TaskStatusActions";
 
 export default async function EmployeeTasksPage() {
     const session = await auth();
@@ -46,12 +47,8 @@ export default async function EmployeeTasksPage() {
                             {/* Card Footer: Date + dummy action buttons  */}
                             <div className='flex items-center justify-between pt-2 border-t border-border'>
                                 <span className="text-xs text-muted font-medium">{task.taskDate.toLocaleDateString()}</span>
-                                <button
-                                    className='text-xs font-medium px-3 py-1.5 rounded-md bg-info/10 text-info border border-info/20 hover:bg-info/20 cursor-pointer transition-colors'
-                                    title="Accept task"
-                                >
-                                    Accept
-                                </button>
+                                
+                                <TaskStatusActions taskId={task.id} status={task.status} />
                             </div>
                         </div>
                     );
