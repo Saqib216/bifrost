@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
 import z from "zod";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { TaskStatus } from "@prisma/client";
+import { allowedTransitions } from "./taskTransitions";
 
 const taskSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -114,5 +116,44 @@ export async function authenticate(prevState: string | undefined, formData: Form
             }
         }
         throw error;
+    }
+}
+
+export async function updateTaskStatus(taskId: string, newStatus: TaskStatus): Promise<ActionState> {
+    // 1. Id and role from server
+    const session = await auth();
+    if (!session?.user?.id || session.user.role !== 'EMPLOYEE') {
+        return { success: false, message: 'Unauthorized' };
+    }
+
+    // 2. dont trust value came from client
+    if (!Object.values(TaskStatus).includes(newStatus)) {
+        return { success: false, message: 'Invalid status' };
+    }
+
+    // 3. From which statuses it is allowed to go to newStatus
+    const fromStatuses = (Object.keys(allowedTransitions) as TaskStatus[]).filter((from) => allowedTransitions[from].includes(newStatus));
+
+    try {
+        // Ownership + valid transition, both in one atomic query:
+        const result = await prisma.task.updateMany({
+            where: {
+                id: taskId,
+                userId: session.user.id,
+                status: { in: fromStatuses },
+            },
+            data: { status: newStatus },
+        });
+
+        if (result.count === 0) {
+            return { success: false, message: 'This status change is not allowed.' };
+        }
+
+        revalidatePath('/employee/tasks');
+        revalidatePath('/admin/tasks');
+        return { success: true };
+    }
+    catch {
+        return { success: false, message: 'Something went wrong, try again' };
     }
 }
