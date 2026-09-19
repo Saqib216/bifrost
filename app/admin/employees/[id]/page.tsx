@@ -1,6 +1,7 @@
 import { prisma } from "@/app/lib/prisma";
 import { notFound } from "next/navigation";
 import TaskFilters from "./_components/TaskFilters";
+import Image from "next/image";
 
 export default async function EmployeeProfilePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string; search?: string }>; }) {
     const { id } = await params;
@@ -12,6 +13,7 @@ export default async function EmployeeProfilePage({ params, searchParams }: { pa
             name: true,
             email: true,
             role: true,
+            image: true,
             tasks: {
                 select: {
                     id: true,
@@ -67,9 +69,20 @@ export default async function EmployeeProfilePage({ params, searchParams }: { pa
 
             {/* Header */}
             <div className="flex items-center gap-4 mb-8 pb-6 border-b border-border">
-                <div className="w-14 h-14 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent font-bold text-lg font-mono">
-                    {getInitials(employee.name)}
+                <div className="relative w-14 h-14 shrink-0 rounded-full overflow-hidden bg-accent/10 border border-accent/30 flex items-center justify-center text-accent font-bold text-lg font-mono">
+                    {employee.image ? (
+                        <Image
+                            src={employee.image}
+                            alt={employee.name}
+                            fill
+                            sizes="56px"
+                            className="object-cover"
+                        />
+                    ) : (
+                        getInitials(employee.name)
+                    )}
                 </div>
+
                 <div className="flex flex-col gap-1">
                     <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-primary">{employee.name}</h1>
                     <div className="flex items-center gap-3 text-sm text-muted">

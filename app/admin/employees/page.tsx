@@ -11,6 +11,7 @@ export default async function EmployeesOfAdmin({ searchParams }: { searchParams:
             id: true,
             email: true,
             name: true,
+            image: true,
             tasks: {
                 select: { status: true },
             },
@@ -22,6 +23,7 @@ export default async function EmployeesOfAdmin({ searchParams }: { searchParams:
             id: emp.id,
             name: emp.name,
             email: emp.email,
+            image: emp.image,
             totalTasks: emp.tasks.length,
             pendingTasks: emp.tasks.filter(t => t.status !== 'COMPLETED').length,
         }
