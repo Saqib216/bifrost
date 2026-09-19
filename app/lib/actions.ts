@@ -8,6 +8,7 @@ import { AuthError } from "next-auth";
 import { TaskStatus } from "@prisma/client";
 import { allowedTransitions } from "./taskTransitions";
 import { del, put } from "@vercel/blob";
+import bcrypt from "bcryptjs";
 
 const taskSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -279,5 +280,108 @@ export async function removeAvatar() {
             message:
                 'Failed to remove avatar. Please try again.'
         };
+    }
+}
+
+const updateNameSchema = z.object({
+    name: z.string().trim().min(2, 'Name must be at least 2 characters').max(50, 'Name is too long'),
+});
+
+export async function updateProfileName(prevState: ActionState, formData: FormData): Promise<ActionState> {
+    const session = await auth();
+    if (!session?.user?.id) {
+        return { success: false, message: "Unauthorized" };
+    }
+
+    const result = updateNameSchema.safeParse({
+        name: formData.get("name"),
+    });
+
+    if (!result.success) {
+        return {
+            success: false,
+            errors: z.flattenError(result.error).fieldErrors,
+        };
+    }
+
+    try {
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { name: result.data.name },
+        });
+        revalidatePath("/employee/profile");
+        revalidatePath("/employee");
+        revalidatePath("/admin/employees");
+        return { success: true, message: "Name updated successfully!" };
+    } catch {
+        return { success: false, message: "Failed to update name. Please try again." };
+    }
+}
+
+const changePasswordSchema = z.object({
+    currentPassword: z.string().min(1, 'Current Password is required'),
+    newPassword: z.string().min(6, 'New password must be at least 6 characters'),
+    confirmPassword: z.string().min(1, 'Please confirm your new password'),
+})
+    .refine((data) => data.newPassword === data.confirmPassword, {
+        message: 'New passwords do not match',
+        path: ['confirmPassword'],
+    });
+
+export async function changePassword(prevState: ActionState, formData: FormData): Promise<ActionState> {
+    const session = await auth();
+    if (!session?.user?.id) {
+        return { success: false, message: "Unauthorized" };
+    }
+
+    const result = changePasswordSchema.safeParse({
+        currentPassword: formData.get("currentPassword"),
+        newPassword: formData.get("newPassword"),
+        confirmPassword: formData.get("confirmPassword"),
+    });
+
+    if (!result.success) {
+        return {
+            success: false,
+            errors: z.flattenError(result.error).fieldErrors,
+        };
+    }
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { password: true },
+        });
+        if (!user) {
+            return { success: false, message: "User not found" };
+        }
+
+        // 1. Verify current password
+        const isCurrentValid = await bcrypt.compare(result.data.currentPassword, user.password);
+        if (!isCurrentValid) {
+            return {
+                success: false,
+                errors: { currentPassword: ["Current password is incorrect"] },
+            };
+        }
+
+        // 2. Prevent using the same password again
+        const isSamePassword = await bcrypt.compare(result.data.newPassword, user.password);
+        if (isSamePassword) {
+            return {
+                success: false,
+                errors: { newPassword: ["New password must be different from current password"] },
+            };
+        }
+
+        // 3. Hash and save new password
+        const hashedPassword = await bcrypt.hash(result.data.newPassword, 10);
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { password: hashedPassword },
+        });
+        return { success: true, message: "Password changed successfully!" };
+    } catch {
+        return { success: false, message: "Failed to change password. Please try again." };
     }
 }
