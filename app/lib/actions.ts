@@ -234,10 +234,11 @@ export async function updateAvatar(formData: FormData) {
         revalidatePath('/admin/employees');
 
         return { success: true, url: blob.url };
-    } catch {
+    } catch (error) {
+        console.error("Avatar upload error:", error);
         return {
             success: false,
-            message: "Failed to upload image. Please try again."
+            message: error instanceof Error ? error.message : "Failed to upload image. Please try again."
         };
     }
 }
