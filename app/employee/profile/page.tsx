@@ -3,6 +3,7 @@ import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import AvatarUpload from "./_components/AvatarUpload";
 import AnimatedNumber from "@/components/AnimatedNumber";
+import ProfileSettings from "./_components/ProfileSettings";
 
 export default async function EmployeeProfilePage() {
     const session = await auth();
@@ -128,6 +129,8 @@ export default async function EmployeeProfilePage() {
                     </div>
                 </div>
             </div>
+
+            <ProfileSettings userName={user.name} userEmail={user.email} />
 
             {/* Task Performance Overview */}
             <div className="flex flex-col gap-4">
