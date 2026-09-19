@@ -34,16 +34,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     name: user.name,
                     email: user.email,
                     role: user.role,
+                    image: user.image,
                 };
             },
         }),
     ],
 
     callbacks: {
-        jwt: async ({ token, user }) => {
+        jwt: async ({ token, user, trigger, session }) => {
             if (user) {
                 token.role = user.role;
                 token.id = user.id;
+                token.picture = user.image; // built in on NextAuth JWT
+            }
+            // Allows updating avatar in session without requiring re-login
+            if (trigger === 'update' && session?.image) {
+                token.picture = session.image;
             }
             return token;
         },
@@ -51,6 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (session.user) {
                 session.user.role = token.role as string;
                 session.user.id = token.id as string;
+                session.user.image = (token.picture as string) ?? null;
             }
             return session;
         },
