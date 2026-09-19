@@ -190,7 +190,7 @@ export async function updateAvatar(formData: FormData) {
     }
 
     // Validate mime type 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webg', 'image/gif'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
     if (!allowedTypes.includes(file.type)) {
         return {

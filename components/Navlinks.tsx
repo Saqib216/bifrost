@@ -14,6 +14,7 @@ export default function Navlinks({ role }: { role: "ADMIN" | "EMPLOYEE" }) {
     const employeeLinks = [
         { href: "/employee", label: "Home", icon: "fa-solid fa-house" },
         { href: "/employee/tasks", label: "Tasks", icon: "fa-solid fa-list-check" },
+        { href: "/employee/profile", label: "Profile", icon: "fa-solid fa-user" },
     ];
 
     const currentPath = usePathname();
