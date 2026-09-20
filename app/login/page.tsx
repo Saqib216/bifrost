@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { authenticate } from "../lib/actions";
 import Logo from "@/components/Logo";
+import Link from "next/link";
 
 export default function LoginPage() {
     const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
@@ -87,6 +88,16 @@ export default function LoginPage() {
                             {isPending ? 'Signing in...' : 'Continue'}
                         </button>
                     </form>
+
+                    {/* Link to signup */}
+                    <p className="text-sm text-center text-muted">
+                        Don&apos;t have an account?{" "}
+                        <Link href="/signup"
+                            className="font-semibold transition-colors duration-150"
+                            style={{ color: "#F2266E" }}>
+                            Sign up
+                        </Link>
+                    </p>
                 </div>
             </div>
         </div>
