@@ -5,7 +5,7 @@ import { prisma } from "./prisma";
 import z from "zod";
 import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
-import { TaskStatus } from "@prisma/client";
+import { Prisma, TaskStatus } from "@prisma/client";
 import { allowedTransitions } from "./taskTransitions";
 import { del, put } from "@vercel/blob";
 import bcrypt from "bcryptjs";
@@ -106,7 +106,7 @@ export async function updateTask(taskId: string, prevState: ActionState, formDat
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
     try {
-        const email = formData.get('email') as string;
+        const email = (formData.get('email') as string).trim().toLowerCase();
 
         // Find user role to determine the right dashboard
 
@@ -117,6 +117,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
 
         const redirectTo = user?.role === 'ADMIN' ? '/admin' : '/employee';
 
+        formData.set('email', email); // set normalized email 
         formData.set('redirectTo', redirectTo);
 
         await signIn('credentials', formData);
@@ -396,4 +397,55 @@ export async function changePassword(prevState: ActionState, formData: FormData)
     } catch {
         return { success: false, message: "Failed to change password. Please try again." };
     }
+}
+
+const registerSchema = z.object({
+    name: z.string().trim().min(2, 'Name must be at least 2 characters').max(50, 'Name is too long'),
+    email: z.string().trim().toLowerCase().pipe(z.email('Enter a valid email')),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+});
+
+export async function register(prevState: ActionState, formData: FormData): Promise<ActionState> {
+    const result = registerSchema.safeParse({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+    });
+
+    if (!result.success) {
+        return { success: false, errors: z.flattenError(result.error).fieldErrors };
+    }
+
+    const { name, email, password } = result.data;
+
+    try {
+        const hashed = await bcrypt.hash(password, 10);
+
+        await prisma.user.create({
+            data: {
+                name,
+                email,
+                password: hashed,
+                role: 'EMPLOYEE', // hardcoded and not from formData
+                // nested create: user and their sample tasks in one atomic query
+                tasks: {
+                    create: [
+                        { title: 'Welcome aboard: accept this task', description: 'Click Accept to move it to Active.', category: 'onboarding', taskDate: new Date() },
+                        { title: 'Complete your profile', description: 'Upload a photo and check your details on the Profile page.', category: 'onboarding', taskDate: new Date() },
+                        { title: 'Mark a task as completed', description: 'Accept a task first, then mark it Completed.', category: 'onboarding', taskDate: new Date() },
+                    ],
+                },
+            },
+        });
+    } catch (error) {
+        // P2002 = unique constraint violation (email already exists)
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+            return { success: false, errors: { email: ['This email is already registered'] } };
+        }
+        return { success: false, message: 'Something went wrong, try again' };
+    }
+
+    // it is outside try/catch bcz Next.js's redirect throws a special error 
+    await signIn('credentials', { email, password, redirectTo: '/employee' });
+    return { success: true };
 }

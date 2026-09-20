@@ -9,6 +9,7 @@ export default auth((req) => {
     const isAdminRoute = path.startsWith("/admin");
     const isEmployeeRoute = path.startsWith("/employee");
     const isLoginPage = path === "/login";
+    const isSignupPage = path === "/signup";
 
     // Not logged in, trying to access protected route
     if (!isLoggedIn && (isAdminRoute || isEmployeeRoute)) {
@@ -26,7 +27,7 @@ export default auth((req) => {
     }
 
     // Already logged in, trying to visit /login or root '/'
-    if (isLoggedIn && (isLoginPage || path === '/')) {
+    if (isLoggedIn && (isLoginPage || isSignupPage || path === '/')) {
         const redirectPath = userRole === 'ADMIN' ? '/admin' : '/employee';
         return NextResponse.redirect(new URL(redirectPath, req.url));
     }
