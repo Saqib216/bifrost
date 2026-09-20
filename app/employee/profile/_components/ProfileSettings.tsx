@@ -52,7 +52,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                 <button
                     type="button"
                     onClick={() => setActiveTab("general")}
-                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-[1px] ${
+                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-px ${
                         activeTab === "general"
                             ? "border-accent text-accent bg-card"
                             : "border-transparent text-muted hover:text-primary hover:bg-card/40"
@@ -65,7 +65,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                 <button
                     type="button"
                     onClick={() => setActiveTab("security")}
-                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-[1px] ${
+                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-px ${
                         activeTab === "security"
                             ? "border-accent text-accent bg-card"
                             : "border-transparent text-muted hover:text-primary hover:bg-card/40"

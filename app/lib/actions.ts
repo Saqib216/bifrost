@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
-import z, { success } from "zod";
+import z, { nullable, success } from "zod";
 import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { TaskStatus } from "@prisma/client";
@@ -23,7 +23,15 @@ export type ActionState = {
     message?: string;
 };
 
+async function requireAdmin() {
+    const session = await auth();
+    if (!session?.user?.id || session.user.role !== 'ADMIN') return null;
+    return session;
+}
+
 export async function deleteTask(taskId: string) {
+    if (!(await requireAdmin())) return;
+
     await prisma.task.delete({
         where: {
             id: taskId,
@@ -34,6 +42,8 @@ export async function deleteTask(taskId: string) {
 }
 
 export async function createTask(prevState: ActionState, formData: FormData): Promise<ActionState> {
+    if (!(await requireAdmin())) return { success: false, message: 'Unauthorized' };
+
     const result = taskSchema.safeParse({
         title: formData.get('title'),
         category: formData.get('category'),
@@ -63,6 +73,8 @@ export async function createTask(prevState: ActionState, formData: FormData): Pr
 }
 
 export async function updateTask(taskId: string, prevState: ActionState, formData: FormData): Promise<ActionState> {
+    if (!(await requireAdmin())) return { success: false, message: 'Unauthorized' };
+
     const result = taskSchema.safeParse({
         title: formData.get('title'),
         category: formData.get('category'),
