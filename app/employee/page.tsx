@@ -8,7 +8,7 @@ export default async function EmployeeDashboardPage() {
     const session = await auth();
     const userId = session?.user?.id;
 
-    const [tasks, tasksCount] = await Promise.all([
+    const [tasks, tasksCount, user] = await Promise.all([
         prisma.task.findMany({
             where: { userId },
             orderBy: { taskDate: 'desc' },
@@ -19,6 +19,10 @@ export default async function EmployeeDashboardPage() {
             where: { userId },
             _count: true,
         }),
+        prisma.user.findUnique({
+            where: { id: userId },
+            select: { name: true },
+        })
     ]);
 
     const getCount = (status: string) => tasksCount.find(task => task.status === status)?._count ?? 0;
@@ -37,7 +41,7 @@ export default async function EmployeeDashboardPage() {
             {/* Greeting */}
             <div className='flex flex-col gap-1 mb-6'>
                 <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>
-                    Welcome back, {session?.user?.name?.split(' ')[0]}
+                    Welcome back, {user?.name?.split(' ')[0]}
                 </h2>
                 <p className='text-sm text-muted font-medium'>Here's what's on your plate today.</p>
             </div>

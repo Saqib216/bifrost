@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
-import z, { nullable, success } from "zod";
+import z from "zod";
 import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { TaskStatus } from "@prisma/client";
@@ -182,7 +182,7 @@ export async function updateAvatar(formData: FormData) {
     if (!process.env.BLOB_READ_WRITE_TOKEN) {
         return {
             success: false,
-            message: 'Missing BLOB_READ_WRITE_TOKEN in .env. Please configure your Vervel Blob token.',
+            message: 'Missing BLOB_READ_WRITE_TOKEN in .env. Please configure your Vercel Blob token.',
         };
     }
 
