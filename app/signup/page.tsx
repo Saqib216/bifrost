@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useActionState } from "react";
-import { authenticate } from "../lib/actions";
 import Logo from "@/components/Logo";
+import { register } from "../lib/actions";
+import { useActionState } from "react";
 
-export default function LoginPage() {
-    const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
+export default function SignupPage() {
+    const [state, formAction, isPending] = useActionState(register, { success: false });
 
     return (
         <div className="min-h-screen flex">
@@ -39,26 +39,44 @@ export default function LoginPage() {
                 <div className="w-full max-w-sm flex flex-col gap-8">
 
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">Welcome back</h2>
-                        <p className="text-sm text-muted">Let's get started, sign in to continue.</p>
+                        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">Welcome</h2>
+                        <p className="text-sm text-muted">Let's get started, register here to continue.</p>
                     </div>
-
 
                     <form action={formAction}
                         className="flex flex-col gap-5">
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="name"
+                                className="text-xs font-semibold uppercase tracking-wider text-muted">
+                                Name
+                            </label>
+                            <input
+                                autoFocus
+                                type="text"
+                                name="name"
+                                placeholder="Your Name"
+                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-sm"
+                            />
+
+                            {state.errors?.name && (
+                                <p className="text-danger text-xs">{state.errors.name[0]}</p>
+                            )}
+                        </div>
+
                         <div className="flex flex-col gap-1.5">
                             <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-muted">
                                 Email Address
                             </label>
                             <input
-                                autoFocus
-                                id="email"
                                 name="email"
                                 type="email"
                                 placeholder="name@company.com"
-                                required
                                 className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-sm"
                             />
+
+                            {state.errors?.email && (
+                                <p className="text-danger text-xs">{state.errors.email[0]}</p>
+                            )}
                         </div>
 
                         <div className="flex flex-col gap-1.5">
@@ -66,29 +84,28 @@ export default function LoginPage() {
                                 Password
                             </label>
                             <input
-                                id="password"
                                 name="password"
                                 type="password"
                                 placeholder="••••••••"
-                                required
                                 className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary
                                 focus:ring-4 focus:ring-focus-ring text-sm"
                             />
+                            
+                            {state.errors?.password && (
+                                <p className="text-danger text-xs">{state.errors.password[0]}</p>
+                            )}
                         </div>
-
-                        {/* Error message */}
-                        {errorMessage && <p className="text-danger text-xs">{errorMessage}</p>}
 
                         <button
                             type="submit"
                             disabled={isPending}
                             className="mt-2 px-4 py-2.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm"
                         >
-                            {isPending ? 'Signing in...' : 'Continue'}
+                            {isPending ? 'Registering you...' : 'Sign up'}
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-    );
+    )
 }
