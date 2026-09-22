@@ -32,6 +32,7 @@ model User {
   role      Role     @default(EMPLOYEE)
   tasks     Task[]
   createdAt DateTime @default(now())
+  isDemo    Boolean @default(false)
 }
 
 model Task {

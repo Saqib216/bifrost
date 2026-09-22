@@ -8,12 +8,15 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
     const adminPassword = await bcrypt.hash('Admin@123', 10);
-    const admin = await prisma.user.create({
-        data: {
+    const admin = await prisma.user.upsert({
+        where: {email: 'admin@ems.com'},
+        update: {},
+        create: {
             name: 'Muhammad Saqib Hussnain',
             email: 'admin@ems.com',
             password: adminPassword,
             role: Role.ADMIN,
+            isDemo: true,
         },
     });
 
@@ -162,6 +165,11 @@ async function main() {
 
     for (const emp of employeesData) {
         const hashedPassword = await bcrypt.hash(emp.password, 10);
+        const existing = await prisma.user.findUnique({
+            where: {email: emp.email},
+        });
+        if(existing) continue; // if already exists, skip creating
+
         await prisma.user.create({
             data: {
                 name: emp.name,
@@ -171,6 +179,7 @@ async function main() {
                 tasks: {
                     create: emp.tasks,
                 },
+                isDemo: true,
             },
         });
     }
