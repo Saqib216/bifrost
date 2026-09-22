@@ -306,6 +306,15 @@ export async function updateProfileName(prevState: ActionState, formData: FormDa
         return { success: false, message: "Unauthorized" };
     }
 
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { isDemo: true },
+    });
+
+    if (user?.isDemo) {
+        return { success: false, message: "Demo accounts can't change their profile name." };
+    }
+
     const result = updateNameSchema.safeParse({
         name: formData.get("name"),
     });
@@ -347,6 +356,15 @@ export async function changePassword(prevState: ActionState, formData: FormData)
         return { success: false, message: "Unauthorized" };
     }
 
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { password: true, isDemo: true },
+    });
+
+    if (user?.isDemo) {
+        return { success: false, message: "Demo accounts can't change their password." };
+    }
+
     const result = changePasswordSchema.safeParse({
         currentPassword: formData.get("currentPassword"),
         newPassword: formData.get("newPassword"),
@@ -361,10 +379,6 @@ export async function changePassword(prevState: ActionState, formData: FormData)
     }
 
     try {
-        const user = await prisma.user.findUnique({
-            where: { id: session.user.id },
-            select: { password: true },
-        });
         if (!user) {
             return { success: false, message: "User not found" };
         }

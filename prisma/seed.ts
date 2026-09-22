@@ -9,8 +9,8 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
     const adminPassword = await bcrypt.hash('Admin@123', 10);
     const admin = await prisma.user.upsert({
-        where: {email: 'admin@ems.com'},
-        update: {},
+        where: { email: 'admin@ems.com' },
+        update: { isDemo: true },
         create: {
             name: 'Muhammad Saqib Hussnain',
             email: 'admin@ems.com',
@@ -166,9 +166,15 @@ async function main() {
     for (const emp of employeesData) {
         const hashedPassword = await bcrypt.hash(emp.password, 10);
         const existing = await prisma.user.findUnique({
-            where: {email: emp.email},
+            where: { email: emp.email },
         });
-        if(existing) continue; // if already exists, skip creating
+        if (existing) {
+            await prisma.user.update({
+                where: { id: existing.id },
+                data: { isDemo: true },
+            });
+            continue;  // skip create after adding 'isDemo'
+        }
 
         await prisma.user.create({
             data: {
