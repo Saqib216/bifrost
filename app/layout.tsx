@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     default: 'Bifrost - Workforce',
   },
   description: "Modern employee and task management system built with Next.js, Prisma, and PostgreSQL.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
