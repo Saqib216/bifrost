@@ -4,6 +4,11 @@ import { getStatusStyle } from "@/app/lib/taskStatusStyles";
 import TaskStatusActions from "../_components/TaskStatusActions";
 import { TaskStatus } from "@prisma/client";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "My Tasks",
+};
 
 const statusPills: { label: string; value?: TaskStatus }[] = [
     { label: "All" },

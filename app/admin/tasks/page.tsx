@@ -1,7 +1,12 @@
 import { prisma } from "@/app/lib/prisma";
 import TasksBoard from "@/app/admin/_components/TasksBoard";
+import { Metadata } from "next";
 
 const TASKS_PER_PAGE = 9;
+
+export const metadata: Metadata = {
+    title: "Tasks",
+};
 
 export default async function AdminTasksViewPage({
     searchParams,

@@ -1,6 +1,11 @@
 import { prisma } from "@/app/lib/prisma";
 import EmployeesGrid from "./_components/EmployeesGrid";
 import EmployeeSearch from "./_components/EmployeeSearch";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Employees",
+};
 
 export default async function EmployeesOfAdmin({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
     const { search } = await searchParams;

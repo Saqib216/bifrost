@@ -17,11 +17,14 @@ const geistMono = Geist_Mono({
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"], 
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Bifrost | Work and Task Management",
+  title: {
+    template: '%s | Bifrost',
+    default: 'Bifrost - Workforce',
+  },
   description: "Modern employee and task management system built with Next.js, Prisma, and PostgreSQL.",
 };
 
@@ -39,8 +42,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full flex flex-col">
-          <main>{children}</main>
-          <Toaster position="top-right" theme="dark"/>
+        <main>{children}</main>
+        <Toaster position="top-right" theme="dark" />
       </body>
     </html>
   );

@@ -1,5 +1,10 @@
 import AnimatedNumber from "@/components/AnimatedNumber";
-import { prisma } from "../lib/prisma"
+import { prisma } from "../lib/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Overview",
+};
 
 export default async function AdminDashboardPage() {
     const [employeesCount, tasksCount, tasksByStatus] = await Promise.all([prisma.user.count({

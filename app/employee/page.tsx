@@ -3,6 +3,11 @@ import { prisma } from "../lib/prisma";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { getStatusStyle } from "../lib/taskStatusStyles";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Employee Portal",
+};
 
 export default async function EmployeeDashboardPage() {
     const session = await auth();

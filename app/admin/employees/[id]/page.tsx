@@ -2,6 +2,25 @@ import { prisma } from "@/app/lib/prisma";
 import { notFound } from "next/navigation";
 import TaskFilters from "./_components/TaskFilters";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+    const { id } = await params;
+
+    const employee = await prisma.user.findUnique({
+        where: { id },
+        select: { name: true },
+    });
+
+    return {
+        title: employee?.name ?? "Employee Details",
+    };
+}
+
 
 export default async function EmployeeProfilePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ status?: string; search?: string }>; }) {
     const { id } = await params;

@@ -1,5 +1,10 @@
 import { prisma } from "@/app/lib/prisma";
 import AnalyticsCharts from "./_components/AnalyticsCharts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Analytics",
+};
 
 export default async function AnalyticsPage() {
     const tasks = await prisma.task.findMany({

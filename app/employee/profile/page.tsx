@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 import AvatarUpload from "./_components/AvatarUpload";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import ProfileSettings from "./_components/ProfileSettings";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Profile",
+};
 
 export default async function EmployeeProfilePage() {
     const session = await auth();
