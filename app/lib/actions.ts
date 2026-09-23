@@ -17,6 +17,12 @@ const taskSchema = z.object({
     userId: z.string().min(1, "Please assign an employee"),
 });
 
+const updateTaskSchema = taskSchema.extend({
+    status: z.enum(TaskStatus, {
+        error: "Please select a valid status",
+    }),
+});
+
 export type ActionState = {
     success: boolean;
     errors?: Record<string, string[]>;
@@ -36,9 +42,11 @@ export async function deleteTask(taskId: string) {
         where: {
             id: taskId,
         },
-    }
-    );
-    revalidatePath("/admin/tasks");
+    });
+    revalidatePath('/admin/tasks');
+    revalidatePath('/admin');
+    revalidatePath('/employee/tasks');
+    revalidatePath('/employee');
 }
 
 export async function createTask(prevState: ActionState, formData: FormData): Promise<ActionState> {
@@ -58,14 +66,17 @@ export async function createTask(prevState: ActionState, formData: FormData): Pr
     try {
         await prisma.task.create({
             data: {
-                title: formData.get('title') as string,
+                title: result.data.title,
                 description: formData.get('description') as string,
-                category: formData.get('category') as string,
-                taskDate: new Date(formData.get('taskDate') as string),
-                userId: formData.get('assignedTo') as string,
+                category: result.data.category,
+                taskDate: new Date(result.data.taskDate),
+                userId: result.data.userId,
             },
         });
-        revalidatePath("/admin/tasks");
+        revalidatePath('/admin/tasks');
+        revalidatePath('/admin');
+        revalidatePath('/employee/tasks');
+        revalidatePath('/employee');
         return { success: true, errors: {} };
     } catch {
         return { success: false, errors: {}, message: "Something went wrong, try again" };
@@ -75,11 +86,12 @@ export async function createTask(prevState: ActionState, formData: FormData): Pr
 export async function updateTask(taskId: string, prevState: ActionState, formData: FormData): Promise<ActionState> {
     if (!(await requireAdmin())) return { success: false, message: 'Unauthorized' };
 
-    const result = taskSchema.safeParse({
+    const result = updateTaskSchema.safeParse({
         title: formData.get('title'),
         category: formData.get('category'),
         taskDate: formData.get('taskDate'),
         userId: formData.get('assignedTo'),
+        status: formData.get('status'),
     });
 
     if (!result.success) {
@@ -90,14 +102,18 @@ export async function updateTask(taskId: string, prevState: ActionState, formDat
         await prisma.task.update({
             where: { id: taskId },
             data: {
-                title: formData.get('title') as string,
+                title: result.data.title,
                 description: formData.get('description') as string,
-                category: formData.get('category') as string,
-                taskDate: new Date(formData.get('taskDate') as string),
-                userId: formData.get('assignedTo') as string,
+                category: result.data.category,
+                taskDate: new Date(result.data.taskDate),
+                userId: result.data.userId,
+                status: result.data.status,
             },
         });
         revalidatePath('/admin/tasks');
+        revalidatePath('/admin');
+        revalidatePath('/employee/tasks');
+        revalidatePath('/employee');
         return { success: true, errors: {} };
     } catch {
         return { success: false, errors: {}, message: "Something went wrong, try again" };

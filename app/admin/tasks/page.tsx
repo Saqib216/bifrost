@@ -13,6 +13,7 @@ export default async function AdminTasksViewPage({
 
     const employees = await prisma.user.findMany({
         where: { role: 'EMPLOYEE' },
+        orderBy: { name: 'asc' },
         select: {
             id: true,
             name: true,
