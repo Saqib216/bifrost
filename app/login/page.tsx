@@ -31,7 +31,7 @@ export default function LoginPage() {
 
                 {/* Bottom - subtle footer/stat */}
                 <div className="text-xs text-muted">
-                    &copy; 2026 Workforce
+                    &copy; 2026 Bifrost
                 </div>
             </div>
 

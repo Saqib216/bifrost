@@ -7,7 +7,7 @@ export default function Footer() {
             
             <Logo />
 
-            <p className="text-xs text-muted">&copy; 2026 Workforce. All rights reserved.</p>
+            <p className="text-xs text-muted">&copy; 2026 Bifrost. All rights reserved.</p>
 
             <div className="flex items-center gap-4">
                 <Link href="https://github.com/Saqib216" target="_blank" className="text-muted hover:text-primary transition-colors duration-200">

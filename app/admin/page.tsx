@@ -28,7 +28,7 @@ export default async function AdminDashboardPage() {
             {/* Section Header */}
             <div className='flex flex-col gap-1 mb-6'>
                 <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Overview</h2>
-                <p className='text-sm text-muted font-medium'>Track employees, monitor task progress, and stay on top of your workforce at a glance.</p>
+                <p className='text-sm text-muted font-medium'>Track employees, monitor task progress, and stay on top of your team at a glance.</p>
             </div>
 
             {/* Stat Cards Grid */}

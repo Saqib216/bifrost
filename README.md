@@ -1,3 +1,7 @@
+# Bifrost
+
+Modern employee and task management system built with Next.js, Prisma, and PostgreSQL.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -21,7 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Workforce | Work and Task Management",
+  title: "Bifrost | Work and Task Management",
   description: "Modern employee and task management system built with Next.js, Prisma, and PostgreSQL.",
 };
 

@@ -91,7 +91,7 @@ export default function SignupPage() {
                             </span>
                         </h1>
                         <p className="text-secondary text-base">
-                            Everything your workforce needs, in one place.
+                            Everything your team needs, in one place.
                         </p>
                     </div>
 
@@ -124,7 +124,7 @@ export default function SignupPage() {
 
                 {/* Bottom */}
                 <div className="text-xs text-muted relative z-10">
-                    &copy; 2026 Workforce
+                    &copy; 2026 Bifrost
                 </div>
             </div>
 
