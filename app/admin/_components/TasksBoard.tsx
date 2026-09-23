@@ -117,9 +117,18 @@ export default function TasksBoard({
     return (
         <>
             {/* Section Header */}
-            <div className='flex flex-col gap-1 mb-6'>
-                <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Employee Tasks</h2>
-                <p className='text-sm text-muted font-medium'>View and manage tasks assigned to each employee.</p>
+            <div className='flex items-center justify-between mb-6'>
+                <div className='flex flex-col gap-1'>
+                    <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Employee Tasks</h2>
+                    <p className='text-sm text-muted font-medium'>View and manage tasks assigned to each employee.</p>
+                </div>
+                <button
+                    onClick={openCreateModal}
+                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm shrink-0"
+                >
+                    <i className="fa-solid fa-plus text-xs"></i>
+                    New Task
+                </button>
             </div>
 
             {/* Employee Tab Pills */}
@@ -332,20 +341,6 @@ export default function TasksBoard({
 
             {/* TasksModal Section */}
             <div className="mt-10">
-                {/* Section Header */}
-                <div className='flex flex-col gap-1 mb-6'>
-                    <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Assign Tasks</h2>
-                    <p className='text-sm text-muted font-medium'>Want to assign more tasks to employees? Click the button below</p>
-                </div>
-
-                {/* Add Task button */}
-                <div className="flex justify-center">
-                    <button
-                        onClick={openCreateModal}
-                        className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
-                        Add Task
-                    </button>
-                </div>
                 <TasksModal
                     employees={employees}
                     isOpen={modalOpen}
