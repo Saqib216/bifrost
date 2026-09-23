@@ -80,7 +80,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             type="text"
                                             defaultValue={taskToEdit?.title}
                                             placeholder='Make a Navbar component in react'
-                                            className='border border-border rounded-md p-2 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm' />
+                                            className='border border-border rounded-md p-2 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm' />
                                         {
                                             state.errors?.title && (
                                                 <p className="text-danger text-xs">{state.errors.title[0]}</p>
@@ -94,7 +94,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             name="assignedTo"
                                             defaultValue={taskToEdit?.userId}
                                             id="employee-names"
-                                            className='rounded-md p-2 w-full transition-all duration-150 ease-in-out sm:text-base'
+                                            className='rounded-md p-2 w-full bg-card border border-border transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm cursor-pointer'
                                         >
                                             {employees.map((employee) => (
                                                 <option className='text-base sm:text-sm' value={employee.id} key={employee.id}>
@@ -117,7 +117,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             type="text"
                                             defaultValue={taskToEdit?.category}
                                             placeholder='programming, dev, design, etc...'
-                                            className='outline-none border border-border rounded-md p-2 w-full placeholder:text-muted bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm' />
+                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm' />
 
                                         {
                                             state.errors?.category && (
@@ -134,7 +134,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             name="taskDate"
                                             type="date"
                                             defaultValue={taskToEdit?.taskDate ? new Date(taskToEdit.taskDate).toISOString().split('T')[0] : ''}
-                                            className='border border-border rounded-md p-2 w-full bg-card text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring cursor-pointer text-base sm:text-sm'
+                                            className='border border-border rounded-md p-2 w-full bg-card text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 cursor-pointer text-base sm:text-sm'
                                         />
 
                                         {
@@ -152,7 +152,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             <select
                                                 name="status"
                                                 defaultValue={taskToEdit?.status || TaskStatus.NEW}
-                                                className='rounded-md p-2 w-full bg-card border border-border transition-all duration-150 ease-in-out sm:text-sm text-primary'
+                                                className='rounded-md p-2 w-full bg-card border border-border transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 sm:text-sm text-primary cursor-pointer'
                                             >
                                                 {Object.values(TaskStatus).map((status) => (
                                                     <option key={status} value={status}>
@@ -172,7 +172,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             name="description"
                                             defaultValue={taskToEdit?.description}
                                             placeholder='Add Description'
-                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-base sm:text-sm'>
+                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm'>
                                         </textarea>
                                     </div>
                                 </div>

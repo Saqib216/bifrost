@@ -91,7 +91,7 @@ export default function SignupPage() {
                             </span>
                         </h1>
                         <p className="text-secondary text-base">
-                            Everything your team needs, in one place.
+                            Everything your workforce needs, in one place.
                         </p>
                     </div>
 
@@ -124,7 +124,7 @@ export default function SignupPage() {
 
                 {/* Bottom */}
                 <div className="text-xs text-muted relative z-10">
-                    &copy; 2026 Bifrost
+                    &copy; 2026 Workforce
                 </div>
             </div>
 
@@ -153,7 +153,7 @@ export default function SignupPage() {
                                 type="text"
                                 name="name"
                                 placeholder="Thor Odinson"
-                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-sm"
+                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-sm"
                             />
                             {state.errors?.name && (
                                 <p className="text-danger text-xs">{state.errors.name[0]}</p>
@@ -169,7 +169,7 @@ export default function SignupPage() {
                                 name="email"
                                 type="email"
                                 placeholder="thor@asgard.com"
-                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-sm"
+                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-sm"
                             />
                             {state.errors?.email && (
                                 <p className="text-danger text-xs">{state.errors.email[0]}</p>
@@ -185,7 +185,7 @@ export default function SignupPage() {
                                 name="password"
                                 type="password"
                                 placeholder="••••••••"
-                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-sm"
+                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-sm"
                             />
                             {state.errors?.password && (
                                 <p className="text-danger text-xs">{state.errors.password[0]}</p>

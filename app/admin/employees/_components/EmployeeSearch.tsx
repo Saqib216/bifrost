@@ -26,7 +26,7 @@ export default function EmployeeSearch() {
                 defaultValue={currentSearch}
                 onChange={(e) => updateSearch(e.target.value)}
                 placeholder="Search employees by name..."
-                className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
+                className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30"
             />
         </div>
     );

@@ -76,6 +76,7 @@ html {
 }
 
 input,
-select, textarea {
+select,
+textarea {
   outline: none;
 }

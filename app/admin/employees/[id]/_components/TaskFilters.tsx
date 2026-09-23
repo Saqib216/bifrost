@@ -26,14 +26,14 @@ export default function TaskFilters() {
                     defaultValue={currentSearch}
                     onChange={(e) => updateParam("search", e.target.value)}
                     placeholder="Search tasks by title..."
-                    className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
+                    className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30"
                 />
             </div>
 
             <select
                 value={currentStatus}
                 onChange={(e) => updateParam("status", e.target.value)}
-                className="bg-card border border-border rounded-md px-3 py-2 text-sm text-primary focus:outline-none focus:border-accent/50 transition-colors cursor-pointer"
+                className="bg-card border border-border rounded-md px-3 py-2 text-sm text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 cursor-pointer"
             >
                 <option value="">All Status</option>
                 <option value="NEW">New</option>

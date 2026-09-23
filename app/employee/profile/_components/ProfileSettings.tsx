@@ -52,11 +52,10 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                 <button
                     type="button"
                     onClick={() => setActiveTab("general")}
-                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-px ${
-                        activeTab === "general"
+                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-px ${activeTab === "general"
                             ? "border-accent text-accent bg-card"
                             : "border-transparent text-muted hover:text-primary hover:bg-card/40"
-                    }`}
+                        }`}
                 >
                     <i className="fa-regular fa-user"></i>
                     General Details
@@ -65,11 +64,10 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                 <button
                     type="button"
                     onClick={() => setActiveTab("security")}
-                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-px ${
-                        activeTab === "security"
+                    className={`flex items-center gap-2 px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors cursor-pointer border-b-2 -mb-px ${activeTab === "security"
                             ? "border-accent text-accent bg-card"
                             : "border-transparent text-muted hover:text-primary hover:bg-card/40"
-                    }`}
+                        }`}
                 >
                     <i className="fa-solid fa-lock"></i>
                     Security & Password
@@ -93,7 +91,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                                 required
                                 disabled={isNamePending}
                                 placeholder="Enter your full name"
-                                className="px-3.5 py-2.5 rounded-md bg-surface border border-border text-primary text-sm focus:border-accent focus:ring-1 focus:ring-accent transition-colors disabled:opacity-50"
+                                className="px-3.5 py-2.5 rounded-md bg-surface border border-border text-primary text-sm transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 disabled:opacity-50"
                             />
                             {nameState.errors?.name && (
                                 <p className="text-xs text-danger font-medium mt-0.5">
@@ -155,7 +153,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                                     required
                                     disabled={isPassPending}
                                     placeholder="Enter current password"
-                                    className="w-full px-3.5 py-2.5 pr-10 rounded-md bg-surface border border-border text-primary text-sm focus:border-accent focus:ring-1 focus:ring-accent transition-colors disabled:opacity-50"
+                                    className="w-full px-3.5 py-2.5 pr-10 rounded-md bg-surface border border-border text-primary text-sm transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 disabled:opacity-50"
                                 />
                                 <button
                                     type="button"
@@ -184,7 +182,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                                     required
                                     disabled={isPassPending}
                                     placeholder="At least 6 characters"
-                                    className="w-full px-3.5 py-2.5 pr-10 rounded-md bg-surface border border-border text-primary text-sm focus:border-accent focus:ring-1 focus:ring-accent transition-colors disabled:opacity-50"
+                                    className="w-full px-3.5 py-2.5 pr-10 rounded-md bg-surface border border-border text-primary text-sm transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 disabled:opacity-50"
                                 />
                                 <button
                                     type="button"
@@ -213,7 +211,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                                     required
                                     disabled={isPassPending}
                                     placeholder="Confirm new password"
-                                    className="w-full px-3.5 py-2.5 pr-10 rounded-md bg-surface border border-border text-primary text-sm focus:border-accent focus:ring-1 focus:ring-accent transition-colors disabled:opacity-50"
+                                    className="w-full px-3.5 py-2.5 pr-10 rounded-md bg-surface border border-border text-primary text-sm transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 disabled:opacity-50"
                                 />
                                 <button
                                     type="button"

@@ -156,14 +156,14 @@ export default function TasksBoard({
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search tasks by title..."
-                        className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
+                        className="w-full bg-card border border-border rounded-md pl-9 pr-3 py-2 text-sm text-primary placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30"
                     />
                 </div>
 
                 <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value as TaskStatus | "")}
-                    className="bg-card border border-border rounded-md px-3 py-2 text-sm text-primary focus:outline-none focus:border-accent/50 transition-colors cursor-pointer"
+                    className="bg-card border border-border rounded-md px-3 py-2 text-sm text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 cursor-pointer"
                 >
                     <option value="">All Status</option>
                     <option value={TaskStatus.NEW}>New</option>

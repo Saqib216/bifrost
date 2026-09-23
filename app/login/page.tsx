@@ -58,7 +58,7 @@ export default function LoginPage() {
                                 type="email"
                                 placeholder="name@company.com"
                                 required
-                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary focus:ring-4 focus:ring-focus-ring text-sm"
+                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-sm"
                             />
                         </div>
 
@@ -72,8 +72,7 @@ export default function LoginPage() {
                                 type="password"
                                 placeholder="••••••••"
                                 required
-                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-200 ease-in-out hover:border-muted focus:border-primary
-                                focus:ring-4 focus:ring-focus-ring text-sm"
+                                className="border border-border rounded-md p-2.5 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-sm"
                             />
                         </div>
 
