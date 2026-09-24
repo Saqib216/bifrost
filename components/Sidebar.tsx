@@ -1,6 +1,7 @@
 import { signOut } from "@/auth";
 import Navlinks from "./Navlinks";
 import Logo from "./Logo";
+import SidebarStats from "./SidebarStats";
 
 export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
     return (
@@ -17,8 +18,9 @@ export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
             {/* Navlinks: */}
             <Navlinks role={role} />
 
-            {/* Logout */}
-            <div className="mt-auto">
+            {/* Stats + Logout */}
+            <div className="mt-auto flex flex-col gap-3">
+                <SidebarStats role={role} />
                 <form action={
                     async () => {
                         'use server';

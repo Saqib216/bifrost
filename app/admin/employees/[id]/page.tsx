@@ -116,20 +116,41 @@ export default async function EmployeeProfilePage({ params, searchParams }: { pa
                 </div>
             </div>
 
-            {/* Stat Cards */}
-            {employee.tasks.length > 0 && (
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-                    {stats.map((stat) => (
-                        <div key={stat.label} className={`bg-card border ${stat.border} rounded-md p-4 flex flex-col gap-2`}>
-                            <div className="flex items-center gap-2">
-                                <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`}></span>
-                                <span className="text-xs font-semibold uppercase tracking-wider text-muted">{stat.label}</span>
-                            </div>
-                            <span className={`text-2xl sm:text-3xl font-bold tracking-tight font-mono ${stat.color}`}>{stat.count}</span>
+            {/* Summary Card */}
+            {employee.tasks.length > 0 && (() => {
+                const total = employee.tasks.length;
+                const completionRate = Math.round((counts.COMPLETED / total) * 100);
+                return (
+                    <div className="bg-card border border-border rounded-md p-5 mb-8">
+                        {/* Completion */}
+                        <div className="flex items-baseline gap-2 mb-3">
+                            <span className="text-3xl font-bold font-mono text-accent">{completionRate}%</span>
+                            <span className="text-xs text-muted">
+                                completion · <span className="text-secondary font-medium">{counts.COMPLETED}</span> of <span className="text-secondary font-medium">{total}</span> tasks
+                            </span>
                         </div>
-                    ))}
-                </div>
-            )}
+
+                        {/* Progress bar */}
+                        <div className="w-full h-1.5 bg-surface rounded-full overflow-hidden mb-4">
+                            <div
+                                className="h-full bg-accent rounded-full transition-all duration-700 ease-out"
+                                style={{ width: `${completionRate}%` }}
+                            />
+                        </div>
+
+                        {/* Inline status breakdown */}
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-3 border-t border-border">
+                            {stats.map((stat) => (
+                                <div key={stat.label} className="flex items-center gap-2">
+                                    <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`} />
+                                    <span className="text-xs text-muted font-medium">{stat.label}</span>
+                                    <span className={`text-sm font-bold font-mono ${stat.color}`}>{stat.count}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            })()}
 
             {/* Filters */}
             <TaskFilters />

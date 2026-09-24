@@ -33,18 +33,27 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
 
             {/* KPI Strip */}
             <div className="grid grid-cols-3 gap-3">
-                <div className="bg-card border border-border rounded-lg p-4 flex flex-col gap-1">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted">Total Tasks</span>
+                <div className="bg-card border border-border rounded-md p-4 flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                        <i className="fa-solid fa-list-check text-muted text-xs" />
+                        <span className="text-xs font-semibold uppercase tracking-wider text-muted">Total Tasks</span>
+                    </div>
                     <AnimatedNumber value={kpis.totalTasks} className="text-2xl font-bold font-mono text-primary" />
                 </div>
-                <div className="bg-card border border-border rounded-lg p-4 flex flex-col gap-1">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted">Completion Rate</span>
+                <div className="bg-card border border-border rounded-md p-4 flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                        <i className="fa-solid fa-chart-line text-muted text-xs" />
+                        <span className="text-xs font-semibold uppercase tracking-wider text-muted">Completion Rate</span>
+                    </div>
                     <span className="text-2xl font-bold font-mono text-primary">
                         <AnimatedNumber value={kpis.overallCompletionRate} />%
                     </span>
                 </div>
-                <div className="bg-card border border-border rounded-lg p-4 flex flex-col gap-1">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted">Active Employees</span>
+                <div className="bg-card border border-border rounded-md p-4 flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                        <i className="fa-solid fa-users text-muted text-xs" />
+                        <span className="text-xs font-semibold uppercase tracking-wider text-muted">Active Employees</span>
+                    </div>
                     <AnimatedNumber value={kpis.activeEmployees} className="text-2xl font-bold font-mono text-primary" />
                 </div>
             </div>

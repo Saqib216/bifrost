@@ -182,21 +182,24 @@ export default function TasksBoard({
                 </select>
             </div>
 
-            {/* Stat Cards - hidden in All view (page-level data can't give accurate totals) */}
+            {/* Stat Bar - compact inline row, hidden in All view */}
             {!isAllView && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3 bg-card border border-border rounded-md mb-5">
                     {stats.map((stat) => (
-                        <div
-                            key={stat.label}
-                            className="bg-card rounded-md border border-border p-4 flex flex-col gap-2"
-                        >
-                            <div className="flex items-center gap-2">
-                                <span className={`${stat.dot} w-1.5 h-1.5 rounded-full`}></span>
-                                <span className="text-xs font-semibold tracking-wider text-muted uppercase">{stat.label}</span>
-                            </div>
-                            <span className="text-3xl font-bold font-mono">{stat.count}</span>
+                        <div key={stat.label} className="flex items-center gap-2">
+                            <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`} />
+                            <span className="text-xs text-muted font-medium">{stat.label}</span>
+                            <span className="text-sm font-bold font-mono text-primary">{stat.count}</span>
                         </div>
                     ))}
+                    {employeeTasks.length > 0 && (
+                        <div className="flex items-center gap-2 ml-auto">
+                            <span className="text-xs text-muted font-medium">Completion</span>
+                            <span className="text-sm font-bold font-mono text-accent">
+                                {Math.round((employeeTasks.filter(t => t.status === TaskStatus.COMPLETED).length / employeeTasks.length) * 100)}%
+                            </span>
+                        </div>
+                    )}
                 </div>
             )}
 
