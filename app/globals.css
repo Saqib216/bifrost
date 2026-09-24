@@ -71,6 +71,11 @@ h6 {
   -webkit-tap-highlight-color: transparent;
 }
 
+::selection {
+  background-color: rgba(242, 38, 110, 0.25);
+  color: var(--white);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -79,4 +84,44 @@ input,
 select,
 textarea {
   outline: none;
+}
+
+/* Scrollbar */
+
+/* Firefox only */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2E2F3B var(--black);
+  }
+}
+
+/* WebKit & Blink (Chrome, Edge, Opera, Safari) */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background: #2E2F3B;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active,
+*::-webkit-scrollbar-thumb:active {
+  background: #F2266E;
+}
+
+::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+  background: var(--black);
 }
