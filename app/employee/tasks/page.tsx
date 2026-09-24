@@ -47,7 +47,7 @@ export default async function EmployeeTasksPage({
             </div>
 
             {/* Status Pills */}
-            <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1">
+            <div className="flex items-center gap-4 mb-6 overflow-x-auto pb-1">
                 {statusPills.map((pill) => {
                     const isActive = pill.value ? status === pill.value : !status;
                     const href = pill.value ? `/employee/tasks?status=${pill.value}` : `/employee/tasks`;
