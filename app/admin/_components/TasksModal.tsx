@@ -1,6 +1,7 @@
 "use client";
 
 import { createTask, updateTask } from "@/app/lib/actions";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Task, TaskStatus } from "@prisma/client";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -90,19 +91,23 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
                                         <h3 className='flex gap-1 items-center'>Assign to <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span></h3>
-                                        <select
-                                            name="assignedTo"
-                                            defaultValue={taskToEdit?.userId}
-                                            id="employee-names"
-                                            className='rounded-md p-2 w-full bg-card border border-border transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm cursor-pointer'
-                                        >
-                                            {employees.map((employee) => (
-                                                <option className='text-base sm:text-sm' value={employee.id} key={employee.id}>
-                                                    {employee.name}
-                                                </option>
-                                            ))}
-                                        </select>
-
+                                        <Select name="assignedTo" defaultValue={taskToEdit?.userId || employees[0]?.id}>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select employee" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {employees.map((employee) => (
+                                                    <SelectItem key={employee.id} value={employee.name}>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="w-5 h-5 rounded-full bg-accent/15 text-accent text-[10px] font-semibold flex items-center justify-center shrink-0">
+                                                                {employee.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+                                                            </span>
+                                                            <span className="truncate">{employee.name}</span>
+                                                        </div>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                         {
                                             state.errors?.userId && (
                                                 <p className="text-danger text-xs">{state.errors.userId[0]}</p>
@@ -149,17 +154,18 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             <h3 className='flex gap-1 items-center'>
                                                 Status <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span>
                                             </h3>
-                                            <select
-                                                name="status"
-                                                defaultValue={taskToEdit?.status || TaskStatus.NEW}
-                                                className='rounded-md p-2 w-full bg-card border border-border transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 sm:text-sm text-primary cursor-pointer'
-                                            >
-                                                {Object.values(TaskStatus).map((status) => (
-                                                    <option key={status} value={status}>
-                                                        {status}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            <Select name="status" defaultValue={taskToEdit?.status || TaskStatus.NEW}>
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Status" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {Object.values(TaskStatus).map((status) => (
+                                                        <SelectItem key={status} value={status}>
+                                                            {status}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                             {state.errors?.status && (
                                                 <p className="text-danger text-xs">{state.errors.status[0]}</p>
                                             )}
