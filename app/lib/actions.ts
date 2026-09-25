@@ -196,10 +196,10 @@ export async function updateAvatar(formData: FormData) {
         return { success: false, message: 'Unauthorized' };
     }
 
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) {
         return {
             success: false,
-            message: 'Missing BLOB_READ_WRITE_TOKEN in .env. Please configure your Vercel Blob token.',
+            message: 'Missing BLOB_READ_WRITE_TOKEN OR BLOB_STORE_ID. Please connect Vercel Blob or configure the token/id in your project environment variables.',
         };
     }
 
