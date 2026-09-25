@@ -53,6 +53,9 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
         }
     }, [state]);
 
+    const employeeItems = Object.fromEntries(employees.map((e) => [e.id, e.name]));
+    const statusItems = Object.fromEntries(Object.values(TaskStatus).map((s) => [s, s]));
+
     return (
         <div>
             {/* Dynamic Create + Edit  Task Modal */}
@@ -91,13 +94,18 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
                                         <h3 className='flex gap-1 items-center'>Assign to <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span></h3>
-                                        <Select name="assignedTo" defaultValue={taskToEdit?.userId || employees[0]?.id}>
+                                        <Select
+                                            key={taskToEdit?.id ?? "create-assigned"}
+                                            name="assignedTo"
+                                            defaultValue={taskToEdit?.userId}
+                                            items={employeeItems}
+                                        >
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder="Select employee" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {employees.map((employee) => (
-                                                    <SelectItem key={employee.id} value={employee.name}>
+                                                    <SelectItem key={employee.id} value={employee.id}>
                                                         <div className="flex items-center gap-2">
                                                             <span className="w-5 h-5 rounded-full bg-accent/15 text-accent text-[10px] font-semibold flex items-center justify-center shrink-0">
                                                                 {employee.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
@@ -154,7 +162,12 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                             <h3 className='flex gap-1 items-center'>
                                                 Status <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span>
                                             </h3>
-                                            <Select name="status" defaultValue={taskToEdit?.status || TaskStatus.NEW}>
+                                            <Select
+                                                key={taskToEdit?.id ? `status-${taskToEdit.id}` : "status-create"}
+                                                name="status"
+                                                defaultValue={taskToEdit?.status || TaskStatus.NEW}
+                                                items={statusItems}
+                                            >
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue placeholder="Status" />
                                                 </SelectTrigger>
