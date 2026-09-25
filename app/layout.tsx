@@ -44,7 +44,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col"
+      spellCheck={false}>
         <main>{children}</main>
         <Toaster position="top-right" theme="dark" />
       </body>
