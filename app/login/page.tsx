@@ -5,6 +5,7 @@ import { authenticate } from "../lib/actions";
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import { motion } from 'motion/react';
+import DemoAdminCredentials from "./_components/DemoAdminCredentials";
 
 export default function LoginPage() {
     const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
@@ -164,6 +165,8 @@ export default function LoginPage() {
                             {isPending ? 'Signing in...' : 'Continue'}
                         </button>
                     </form>
+
+                    <DemoAdminCredentials />
 
                     {/* Link to signup */}
                     <p className="text-sm text-center text-muted">
