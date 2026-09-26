@@ -20,6 +20,29 @@ async function main() {
         },
     });
 
+    // real admin(only one):
+    const realAdminPassword = await bcrypt.hash(
+        process.env.REAL_ADMIN_PASSWORD as string,
+        10
+    );
+    const realAdmin = await prisma.user.upsert({
+        where: {
+            email: process.env.REAL_ADMIN_EMAIL as string
+        },
+        update: {
+            password: realAdminPassword,
+            role: Role.ADMIN,
+            isDemo: false,
+        },
+        create: {
+            name: "Muhammad Saqib Hussnain",
+            email: process.env.REAL_ADMIN_EMAIL as string,
+            password: realAdminPassword,
+            role: Role.ADMIN,
+            isDemo: false,
+        },
+    });
+
     const employeesData = [
         {
             name: 'Ali Raza',
