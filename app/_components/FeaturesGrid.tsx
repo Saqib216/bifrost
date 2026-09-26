@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion, Variants } from "motion/react";
 
@@ -27,7 +27,7 @@ const itemVariants: Variants = {
 
 export default function FeaturesGrid() {
     return (
-        <section id="features" className="px-6 sm:px-10 lg:px-20 py-20">
+        <section id="features" className="px-6 sm:px-10 lg:px-20 py-20 scroll-mt-20">
 
             <div className="flex flex-col items-center text-center gap-2 mb-14">
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-primary">

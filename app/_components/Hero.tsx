@@ -1,13 +1,12 @@
-"use client";
+﻿"use client";
 
-import Logo from "@/components/Logo";
 import { motion, Variants } from "motion/react";
 import Link from "next/link";
 
 const containerVariants: Variants = {
     hidden: {},
     visible: {
-        transition: { staggerChildren: 0.15 },
+        transition: { staggerChildren: 0.12 },
     },
 };
 
@@ -22,7 +21,7 @@ const itemVariants: Variants = {
 
 export default function Hero() {
     return (
-        <section className="min-h-screen flex flex-col lg:flex-row items-center px-6 sm:px-10 lg:px-20 py-20 gap-16">
+        <section className="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row items-center justify-center px-6 sm:px-10 lg:px-20 py-16 lg:py-24 gap-16">
 
             {/* Left - Content */}
             <motion.div
@@ -31,10 +30,6 @@ export default function Hero() {
                 animate="visible"
                 className="flex-1 flex flex-col gap-6 max-w-xl"
             >
-                <motion.div variants={itemVariants} className="flex items-center gap-2">
-                    <Logo size="text-2xl" />
-                </motion.div>
-
                 <motion.h1
                     variants={itemVariants}
                     className="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-primary leading-[1.1]"
@@ -44,26 +39,27 @@ export default function Hero() {
                     <span className="text-accent">effortlessly.</span>
                 </motion.h1>
 
-                <motion.p variants={itemVariants} className="text-secondary text-base sm:text-lg max-w-md">
-                    Role-based task management built for modern teams. Assign, track, and complete - all in one clean dashboard.
+                <motion.p variants={itemVariants} className="text-secondary text-base sm:text-lg max-w-md leading-relaxed">
+                    Role-based task management built for modern teams. Assign, track, and complete—all in one clean dashboard.
                 </motion.p>
 
-                <motion.div variants={itemVariants} className="flex items-center gap-4 mt-2">
+                {/* Direct CTA Buttons */}
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mt-2">
+                    <Link
+                        href="/signup"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-accent rounded-md font-semibold text-surface transition-all duration-200 ease-in-out hover:bg-accent-hover active:scale-95 text-sm shadow-lg shadow-accent/20 tracking-tight"
+                    >
+                        <span>Sign Up</span>
+                        <i className="fa-solid fa-arrow-right ml-2 text-xs" />
+                    </Link>
+
                     <Link
                         href="/login"
-                        className="inline-flex items-center justify-center px-6 py-3 bg-accent rounded-md font-semibold text-surface transition-all duration-200 ease-in-out hover:bg-accent-hover active:scale-95 text-sm"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-md font-semibold text-primary border border-border bg-card/40 transition-all duration-200 hover:border-border-hover hover:bg-card/80 active:scale-95 text-sm tracking-tight"
                     >
-                        Get Started
-                    </Link>
-
-                    <Link
-                        href="#features"
-                        className="inline-flex items-center justify-center px-6 py-3 rounded-md font-semibold text-primary border border-border transition-all duration-200 hover:border-border-hover active:scale-95 text-sm"
-                    >
-                        See how it works
+                        Try Demo
                     </Link>
                 </motion.div>
-
             </motion.div>
 
             {/* Right - Animated Dashboard Mockup */}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from 'motion/react';
 import AnimatedNumber from '../../components/AnimatedNumber';
@@ -11,7 +11,7 @@ const stats = [
 
 export default function TrustStats() {
     return (
-        <section className="px-6 sm:px-10 lg:px-20 pb-20">
+        <section id="metrics" className="px-6 sm:px-10 lg:px-20 pb-20 scroll-mt-20">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
