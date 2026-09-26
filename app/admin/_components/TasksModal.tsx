@@ -6,7 +6,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Task, TaskStatus } from "@prisma/client";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 
 interface Employee {
@@ -27,10 +27,11 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
     const [isVisible, setIsVisible] = useState(false);
     const [date, setDate] = useState<Date | undefined>(taskToEdit?.taskDate ? new Date(taskToEdit.taskDate) : undefined);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
         if (isOpen) {
-            requestAnimationFrame(() => { setIsVisible(true) });
+            requestAnimationFrame(() => { setIsVisible(true); });
             setDate(taskToEdit?.taskDate ? new Date(taskToEdit.taskDate) : undefined);
         } else {
             setIsCalendarOpen(false);
@@ -41,12 +42,23 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
         setIsVisible(false);
         setTimeout(() => {
             onClose();
-        }, 200);
-    }
+        }, 180);
+    };
+
+    // Close on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && isOpen) {
+                closeModal();
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isOpen]);
 
     const updateTaskWithId = taskToEdit ? updateTask.bind(null, taskToEdit.id) : null;
 
-    const [state, formAction] = useActionState(
+    const [state, formAction, isPending] = useActionState(
         mode === 'edit' && updateTaskWithId ? updateTaskWithId : createTask,
         { success: false, errors: {} }
     );
@@ -55,8 +67,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
         if (state.success) {
             closeModal();
             toast.success(mode === "edit" ? "Task updated successfully" : "New Task created");
-        }
-        else if (state.message) {
+        } else if (state.message) {
             toast.error(state.message);
         }
     }, [state]);
@@ -64,175 +75,243 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
     const employeeItems = Object.fromEntries(employees.map((e) => [e.id, e.name]));
     const statusItems = Object.fromEntries(Object.values(TaskStatus).map((s) => [s, s]));
 
+    if (!isOpen) return null;
+
     return (
-        <div>
-            {/* Dynamic Create + Edit  Task Modal */}
-            {
-                isOpen && (
-                    <div id='create-task-modal-overlay' className={`bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center transition-opacity duration-200 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-                        <div id="create-task-modal-content"
-                            className={`w-3/4 h-3/4 bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-                            <form action={formAction}>
-
-                                {/* Modal header  */}
-                                <div className="flex justify-between">
-                                    <h2 className='font-semibold text-lg sm:text-2xl tracking-tight text-primary'>{mode === 'edit' ? 'Edit Task' : 'Create a Task'}</h2>
-                                    <span
-                                        onClick={closeModal}
-                                        className="text-xl cursor-pointer px-2">
-                                        <i className="fa-solid fa-xmark"></i>
-                                    </span>
-                                </div>
-                                <div className='grid grid-cols-5 gap-x-6 gap-y-5 mt-5'>
-                                    <div className='col-span-5 sm:col-span-3 flex flex-col gap-1'>
-                                        <p className='flex gap-1 items-center'>Task Title
-                                        </p>
-                                        <input
-                                            name="title"
-                                            type="text"
-                                            defaultValue={taskToEdit?.title}
-                                            placeholder='Make a Navbar component in react'
-                                            className='border border-border rounded-md p-2 bg-card w-full placeholder:text-muted transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm' />
-                                        {
-                                            state.errors?.title && (
-                                                <p className="text-danger text-xs">{state.errors.title[0]}</p>
-                                            )
-                                        }
-                                    </div>
-
-                                    <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
-                                        <p className='flex gap-1 items-center'>Assign to</p>
-                                        <Select
-                                            key={taskToEdit?.id ?? "create-assigned"}
-                                            name="assignedTo"
-                                            defaultValue={taskToEdit?.userId}
-                                            items={employeeItems}
-                                        >
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select employee" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {employees.map((employee) => (
-                                                    <SelectItem key={employee.id} value={employee.id}>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="w-5 h-5 rounded-full bg-accent/15 text-accent text-[10px] font-semibold flex items-center justify-center shrink-0">
-                                                                {employee.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
-                                                            </span>
-                                                            <span className="truncate">{employee.name}</span>
-                                                        </div>
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        {
-                                            state.errors?.userId && (
-                                                <p className="text-danger text-xs">{state.errors.userId[0]}</p>
-                                            )
-                                        }
-                                    </div>
-
-                                    <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
-                                        <p className='flex gap-1 items-center'>Category</p>
-                                        <input
-                                            name="category"
-                                            type="text"
-                                            defaultValue={taskToEdit?.category}
-                                            placeholder='programming, dev, design, etc...'
-                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm' />
-
-                                        {
-                                            state.errors?.category && (
-                                                <p className="text-danger text-xs">{state.errors.category[0]}</p>
-                                            )
-                                        }
-                                    </div>
-
-                                    <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
-                                        <p className='flex gap-1 items-center'>
-                                            Date
-                                        </p>
-
-                                        <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-                                            <PopoverTrigger
-                                                type="button"
-                                                className="h-[38px] w-full flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 data-[popup-open]:border-accent data-[popup-open]:ring-4 data-[popup-open]:ring-accent/30 cursor-pointer text-left"
-                                            >
-                                                <span className={date ? "text-primary" : "text-muted"}>
-                                                    {date ? format(date, "MMM d, yyyy") : "Pick a date"}
-                                                </span>
-                                                <i className="fa-regular fa-calendar text-muted text-sm shrink-0"></i>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0" align="start">
-                                                <Calendar
-                                                    mode="single"
-                                                    selected={date}
-                                                    onSelect={(newDate) => {
-                                                        setDate(newDate);
-                                                        setIsCalendarOpen(false);
-                                                    }}
-                                                />
-                                            </PopoverContent>
-                                        </Popover>
-                                        <input type="hidden" name="taskDate" value={date ? date.toISOString() : ''} />
-
-                                        {
-                                            state.errors?.taskDate && (
-                                                <p className="text-danger text-xs">{state.errors.taskDate[0]}</p>
-                                            )
-                                        }
-                                    </div>
-
-                                    {mode === 'edit' && (
-                                        <div className='col-span-5 sm:col-span-1 flex flex-col gap-1'>
-                                            <p className='flex gap-1 items-center'>
-                                                Status
-                                            </p>
-                                            <Select
-                                                key={taskToEdit?.id ? `status-${taskToEdit.id}` : "status-create"}
-                                                name="status"
-                                                defaultValue={taskToEdit?.status || TaskStatus.NEW}
-                                                items={statusItems}
-                                            >
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Status" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {Object.values(TaskStatus).map((status) => (
-                                                        <SelectItem key={status} value={status}>
-                                                            {status}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            {state.errors?.status && (
-                                                <p className="text-danger text-xs">{state.errors.status[0]}</p>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    <div className='flex flex-col gap-1 col-span-5' id='taskDesc'>
-                                        <p>Description {"(Optional)"}</p>
-                                        <textarea
-                                            name="description"
-                                            defaultValue={taskToEdit?.description}
-                                            placeholder='Add Description'
-                                            className='border border-border rounded-md p-2 w-full placeholder:text-muted min-h-30 bg-card transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 text-base sm:text-sm'>
-                                        </textarea>
-                                    </div>
-                                </div>
-
-                                {/* Add + Edit Task Button */}
-                                <div className='flex justify-end mt-5'>
-                                    <button
-                                        className="px-3 py-1.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm">
-                                        {mode === 'edit' ? 'Update Task' : 'Add Task'}
-                                    </button>
-                                </div>
-                            </form>
+        <div
+            id="create-task-modal-overlay"
+            onClick={(e) => {
+                if (e.target === e.currentTarget) closeModal();
+            }}
+            className={`fixed inset-0 z-[1000] flex justify-center items-start pt-[10vh] sm:pt-[14vh] px-4 bg-black/60 backdrop-blur-sm transition-opacity duration-200 ease-out ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+        >
+            <div
+                id="create-task-modal-content"
+                className={`w-full max-w-2xl bg-surface/95 backdrop-blur-xl border border-border/80 rounded-md shadow-2xl shadow-black/50 overflow-hidden relative before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-accent/60 before:to-transparent transition-all duration-200 ease-out transform ${isVisible ? "scale-100 translate-y-0 opacity-100" : "scale-98 -translate-y-2 opacity-0"
+                    }`}
+            >
+                <form
+                    ref={formRef}
+                    action={formAction}
+                    onKeyDown={(e) => {
+                        if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                            e.preventDefault();
+                            formRef.current?.requestSubmit();
+                        }
+                    }}
+                >
+                    {/* Header bar */}
+                    <div className="flex items-center justify-between px-5 pt-4 pb-2">
+                        <div className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-accent/15 text-accent flex items-center justify-center text-xs">
+                                <i className={mode === "edit" ? "fa-solid fa-pen-to-square text-[10px]" : "fa-solid fa-plus text-[10px]"}></i>
+                            </span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+                                {mode === "edit" ? "Edit Task" : "New Task"}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <kbd className="hidden sm:inline-block text-[10px] text-muted/70 bg-card border border-border/60 px-1.5 py-0.5 rounded-md font-mono">
+                                Esc
+                            </kbd>
+                            <button
+                                type="button"
+                                onClick={closeModal}
+                                className="w-7 h-7 rounded-md flex items-center justify-center text-muted hover:text-primary hover:bg-card transition-colors cursor-pointer"
+                                aria-label="Close modal"
+                            >
+                                <i className="fa-solid fa-xmark text-sm"></i>
+                            </button>
                         </div>
                     </div>
-                )
-            }
+
+                    {/* Canvas Area: Title & Description */}
+                    <div className="px-6 pt-2 pb-5 flex flex-col gap-3">
+                        <div>
+                            <input
+                                name="title"
+                                type="text"
+                                autoFocus
+                                defaultValue={taskToEdit?.title}
+                                placeholder="Task title..."
+                                className="w-full bg-transparent text-xl sm:text-2xl font-semibold text-primary placeholder:text-muted/40 outline-none border-0 focus:ring-0 focus:outline-none p-0 tracking-tight"
+                            />
+                            {state.errors?.title && (
+                                <p className="text-danger text-xs mt-1.5 flex items-center gap-1.5">
+                                    <i className="fa-solid fa-circle-exclamation text-[11px]"></i>
+                                    {state.errors.title[0]}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
+                            <textarea
+                                name="description"
+                                defaultValue={taskToEdit?.description ?? ""}
+                                placeholder="Add description, notes, or acceptance criteria..."
+                                rows={3}
+                                className="w-full bg-transparent text-sm sm:text-base text-primary/80 placeholder:text-muted/40 outline-none border-0 focus:ring-0 focus:outline-none p-0 resize-none leading-relaxed min-h-22.5"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Validation Errors Strip (for secondary fields) */}
+                    {(state.errors?.userId || state.errors?.category || state.errors?.taskDate) && (
+                        <div className="px-6 py-2 bg-danger/10 border-t border-danger/20 text-danger text-xs flex flex-wrap items-center gap-3">
+                            <i className="fa-solid fa-circle-exclamation text-[11px] shrink-0"></i>
+                            {state.errors.userId && <span>Assignee: {state.errors.userId[0]}</span>}
+                            {state.errors.category && <span>Category: {state.errors.category[0]}</span>}
+                            {state.errors.taskDate && <span>Date: {state.errors.taskDate[0]}</span>}
+                        </div>
+                    )}
+
+                    {/* Bottom Properties & Action Bar */}
+                    <div className="border-t border-border/70 bg-card/40 px-5 py-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                        {/* Interactive Property Pills */}
+                        <div className="flex flex-wrap items-center gap-2 min-w-0 flex-1">
+                            {/* Assignee Pill */}
+                            <Select
+                                key={taskToEdit?.id ?? "create-assigned"}
+                                name="assignedTo"
+                                defaultValue={taskToEdit?.userId}
+                                items={employeeItems}
+                            >
+                                <SelectTrigger
+                                    size="sm"
+                                    className="w-auto max-w-45 h-7 px-2.5 rounded-md bg-surface/90 border border-border/80 hover:bg-card hover:border-muted text-xs shrink-0"
+                                >
+                                    <div className="flex items-center gap-1.5 truncate">
+                                        <i className="fa-regular fa-user text-muted text-[10px] shrink-0"></i>
+                                        <SelectValue placeholder="Assignee" className="text-xs truncate" />
+                                    </div>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {employees.map((employee) => (
+                                        <SelectItem key={employee.id} value={employee.id}>
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-5 h-5 rounded-md bg-accent/15 text-accent text-[10px] font-semibold flex items-center justify-center shrink-0">
+                                                    {employee.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+                                                </span>
+                                                <span className="truncate text-xs">{employee.name}</span>
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            {/* Due Date Pill */}
+                            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                                <PopoverTrigger
+                                    type="button"
+                                    className={`h-7 px-2.5 rounded-md border text-xs font-medium text-primary transition-all duration-150 flex items-center gap-1.5 cursor-pointer outline-none shrink-0 ${isCalendarOpen
+                                            ? "border-accent ring-4 ring-accent/30 bg-card"
+                                            : "border border-border/80 bg-surface/90 hover:bg-card hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 data-[popup-open]:border-accent data-[popup-open]:ring-4 data-[popup-open]:ring-accent/30 aria-expanded:border-accent aria-expanded:ring-4 aria-expanded:ring-accent/30"
+                                        }`}
+                                >
+                                    <i className="fa-regular fa-calendar text-muted text-[10px] shrink-0"></i>
+                                    <span className={date ? "text-primary font-medium" : "text-muted"}>
+                                        {date ? format(date, "MMM d, yyyy") : "Due date"}
+                                    </span>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={date}
+                                        onSelect={(newDate) => {
+                                            setDate(newDate);
+                                            setIsCalendarOpen(false);
+                                        }}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                            <input type="hidden" name="taskDate" value={date ? date.toISOString() : ""} />
+
+                            {/* Category Pill */}
+                            <label className="h-7 px-2.5 rounded-md border border-border/80 bg-surface/90 hover:bg-card hover:border-muted focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/30 flex items-center gap-1.5 transition-all duration-150 shrink-0 cursor-text">
+                                <i className="fa-solid fa-tag text-[10px] text-muted shrink-0"></i>
+                                <input
+                                    name="category"
+                                    type="text"
+                                    defaultValue={taskToEdit?.category}
+                                    placeholder="Category"
+                                    className="bg-transparent border-none outline-none text-xs text-primary placeholder:text-muted w-20 sm:w-24 focus:ring-0 p-0 cursor-text"
+                                />
+                            </label>
+
+                            {/* Status Pill (Edit mode) */}
+                            {mode === "edit" && (
+                                <Select
+                                    key={taskToEdit?.id ? `status-${taskToEdit.id}` : "status-create"}
+                                    name="status"
+                                    defaultValue={taskToEdit?.status || TaskStatus.NEW}
+                                    items={statusItems}
+                                >
+                                    <SelectTrigger
+                                        size="sm"
+                                        className="w-auto h-7 px-2.5 rounded-md bg-surface/90 border border-border/80 hover:bg-card hover:border-muted text-xs shrink-0"
+                                    >
+                                        <div className="flex items-center gap-1.5 truncate">
+                                            <span
+                                                className={`w-2 h-2 rounded-md shrink-0 ${taskToEdit?.status === TaskStatus.COMPLETED
+                                                        ? "bg-emerald-500"
+                                                        : taskToEdit?.status === TaskStatus.ACTIVE
+                                                            ? "bg-amber-500"
+                                                            : taskToEdit?.status === TaskStatus.FAILED
+                                                                ? "bg-red-500"
+                                                                : "bg-sky-500"
+                                                    }`}
+                                            />
+                                            <SelectValue placeholder="Status" className="text-xs" />
+                                        </div>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.values(TaskStatus).map((status) => (
+                                            <SelectItem key={status} value={status}>
+                                                <div className="flex items-center gap-2">
+                                                    <span
+                                                        className={`w-2 h-2 rounded-md shrink-0 ${status === TaskStatus.COMPLETED
+                                                                ? "bg-emerald-500"
+                                                                : status === TaskStatus.ACTIVE
+                                                                    ? "bg-amber-500"
+                                                                    : status === TaskStatus.FAILED
+                                                                        ? "bg-red-500"
+                                                                        : "bg-sky-500"
+                                                            }`}
+                                                    />
+                                                    <span className="text-xs">{status}</span>
+                                                </div>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex items-center justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40 shrink-0">
+                            <button
+                                type="button"
+                                onClick={closeModal}
+                                className="px-3 py-1.5 rounded-md text-xs font-medium text-muted hover:text-primary hover:bg-card transition-colors cursor-pointer shrink-0"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isPending}
+                                className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 bg-accent hover:bg-accent-hover text-surface text-xs font-semibold rounded-md shadow-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer whitespace-nowrap shrink-0"
+                            >
+                                {isPending && <i className="fa-solid fa-circle-notch fa-spin text-[10px]"></i>}
+                                <span className="whitespace-nowrap">{mode === "edit" ? "Update Task" : "Create Task"}</span>
+                                <span className="hidden sm:inline-block text-[10px] opacity-75 font-mono bg-black/20 px-1 py-0.5 rounded shrink-0">
+                                    ⌘↵
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    )
+    );
 }
