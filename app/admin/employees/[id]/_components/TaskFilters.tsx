@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import StatusFilterSelect from "@/app/admin/_components/StatusFilterSelect";
 
 export default function TaskFilters() {
     const router = useRouter();
@@ -30,17 +31,11 @@ export default function TaskFilters() {
                 />
             </div>
 
-            <select
+            <StatusFilterSelect
                 value={currentStatus}
-                onChange={(e) => updateParam("status", e.target.value)}
-                className="bg-card border border-border rounded-md px-3 py-2 text-sm text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 cursor-pointer"
-            >
-                <option value="">All Status</option>
-                <option value="NEW">New</option>
-                <option value="ACTIVE">Active</option>
-                <option value="COMPLETED">Completed</option>
-                <option value="FAILED">Failed</option>
-            </select>
+                onChange={(val) => updateParam("status", val)}
+                className="w-full sm:w-44"
+            />
         </div>
     );
 }
