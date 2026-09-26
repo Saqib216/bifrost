@@ -43,8 +43,8 @@ export default function LoginPage() {
                         left: '-20%',
                         background: `radial-gradient(
                             ellipse 500px 350px at 50% 50%,
-                            rgba(242,38,110,0.13) 0%,
-                            rgba(242,38,110,0.05) 40%,
+                            rgba(var(--accent-rgb),0.13) 0%,
+                            rgba(var(--accent-rgb),0.05) 40%,
                             transparent 70%
                         )`,
                     }}
@@ -76,8 +76,8 @@ export default function LoginPage() {
                             top: node.y,
                             width: 4,
                             height: 4,
-                            background: '#F2266E',
-                            boxShadow: '0 0 8px rgba(242,38,110,0.5)',
+                            background: 'var(--color-accent)',
+                            boxShadow: '0 0 8px rgba(var(--accent-rgb),0.5)',
                         }}
                         animate={{
                             opacity: [0, 0.7, 0],
@@ -169,8 +169,7 @@ export default function LoginPage() {
                     <p className="text-sm text-center text-muted">
                         Don&apos;t have an account?{" "}
                         <Link href="/signup"
-                            className="font-semibold transition-colors duration-150"
-                            style={{ color: "#F2266E" }}>
+                            className="font-semibold transition-colors duration-150 text-accent">
                             Sign up
                         </Link>
                     </p>

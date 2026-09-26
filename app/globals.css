@@ -20,6 +20,8 @@
   /* Accent */
   --accent-magenta: #F2266E;
   --accent-magenta-hover: #FF4581;
+  --accent-magenta-rgb: 242, 38, 110;
+  --accent-magenta-gradient-end: #FF6B4A;
 
   /* Status colors */
   --status-success: #22D67A;
@@ -110,6 +112,8 @@
 
   --color-accent: var(--accent-magenta);
   --color-accent-hover: var(--accent-magenta-hover);
+  --accent-rgb: var(--accent-magenta-rgb);
+  --accent-gradient-end: var(--accent-magenta-gradient-end);
 
   --color-success: var(--status-success);
   --color-danger: var(--status-danger);

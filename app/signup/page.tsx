@@ -4,6 +4,7 @@ import Logo from "@/components/Logo";
 import { register } from "../lib/actions";
 import { useActionState } from "react";
 import Link from "next/link";
+import { motion } from 'motion/react';
 
 const features = [
     {
@@ -41,27 +42,85 @@ export default function SignupPage() {
     return (
         <div className="min-h-screen flex">
 
-            {/* Left Panel - gradient mesh feel, distinct from login */}
+            {/* Left Panel */}
             <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden flex-col justify-between p-10"
                 style={{
-                    background: "linear-gradient(135deg, #0D0E16 0%, #12101A 40%, #1A0F1F 100%)",
+                    background: "linear-gradient(135deg, #0D0E16 0%, #12101A 40%, #14151C 100%)",
                     borderRight: "1px solid #22232D",
                 }}>
 
-                {/* Glow blob - top-left accent */}
-                <div style={{
-                    position: "absolute", top: "-80px", left: "-80px",
-                    width: "340px", height: "340px",
-                    background: "radial-gradient(circle, rgba(242,38,110,0.18) 0%, transparent 70%)",
-                    pointerEvents: "none",
-                }} />
-                {/* Glow blob - bottom-right purple */}
-                <div style={{
-                    position: "absolute", bottom: "-60px", right: "-60px",
-                    width: "280px", height: "280px",
-                    background: "radial-gradient(circle, rgba(100,60,200,0.14) 0%, transparent 70%)",
-                    pointerEvents: "none",
-                }} />
+                {/* Grid pattern - faint structural lines, fading at edges */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '52px 52px',
+                        maskImage: 'radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 85%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 85%)',
+                    }}
+                />
+
+                {/* Ambient color wash - sweeps diagonally across the grid */}
+                <motion.div
+                    className="absolute pointer-events-none"
+                    style={{
+                        width: '140%',
+                        height: '140%',
+                        top: '-20%',
+                        left: '-20%',
+                        background: `radial-gradient(
+                            ellipse 500px 350px at 50% 50%,
+                            rgba(var(--accent-rgb),0.13) 0%,
+                            rgba(var(--accent-rgb),0.05) 40%,
+                            transparent 70%
+                        )`,
+                    }}
+                    animate={{
+                        x: ['-15%', '55%', '-15%'],
+                        y: ['-10%', '45%', '-10%'],
+                    }}
+                    transition={{
+                        duration: 14,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                />
+
+                {/* Grid intersection nodes - breathing dots at scattered positions */}
+                {[
+                    { x: '18%', y: '22%', delay: 0 },
+                    { x: '72%', y: '15%', delay: 2.5 },
+                    { x: '45%', y: '55%', delay: 1.2 },
+                    { x: '28%', y: '78%', delay: 3.8 },
+                    { x: '82%', y: '62%', delay: 0.8 },
+                    { x: '55%', y: '35%', delay: 4.5 },
+                ].map((node, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute rounded-full pointer-events-none"
+                        style={{
+                            left: node.x,
+                            top: node.y,
+                            width: 4,
+                            height: 4,
+                            background: 'var(--color-accent)',
+                            boxShadow: '0 0 8px rgba(var(--accent-rgb),0.5)',
+                        }}
+                        animate={{
+                            opacity: [0, 0.7, 0],
+                            scale: [0.8, 1.2, 0.8],
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                            delay: node.delay,
+                        }}
+                    />
+                ))}
 
                 {/* Top - Logo */}
                 <div className="flex items-center gap-2 relative z-10">
@@ -71,19 +130,18 @@ export default function SignupPage() {
                 {/* Middle - headline + features */}
                 <div className="flex flex-col gap-8 relative z-10">
                     <div className="flex flex-col gap-3">
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest"
-                            style={{ color: "#F2266E" }}>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-accent">
                             <span style={{
                                 display: "inline-block", width: 6, height: 6,
-                                borderRadius: "50%", background: "#F2266E",
-                                boxShadow: "0 0 6px #F2266E",
+                                borderRadius: "50%", background: "var(--color-accent)",
+                                boxShadow: "0 0 6px var(--color-accent)",
                             }} />
                             New workspace
                         </span>
                         <h1 className="text-4xl xl:text-5xl font-bold tracking-tight text-primary leading-tight">
                             Build your team&apos;s<br />
                             <span style={{
-                                background: "linear-gradient(90deg, #F2266E, #A855F7)",
+                                background: "linear-gradient(90deg, var(--color-accent), var(--accent-gradient-end))",
                                 WebkitBackgroundClip: "text",
                                 WebkitTextFillColor: "transparent",
                             }}>
@@ -108,14 +166,14 @@ export default function SignupPage() {
                                 <span style={{
                                     display: "flex", alignItems: "center", justifyContent: "center",
                                     width: 36, height: 36, borderRadius: 10,
-                                    background: "rgba(242,38,110,0.12)",
-                                    color: "#F2266E", flexShrink: 0,
+                                    background: "rgba(var(--accent-rgb),0.12)",
+                                    color: "var(--color-accent)", flexShrink: 0,
                                 }}>
                                     {f.icon}
                                 </span>
                                 <div>
                                     <p className="text-sm font-semibold text-primary">{f.label}</p>
-                                    <p className="text-xs" style={{ color: "#6E6F7B" }}>{f.desc}</p>
+                                    <p className="text-xs text-muted">{f.desc}</p>
                                 </div>
                             </div>
                         ))}
@@ -205,8 +263,7 @@ export default function SignupPage() {
                     <p className="text-sm text-center text-muted">
                         Already have an account?{" "}
                         <Link href="/login"
-                            className="font-semibold transition-colors duration-150"
-                            style={{ color: "#F2266E" }}>
+                            className="font-semibold transition-colors duration-150 text-accent">
                             Sign in
                         </Link>
                     </p>
