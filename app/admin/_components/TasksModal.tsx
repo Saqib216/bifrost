@@ -77,8 +77,8 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                 </div>
                                 <div className='grid grid-cols-5 gap-x-6 gap-y-5 mt-5'>
                                     <div className='col-span-5 sm:col-span-3 flex flex-col gap-1'>
-                                        <h3 className='flex gap-1 items-center'>Task Title <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span>
-                                        </h3>
+                                        <p className='flex gap-1 items-center'>Task Title
+                                        </p>
                                         <input
                                             name="title"
                                             type="text"
@@ -93,7 +93,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                     </div>
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
-                                        <h3 className='flex gap-1 items-center'>Assign to <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span></h3>
+                                        <p className='flex gap-1 items-center'>Assign to</p>
                                         <Select
                                             key={taskToEdit?.id ?? "create-assigned"}
                                             name="assignedTo"
@@ -124,7 +124,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                     </div>
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
-                                        <h3 className='flex gap-1 items-center'>Category <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span></h3>
+                                        <p className='flex gap-1 items-center'>Category</p>
                                         <input
                                             name="category"
                                             type="text"
@@ -140,9 +140,9 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                     </div>
 
                                     <div className='col-span-5 sm:col-span-2 flex flex-col gap-1'>
-                                        <h3 className='flex gap-1 items-center'>
-                                            Date <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span>
-                                        </h3>
+                                        <p className='flex gap-1 items-center'>
+                                            Date
+                                        </p>
                                         <input
                                             name="taskDate"
                                             type="date"
@@ -159,9 +159,9 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
 
                                     {mode === 'edit' && (
                                         <div className='col-span-5 sm:col-span-1 flex flex-col gap-1'>
-                                            <h3 className='flex gap-1 items-center'>
-                                                Status <span className='w-1.5 h-1.5 rounded-full bg-danger inline-block'></span>
-                                            </h3>
+                                            <p className='flex gap-1 items-center'>
+                                                Status
+                                            </p>
                                             <Select
                                                 key={taskToEdit?.id ? `status-${taskToEdit.id}` : "status-create"}
                                                 name="status"
@@ -186,7 +186,7 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                     )}
 
                                     <div className='flex flex-col gap-1 col-span-5' id='taskDesc'>
-                                        <h3>Description</h3>
+                                        <p>Description {"(Optional)"}</p>
                                         <textarea
                                             name="description"
                                             defaultValue={taskToEdit?.description}
