@@ -35,8 +35,19 @@ async function requireAdmin() {
     return session;
 }
 
+async function isDemoAccount(userId: string | undefined) {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { isDemo: true },
+    });
+    return user?.isDemo ?? false;
+}
+
 export async function deleteTask(taskId: string) {
-    if (!(await requireAdmin())) return;
+    const session = await requireAdmin();
+    if (!session) return;
+
+    if (await isDemoAccount(session.user.id)) return;
 
     await prisma.task.delete({
         where: {
@@ -50,7 +61,12 @@ export async function deleteTask(taskId: string) {
 }
 
 export async function createTask(prevState: ActionState, formData: FormData): Promise<ActionState> {
-    if (!(await requireAdmin())) return { success: false, message: 'Unauthorized' };
+    const session = await requireAdmin();
+    if (!session) return { success: false, message: 'Unauthorized' };
+
+    if (await isDemoAccount(session.user.id)) {
+        return { success: false, message: "Demo admin can't create tasks." };
+    }
 
     const result = taskSchema.safeParse({
         title: formData.get('title'),
@@ -84,7 +100,12 @@ export async function createTask(prevState: ActionState, formData: FormData): Pr
 }
 
 export async function updateTask(taskId: string, prevState: ActionState, formData: FormData): Promise<ActionState> {
-    if (!(await requireAdmin())) return { success: false, message: 'Unauthorized' };
+    const session = await requireAdmin();
+    if (!session) return { success: false, message: 'Unauthorized' };
+
+    if (await isDemoAccount(session.user.id)) {
+        return { success: false, message: "Demo admin can't update tasks." };
+    }
 
     const result = updateTaskSchema.safeParse({
         title: formData.get('title'),
