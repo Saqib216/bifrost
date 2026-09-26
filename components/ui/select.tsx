@@ -30,6 +30,7 @@ function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
 function SelectTrigger({
   className,
   size = "default",
+  type = "button",
   children,
   ...props
 }: SelectPrimitive.Trigger.Props & {
@@ -37,10 +38,12 @@ function SelectTrigger({
 }) {
   return (
     <SelectPrimitive.Trigger
+      type={type}
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-full items-center justify-between gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 data-[popup-open]:border-accent data-[popup-open]:ring-4 data-[popup-open]:ring-accent/30 aria-expanded:border-accent aria-expanded:ring-4 aria-expanded:ring-accent/30 data-[popup-open]:[&_svg]:rotate-180 aria-expanded:[&_svg]:rotate-180 outline-none select-none disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer h-[38px]",
+        "flex w-full items-center justify-between gap-2 rounded-md border border-border bg-card text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 data-[popup-open]:border-accent data-[popup-open]:ring-4 data-[popup-open]:ring-accent/30 aria-expanded:border-accent aria-expanded:ring-4 aria-expanded:ring-accent/30 data-[popup-open]:[&_svg]:rotate-180 aria-expanded:[&_svg]:rotate-180 outline-none select-none disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer",
+        size === "sm" ? "h-7 px-2 py-0.5 text-xs" : "h-[38px] px-3 py-2 text-sm",
         className
       )}
       {...props}
@@ -48,7 +51,7 @@ function SelectTrigger({
       {children}
       <SelectPrimitive.Icon
         render={
-          <ChevronDownIcon className="pointer-events-none size-4 text-muted shrink-0 transition-transform duration-200" />
+          <ChevronDownIcon className={cn("pointer-events-none text-muted shrink-0 transition-transform duration-200", size === "sm" ? "size-3" : "size-4")} />
         }
       />
     </SelectPrimitive.Trigger>
@@ -77,13 +80,13 @@ function SelectContent({
         align={align}
         alignOffset={alignOffset}
         alignItemWithTrigger={alignItemWithTrigger}
-        className="isolate z-[1100]"
+        className="isolate z-[1200]"
       >
         <SelectPrimitive.Popup
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "relative isolate z-[1100] max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-md bg-card border border-border text-primary shadow-2xl p-1 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "relative isolate z-[1200] max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-md bg-card border border-border text-primary shadow-2xl p-1 duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             className
           )}
           {...props}
