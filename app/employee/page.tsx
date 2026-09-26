@@ -53,7 +53,7 @@ export default async function EmployeeDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 mb-3">
 
                 {/* Lead Card: Completion Rate */}
-                <div className="lg:col-span-3 bg-card border border-accent/30 p-5 flex flex-col gap-4 rounded-md">
+                <div className="lg:col-span-3 bg-card border border-border p-5 flex flex-col gap-4 rounded-md">
                     <div className="flex items-center gap-2">
                         <i className="fa-solid fa-chart-line text-accent/70 text-xs" />
                         <span className="text-xs font-semibold tracking-wider text-muted uppercase">Completion Rate</span>

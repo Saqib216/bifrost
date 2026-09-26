@@ -135,7 +135,7 @@ export default function TasksBoard({
             {/* Employee Tab Pills */}
             <div className="flex gap-5 mb-5 border-b border-border pb-3 overflow-x-auto no-scrollbar whitespace-nowrap">
                 <div
-                    className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${isAllView ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
+                    className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${isAllView ? 'bg-accent/15 text-accent border-accent/40 shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
                     onClick={goToAllTab}
                 >
                     All
@@ -144,12 +144,12 @@ export default function TasksBoard({
                     employees.map(emp => (
                         <div
                             key={emp.id}
-                            className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${!isAllView && selectedEmployee.email === emp.email ? 'bg-accent text-surface shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
+                            className={`flex items-center gap-2 font-medium text-sm border border-border rounded-md px-3 py-1 cursor-pointer transition-all duration-200 ease-in-out ${!isAllView && selectedEmployee.email === emp.email ? 'bg-accent/15 text-accent border-accent/40 shadow-sm' : 'hover:text-primary hover:border-border-hover text-secondary bg-card'}`}
                             onClick={() => goToEmployeeTab(emp.id)}
                         >
                             {emp.name.split(' ')[0]}
                             <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold
-                            ${!isAllView && selectedEmployee.email === emp.email ? 'bg-primary/50 text-surface' : 'bg-surface text-muted'}`}>
+                            ${!isAllView && selectedEmployee.email === emp.email ? 'bg-accent/25 text-accent' : 'bg-surface text-muted'}`}>
                                 {emp.tasks.length}
                             </span>
                         </div>
@@ -234,8 +234,8 @@ export default function TasksBoard({
                                         {task.description}
                                     </p>
                                     {assignedTo && (
-                                        <span className="text-[11px] text-accent font-medium mt-1 flex items-center gap-1">
-                                            <i className="fa-regular fa-user text-[10px]"></i>
+                                        <span className="text-[11px] text-secondary font-medium mt-1 flex items-center gap-1.5">
+                                            <i className="fa-regular fa-user text-[10px] text-accent/70"></i>
                                             {assignedTo.name}
                                         </span>
                                     )}
