@@ -1,6 +1,9 @@
 "use client";
 
 import { createTask, updateTask } from "@/app/lib/actions";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Task, TaskStatus } from "@prisma/client";
 import { useActionState, useEffect, useState } from "react";
@@ -22,12 +25,17 @@ interface Props {
 
 export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdit }: Props) {
     const [isVisible, setIsVisible] = useState(false);
+    const [date, setDate] = useState<Date | undefined>(taskToEdit?.taskDate ? new Date(taskToEdit.taskDate) : undefined);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             requestAnimationFrame(() => { setIsVisible(true) });
+            setDate(taskToEdit?.taskDate ? new Date(taskToEdit.taskDate) : undefined);
+        } else {
+            setIsCalendarOpen(false);
         }
-    }, [isOpen]);
+    }, [isOpen, taskToEdit]);
 
     const closeModal = () => {
         setIsVisible(false);
@@ -143,12 +151,29 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
                                         <p className='flex gap-1 items-center'>
                                             Date
                                         </p>
-                                        <input
-                                            name="taskDate"
-                                            type="date"
-                                            defaultValue={taskToEdit?.taskDate ? new Date(taskToEdit.taskDate).toISOString().split('T')[0] : ''}
-                                            className='border border-border rounded-md p-2 w-full bg-card text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 cursor-pointer text-base sm:text-sm'
-                                        />
+
+                                        <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                                            <PopoverTrigger
+                                                type="button"
+                                                className="h-[38px] w-full flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm text-primary transition-all duration-150 ease-in-out hover:border-muted focus:border-accent focus:ring-4 focus:ring-accent/30 data-[popup-open]:border-accent data-[popup-open]:ring-4 data-[popup-open]:ring-accent/30 cursor-pointer text-left"
+                                            >
+                                                <span className={date ? "text-primary" : "text-muted"}>
+                                                    {date ? format(date, "MMM d, yyyy") : "Pick a date"}
+                                                </span>
+                                                <i className="fa-regular fa-calendar text-muted text-sm shrink-0"></i>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0" align="start">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={date}
+                                                    onSelect={(newDate) => {
+                                                        setDate(newDate);
+                                                        setIsCalendarOpen(false);
+                                                    }}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                        <input type="hidden" name="taskDate" value={date ? date.toISOString() : ''} />
 
                                         {
                                             state.errors?.taskDate && (
