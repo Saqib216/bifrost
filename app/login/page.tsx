@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { authenticate } from "../lib/actions";
 import Logo from "@/components/Logo";
 import Link from "next/link";
+import { motion } from 'motion/react';
 
 export default function LoginPage() {
     const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
@@ -11,16 +12,93 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen flex">
 
-            {/* Left Panel - Branding (hidden on mobile) */}
-            <div className="hidden lg:flex lg:w-[45%] bg-card border-r border-border relative overflow-hidden flex-col justify-between p-10">
+            {/* Left Panel */}
+            <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden flex-col justify-between p-10"
+                style={{
+                    background: "linear-gradient(135deg, #0D0E16 0%, #12101A 40%, #14151C 100%)",
+                    borderRight: "1px solid #22232D",
+                }}>
+
+                {/* Grid pattern - faint structural lines, fading at edges */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '52px 52px',
+                        maskImage: 'radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 85%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 85%)',
+                    }}
+                />
+
+                {/* Ambient color wash - sweeps diagonally across the grid */}
+                <motion.div
+                    className="absolute pointer-events-none"
+                    style={{
+                        width: '140%',
+                        height: '140%',
+                        top: '-20%',
+                        left: '-20%',
+                        background: `radial-gradient(
+                            ellipse 500px 350px at 50% 50%,
+                            rgba(242,38,110,0.13) 0%,
+                            rgba(242,38,110,0.05) 40%,
+                            transparent 70%
+                        )`,
+                    }}
+                    animate={{
+                        x: ['-15%', '55%', '-15%'],
+                        y: ['-10%', '45%', '-10%'],
+                    }}
+                    transition={{
+                        duration: 14,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                />
+
+                {/* Grid intersection nodes - breathing dots at scattered positions */}
+                {[
+                    { x: '18%', y: '22%', delay: 0 },
+                    { x: '72%', y: '15%', delay: 2.5 },
+                    { x: '45%', y: '55%', delay: 1.2 },
+                    { x: '28%', y: '78%', delay: 3.8 },
+                    { x: '82%', y: '62%', delay: 0.8 },
+                    { x: '55%', y: '35%', delay: 4.5 },
+                ].map((node, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute rounded-full pointer-events-none"
+                        style={{
+                            left: node.x,
+                            top: node.y,
+                            width: 4,
+                            height: 4,
+                            background: '#F2266E',
+                            boxShadow: '0 0 8px rgba(242,38,110,0.5)',
+                        }}
+                        animate={{
+                            opacity: [0, 0.7, 0],
+                            scale: [0.8, 1.2, 0.8],
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: 'easeInOut',
+                            delay: node.delay,
+                        }}
+                    />
+                ))}
 
                 {/* Logo/Brand mark top */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 relative z-10">
                     <Logo size="text-2xl" />
                 </div>
 
                 {/* Center content */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 relative z-10">
                     <h1 className="text-4xl xl:text-5xl font-bold tracking-tight text-primary leading-tight">
                         Manage your team, effortlessly.
                     </h1>
@@ -29,8 +107,7 @@ export default function LoginPage() {
                     </p>
                 </div>
 
-                {/* Bottom - subtle footer/stat */}
-                <div className="text-xs text-muted">
+                <div className="text-xs text-muted relative z-10">
                     &copy; 2026 Bifrost
                 </div>
             </div>

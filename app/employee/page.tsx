@@ -44,7 +44,7 @@ export default async function EmployeeDashboardPage() {
             {/* Greeting */}
             <div className='flex flex-col gap-1 mb-6'>
                 <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>
-                    Welcome back, {user?.name?.split(' ')[0]}
+                    Welcome, {user?.name?.split(' ')[0]}
                 </h2>
                 <p className='text-sm text-muted font-medium'>Here's what's on your plate today.</p>
             </div>

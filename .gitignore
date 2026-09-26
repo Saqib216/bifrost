@@ -41,3 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 /app/generated/prisma
+
+login_left_panel_ideas.md
