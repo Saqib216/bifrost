@@ -5,7 +5,7 @@ import { prisma } from "./prisma";
 import z from "zod";
 import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
-import { Prisma, TaskStatus } from "@prisma/client";
+import { AccentColor, Prisma, TaskStatus } from "@prisma/client";
 import { allowedTransitions } from "./taskTransitions";
 import { del, put } from "@vercel/blob";
 import bcrypt from "bcryptjs";
@@ -506,4 +506,26 @@ export async function register(prevState: ActionState, formData: FormData): Prom
     // it is outside try/catch bcz Next.js's redirect throws a special error 
     await signIn('credentials', { email, password, redirectTo: '/employee' });
     return { success: true };
+}
+
+export async function updateAccentColor(color: AccentColor) {
+    const session = await auth();
+    if (!session?.user?.id) {
+        return { success: false, message: 'Unauthorized' };
+    }
+
+    if (!Object.values(AccentColor).includes(color)) {
+        return { success: false, message: 'Invalid color' };
+    }
+
+    try {
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { accentColor: color },
+        });
+        revalidatePath('/', 'layout');
+        return { success: true };
+    } catch {
+        return { success: false, message: 'Failed to update accent color' };
+    }
 }
