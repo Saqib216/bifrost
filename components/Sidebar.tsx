@@ -2,13 +2,17 @@ import { signOut } from "@/auth";
 import Navlinks from "./Navlinks";
 import Logo from "./Logo";
 import SidebarStats from "./SidebarStats";
+import { AccentColor } from "@prisma/client";
+import AccentToggle from "./AccentToggle";
 
 export default function Sidebar({
     role,
     isMobile = false,
+    accentColor,
 }: {
     role: 'ADMIN' | 'EMPLOYEE';
     isMobile?: boolean;
+    accentColor: AccentColor;
 }) {
     return (
         <div className={`flex flex-col gap-1 ${isMobile ? 'h-full w-full' : 'border-r border-border h-full shrink-0 w-56 px-3 py-5'}`}>
@@ -28,6 +32,7 @@ export default function Sidebar({
 
             {/* Stats + Logout */}
             <div className="mt-auto flex flex-col gap-3 pt-4">
+                <AccentToggle currentAccent={accentColor} />
                 <SidebarStats role={role} />
                 <form action={
                     async () => {

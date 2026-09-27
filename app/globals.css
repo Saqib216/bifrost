@@ -88,6 +88,14 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Default fallback so an accent always exists even before hydration */
+:root {
+  --accent: #F2266E;
+  --accent-hover: #FF4581;
+  --accent-rgb: 242, 38, 110;
+  --accent-gradient-end: #FF6B4A;
+}
+
 :root[data-accent="magenta"] {
   --accent: #F2266E;
   --accent-hover: #FF4581;
