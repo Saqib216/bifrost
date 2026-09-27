@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import Sidebar from "@/components/Sidebar";
+import MobileHeader from "@/components/MobileHeader";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -10,9 +11,19 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     }
 
     return (
-        <div className="flex h-screen overflow-hidden">
-            <Sidebar role="ADMIN"/>
-            <main className="flex-1 h-full overflow-y-auto p-6">{children}</main>
+        <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+            {/* Mobile Navigation Bar & Drawer */}
+            <MobileHeader role="ADMIN">
+                <Sidebar role="ADMIN" isMobile />
+            </MobileHeader>
+
+            {/* Desktop Fixed Sidebar */}
+            <div className="hidden md:flex h-full shrink-0">
+                <Sidebar role="ADMIN" />
+            </div>
+
+            {/* Main Content Area */}
+            <main className="flex-1 h-full overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</main>
         </div>
     )
 }

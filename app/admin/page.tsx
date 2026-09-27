@@ -88,7 +88,7 @@ export default async function AdminDashboardPage() {
             </div>
 
             {/* Status Strip */}
-            <div className="flex items-center gap-5 px-4 py-3 bg-card border border-border rounded-md mb-8">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 px-4 py-3 bg-card border border-border rounded-md mb-8">
                 <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-info" />
                     <span className="text-xs text-muted font-medium">New</span>

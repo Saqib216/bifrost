@@ -153,14 +153,14 @@ export default function TasksBoard({
     return (
         <>
             {/* Section Header */}
-            <div className='flex items-center justify-between mb-6'>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6'>
                 <div className='flex flex-col gap-1'>
                     <h2 className='font-semibold text-xl sm:text-2xl tracking-tight text-primary'>Employee Tasks</h2>
                     <p className='text-sm text-muted font-medium'>View and manage tasks assigned to each employee.</p>
                 </div>
                 <button
                     onClick={openCreateModal}
-                    className="flex items-center gap-2 px-4 py-2 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm shrink-0"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm shrink-0 self-start sm:self-auto"
                 >
                     <i className="fa-solid fa-plus text-xs"></i>
                     New Task

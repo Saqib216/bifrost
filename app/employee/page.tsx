@@ -77,7 +77,7 @@ export default async function EmployeeDashboardPage() {
                 </div>
 
                 {/* Side Cards: Active Tasks + Total Tasks */}
-                <div className="lg:col-span-2 grid grid-cols-2 lg:grid-cols-1 gap-3">
+                <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
                     <div className="bg-card rounded-md border border-warning/30 p-4 flex flex-col gap-2">
                         <div className="flex items-center gap-2">
                             <i className="fa-solid fa-hourglass-half text-warning/90 text-xs" />
@@ -96,7 +96,7 @@ export default async function EmployeeDashboardPage() {
             </div>
 
             {/* Status Strip */}
-            <div className="flex items-center gap-5 px-4 py-3 bg-card border border-border rounded-md mb-8">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 px-4 py-3 bg-card border border-border rounded-md mb-8">
                 <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-info" />
                     <span className="text-xs text-muted font-medium">New</span>

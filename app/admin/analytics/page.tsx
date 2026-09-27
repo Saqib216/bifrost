@@ -61,7 +61,7 @@ export default async function AnalyticsPage() {
     const activeEmployees = employeeData.length;
 
     return (
-        <div className="mx-10 mb-10">
+        <div className="mx-0 sm:mx-6 lg:mx-10 mb-10">
             <div className="flex flex-col gap-1 mb-6">
                 <h2 className="font-semibold text-xl sm:text-2xl tracking-tight text-primary">Analytics</h2>
                 <p className="text-sm text-muted font-medium">Team performance and task trends at a glance.</p>

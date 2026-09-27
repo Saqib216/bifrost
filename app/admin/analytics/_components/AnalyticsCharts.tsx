@@ -32,7 +32,7 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
         <div className="flex flex-col gap-4">
 
             {/* KPI Strip */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-card border border-border rounded-md p-4 flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                         <i className="fa-solid fa-list-check text-muted text-xs" />

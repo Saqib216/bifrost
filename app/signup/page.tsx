@@ -190,6 +190,13 @@ export default function SignupPage() {
             <div className="flex-1 flex items-center justify-center p-6 sm:p-10">
                 <div className="w-full max-w-sm flex flex-col gap-8">
 
+                    {/* Mobile Logo Header */}
+                    <div className="lg:hidden">
+                        <Link href="/">
+                            <Logo size="text-xl" />
+                        </Link>
+                    </div>
+
                     <div className="flex flex-col gap-1">
                         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">
                             Create an account

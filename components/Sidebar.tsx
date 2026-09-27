@@ -3,23 +3,31 @@ import Navlinks from "./Navlinks";
 import Logo from "./Logo";
 import SidebarStats from "./SidebarStats";
 
-export default function Sidebar({ role }: { role: 'ADMIN' | 'EMPLOYEE' }) {
+export default function Sidebar({
+    role,
+    isMobile = false,
+}: {
+    role: 'ADMIN' | 'EMPLOYEE';
+    isMobile?: boolean;
+}) {
     return (
-        <div className="flex flex-col gap-1 border-r border-border h-full shrink-0 w-56 px-3 py-5">
+        <div className={`flex flex-col gap-1 ${isMobile ? 'h-full w-full' : 'border-r border-border h-full shrink-0 w-56 px-3 py-5'}`}>
 
-            {/* Logo */}
-            <div className='flex items-center gap-3 shrink-0 px-1 mb-5'>
-                <div className='flex flex-col'>
-                    <Logo />
-                    <span className='text-[10px] font-semibold tracking-widest uppercase text-muted leading-tight'>{role}</span>
+            {/* Logo (Desktop only, drawer has its own header) */}
+            {!isMobile && (
+                <div className='flex items-center gap-3 shrink-0 px-1 mb-5'>
+                    <div className='flex flex-col gap-0.5'>
+                        <Logo />
+                        <span className='text-[10px] font-semibold tracking-widest uppercase text-muted leading-tight'>{role}</span>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Navlinks: */}
             <Navlinks role={role} />
 
             {/* Stats + Logout */}
-            <div className="mt-auto flex flex-col gap-3">
+            <div className="mt-auto flex flex-col gap-3 pt-4">
                 <SidebarStats role={role} />
                 <form action={
                     async () => {
