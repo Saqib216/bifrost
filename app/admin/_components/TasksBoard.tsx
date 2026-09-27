@@ -2,7 +2,7 @@
 
 import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
-import { useOptimistic, useState, useTransition } from "react";
+import { useEffect, useOptimistic, useState, useTransition } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import TasksModal from "@/app/admin/_components/TasksModal";
 import { getStatusStyle } from "@/app/lib/taskStatusStyles";
@@ -55,6 +55,41 @@ export default function TasksBoard({
     const sourceTasks = isAllView ? (allTasksData?.tasks ?? []) : employeeTasks;
 
     const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    // Close confirmation on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && taskToDelete && !isDeleting) {
+                setTaskToDelete(null);
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [taskToDelete, isDeleting]);
+
+
+    const handleConfirmDelete = async () => {
+        if (!taskToDelete || isDeleting) return;
+        const id = taskToDelete;
+        setIsDeleting(true);
+        try {
+            const res = await deleteTask(id);
+            if (res?.success) {
+                startTransition(() => {
+                    deleteOptimisticTask(id);
+                });
+                setTaskToDelete(null);
+                toast.success("Task deleted successfully.");
+            } else {
+                toast.error(res?.message || "Failed to delete task.");
+            }
+        } catch {
+            toast.error("Failed to delete task.");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
@@ -303,35 +338,47 @@ export default function TasksBoard({
                 </div>
             )}
 
-            {/* Task deletion confirmation dialog box */}
-            {
-                taskToDelete && (
-                    <div id='delete-task-modal-overlay' className="bg-surface/50 backdrop-blur-xs w-full h-full z-1000 fixed inset-0 flex justify-center items-center">
-                        <div id="delete-task-modal-content"
-                            className="bg-surface rounded-md border border-border p-4 transition-all duration-200 ease-in-out flex flex-col justify-between">
-                            <p className="text-secondary tracking-tight mb-5">Are you sure you want to delete this task?</p>
-                            <div className="flex gap-4 justify-end">
-                                <button className="text-muted cursor-pointer hover:text-primary transition-all duration-150 ease-in-out" onClick={() => setTaskToDelete(null)}>Cancel</button>
-                                <button className="text-[#941a1a] cursor-pointer transition-all duration-150 ease-in-out hover:text-danger" onClick={() => {
-                                    const id = taskToDelete;
-                                    setTaskToDelete(null);
-                                    startTransition(async () => {
-                                        deleteOptimisticTask(id!);
-                                        const res = await deleteTask(id!);
-                                        if (res?.success) {
-                                            toast.success("Task deleted successfully.");
-                                        } else {
-                                            toast.error(res?.message || "Failed to delete task.");
-                                        }
-                                    });
-                                }}>
-                                    Delete
-                                </button>
+            {/* Task deletion confirmation dialog */}
+            {taskToDelete && (
+                <div
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget && !isDeleting) {
+                            setTaskToDelete(null);
+                        }
+                    }}
+                    className="bg-black/60 backdrop-blur-xs fixed inset-0 z-50 flex items-center justify-center p-4"
+                >
+                    <div className="bg-surface rounded-md border border-border p-5 max-w-sm w-full flex flex-col gap-4 shadow-xl">
+                        <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-full bg-danger/10 border border-danger/20 flex items-center justify-center shrink-0">
+                                <i className="fa-solid fa-triangle-exclamation text-danger text-xs" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <h4 className="text-sm font-semibold text-primary">Delete task?</h4>
+                                <p className="text-xs text-muted leading-relaxed">
+                                    This action will permanently delete this task and cannot be undone.
+                                </p>
                             </div>
                         </div>
+                        <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+                            <button
+                                disabled={isDeleting}
+                                className="px-3 py-1.5 text-xs font-medium text-muted hover:text-primary rounded-md border border-border hover:bg-card transition-colors disabled:opacity-50 cursor-pointer"
+                                onClick={() => setTaskToDelete(null)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                disabled={isDeleting}
+                                className="px-3 py-1.5 text-xs font-medium bg-danger/15 text-danger border border-danger/30 hover:bg-danger/25 rounded-md transition-colors disabled:opacity-50 cursor-pointer inline-flex items-center gap-1.5"
+                                onClick={handleConfirmDelete}
+                            >
+                                {isDeleting ? "Deleting..." : "Delete"}
+                            </button>
+                        </div>
                     </div>
-                )
-            }
+                </div>
+            )}
 
             {/* Empty State */}
             {filteredTasks.length === 0 && (

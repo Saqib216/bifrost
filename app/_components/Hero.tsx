@@ -40,7 +40,7 @@ export default function Hero() {
                 </motion.h1>
 
                 <motion.p variants={itemVariants} className="text-secondary text-base sm:text-lg max-w-md leading-relaxed">
-                    Role-based task management built for modern teams. Assign, track, and complete—all in one clean dashboard.
+                    Role-based task management built for modern teams. Assign, track, and complete - all in one clean dashboard.
                 </motion.p>
 
                 {/* Direct CTA Buttons */}
