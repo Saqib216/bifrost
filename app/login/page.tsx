@@ -166,6 +166,14 @@ export default function LoginPage() {
                         </button>
                     </form>
 
+                    {/* OR Divider */}
+                    <div className="relative flex items-center justify-center -my-2">
+                        <div className="w-full border-t border-border" />
+                        <span className="absolute bg-surface px-3 text-xs uppercase tracking-widest text-muted font-medium">
+                            Or
+                        </span>
+                    </div>
+
                     <DemoAdminCredentials />
 
                     {/* Link to signup */}
