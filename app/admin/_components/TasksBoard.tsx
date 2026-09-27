@@ -211,7 +211,7 @@ export default function TasksBoard({
                                 initial={{ opacity: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.25 }}
-                                className="flex flex-col gap-3 bg-card border border-border rounded-md p-4 hover:border-border-hover hover:-translate-y-0.5 transition-all duration-250"
+                                className="group relative flex flex-col gap-3 bg-card border border-border rounded-md p-4 hover:border-border-hover hover:shadow-lg hover:shadow-black/20 transition-all duration-200"
                             >
                                 {/* Header: Category + Status */}
                                 <div className="flex items-center justify-between">
@@ -241,32 +241,38 @@ export default function TasksBoard({
                                     )}
                                 </div>
 
-                                {/* Footer: Date + Delete */}
-                                <div className="flex items-center justify-between pt-2 border-t border-border">
-                                    <span className='text-xs text-muted font-medium flex items-center gap-1.5'>
-                                        <i className='fa-regular fa-calendar text-[11px]'></i>
-                                        {task.taskDate.toLocaleDateString()}
+                                {/* Footer: Date + Action Buttons */}
+                                <div className="flex items-center justify-between pt-2.5 border-t border-border/80">
+                                    <span className="text-[11px] font-mono text-muted flex items-center gap-1.5">
+                                        <i className="fa-regular fa-calendar text-[10px]" />
+                                        {new Date(task.taskDate).toLocaleDateString(undefined, {
+                                            month: "short",
+                                            day: "numeric",
+                                            year: "numeric",
+                                        })}
                                     </span>
 
-                                    <button
-                                        onClick={() => {
-                                            setTaskToDelete(task.id);
-                                        }}
-                                        title="Delete task"
-                                        className="flex items-center gap-1.5 text-xs text-muted hover:text-danger cursor-pointer transition-colors duration-150 font-medium"
-                                    >
-                                        <i className='fa-regular fa-trash-can text-[13px]'></i>
-                                        Delete
-                                    </button>
+                                    <div className="flex items-center gap-1.5">
+                                        <button
+                                            type="button"
+                                            onClick={() => { openEditModal(task); }}
+                                            title="Edit task"
+                                            className="px-2.5 py-1 rounded-md text-xs font-medium text-secondary bg-surface/80 border border-border hover:border-accent/40 hover:text-accent hover:bg-accent/10 active:scale-95 transition-all duration-150 cursor-pointer flex items-center gap-1.5 shadow-xs"
+                                        >
+                                            <i className="fa-regular fa-pen-to-square text-[11px]" />
+                                            <span>Edit</span>
+                                        </button>
 
-                                    <button
-                                        onClick={() => { openEditModal(task); }}
-                                        title="Edit task"
-                                        className="flex items-center gap-1.5 text-xs text-muted hover:text-primary cursor-pointer transition-colors duration-150 font-medium"
-                                    >
-                                        <i className='fa-regular fa-edit text-[13px]'></i>
-                                        Edit
-                                    </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setTaskToDelete(task.id); }}
+                                            title="Delete task"
+                                            className="p-1 sm:px-2 sm:py-1 rounded-md text-xs font-medium text-muted hover:text-danger hover:border-danger/30 hover:bg-danger/10 border border-transparent active:scale-95 transition-all duration-150 cursor-pointer flex items-center gap-1"
+                                        >
+                                            <i className="fa-regular fa-trash-can text-[11px]" />
+                                            <span className="hidden sm:inline">Delete</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </motion.div>
                         );
