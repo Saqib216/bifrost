@@ -17,19 +17,11 @@
   --gray-300: #9A9BA8;
   --gray-500: #6E6F7B;
 
-  /* Accent */
-  --accent-magenta: #F2266E;
-  --accent-magenta-hover: #FF4581;
-  --accent-magenta-rgb: 242, 38, 110;
-  --accent-magenta-gradient-end: #FF6B4A;
-
   /* Status colors */
   --status-success: #22D67A;
   --status-danger: #FF3860;
   --status-warning: #FFB020;
   --status-info: #3291ff;
-
-  --focus-ring: #F2266E;
 
   --background: oklch(1 0 0);
 
@@ -96,6 +88,27 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+:root[data-accent="magenta"] {
+  --accent: #F2266E;
+  --accent-hover: #FF4581;
+  --accent-rgb: 242, 38, 110;
+  --accent-gradient-end: #FF6B4A;
+}
+
+:root[data-accent="blue"] {
+  --accent: #0070F3;
+  --accent-hover: #3B94FF;
+  --accent-rgb: 0, 112, 243;
+  --accent-gradient-end: #22D3EE;
+}
+
+:root[data-accent="amber"] {
+  --accent: #F59E0B;
+  --accent-hover: #FFB238;
+  --accent-rgb: 245, 158, 11;
+  --accent-gradient-end: #F97316;
+}
+
 @theme inline {
   --font-geist: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -110,17 +123,17 @@
   --color-secondary: var(--gray-300);
   --color-muted: var(--gray-500);
 
-  --color-accent: var(--accent-magenta);
-  --color-accent-hover: var(--accent-magenta-hover);
-  --accent-rgb: var(--accent-magenta-rgb);
-  --accent-gradient-end: var(--accent-magenta-gradient-end);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --accent-rgb: var(--accent-rgb);
+  --accent-gradient-end: var(--accent-gradient-end);
 
   --color-success: var(--status-success);
   --color-danger: var(--status-danger);
   --color-warning: var(--status-warning);
   --color-info: var(--status-info);
 
-  --color-focus-ring: var(--focus-ring);
+  --color-focus-ring: var(--accent);
 
   --font-heading: var(--font-sans);
 
@@ -212,7 +225,7 @@ h6 {
 }
 
 ::selection {
-  background-color: rgba(242, 38, 110, 0.25);
+  background-color: rgba(var(--accent-rgb), 0.25);
   color: var(--white);
 }
 
@@ -258,7 +271,7 @@ textarea {
 *::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active,
 *::-webkit-scrollbar-thumb:active {
-  background: #F2266E;
+  background: var(--accent);
 }
 
 ::-webkit-scrollbar-corner,
@@ -304,9 +317,11 @@ textarea {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }

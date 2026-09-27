@@ -123,7 +123,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                             <button
                                 type="submit"
                                 disabled={isNamePending}
-                                className="px-5 py-2 rounded-md text-xs font-semibold bg-accent text-white hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                                className="px-5 py-2 rounded-md text-xs font-semibold bg-accent text-surface hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-2"
                             >
                                 {isNamePending && (
                                     <i className="fa-solid fa-circle-notch fa-spin"></i>
@@ -233,7 +233,7 @@ export default function ProfileSettings({ userName, userEmail }: ProfileSettings
                             <button
                                 type="submit"
                                 disabled={isPassPending}
-                                className="px-5 py-2 rounded-md text-xs font-semibold bg-accent text-white hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                                className="px-5 py-2 rounded-md text-xs font-semibold bg-accent text-surface hover:bg-accent-hover transition-colors cursor-pointer disabled:opacity-50 flex items-center gap-2"
                             >
                                 {isPassPending && (
                                     <i className="fa-solid fa-circle-notch fa-spin"></i>

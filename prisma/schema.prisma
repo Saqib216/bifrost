@@ -23,6 +23,12 @@ enum TaskStatus {
   FAILED
 }
 
+enum AccentColor {
+  MAGENTA
+  BLUE
+  AMBER
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -33,6 +39,7 @@ model User {
   tasks     Task[]
   createdAt DateTime @default(now())
   isDemo    Boolean @default(false)
+  accentColor AccentColor @default(MAGENTA)
 }
 
 model Task {
