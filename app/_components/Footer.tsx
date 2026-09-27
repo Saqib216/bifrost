@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <footer className="px-6 sm:px-10 lg:px-20 py-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
             
-            <Logo />
+            <Logo showVersion={false} />
 
             <p className="text-xs text-muted">&copy; 2026 Bifrost. All rights reserved.</p>
 
