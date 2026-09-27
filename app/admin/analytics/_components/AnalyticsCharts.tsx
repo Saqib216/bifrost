@@ -1,7 +1,7 @@
 'use client';
 
 import AnimatedNumber from "@/components/AnimatedNumber";
-import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Sector, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Pie, PieChart, ResponsiveContainer, Sector, Tooltip, XAxis, YAxis } from "recharts";
 
 interface AnalyticsChartsProps {
     statusData: { status: string, count: number }[];
@@ -64,13 +64,27 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                 <div className="lg:col-span-2 bg-card border border-border rounded-lg p-5">
                     <h3 className="text-sm font-semibold text-secondary mb-4">Tasks Over Time</h3>
                     <ResponsiveContainer width="100%" height={280}>
-                        <LineChart data={timelineData}>
+                        <AreaChart data={timelineData}>
+                            <defs>
+                                <linearGradient id="timelineGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="var(--color-accent)" stopOpacity={0.25} />
+                                    <stop offset="95%" stopColor="var(--color-accent)" stopOpacity={0.0} />
+                                </linearGradient>
+                            </defs>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                             <XAxis dataKey="date" stroke="var(--color-muted)" fontSize={12} />
                             <YAxis stroke="var(--color-muted)" fontSize={12} allowDecimals={false} />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Line type="linear" dataKey="count" stroke="#F2266E" strokeWidth={2} dot={{ fill: "#F2266E", r: 3 }} />
-                        </LineChart>
+                            <Area
+                                type="monotone"
+                                dataKey="count"
+                                stroke="var(--color-accent)"
+                                strokeWidth={2.5}
+                                fill="url(#timelineGradient)"
+                                dot={{ fill: "var(--color-accent)", r: 3.5, strokeWidth: 1.5, stroke: "var(--color-surface)" }}
+                                activeDot={{ r: 5, fill: "var(--color-accent)" }}
+                            />
+                        </AreaChart>
                     </ResponsiveContainer>
                 </div>
 
@@ -114,7 +128,7 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                             <XAxis dataKey="name" interval={0} tick={angledTick} />
                             <YAxis stroke="var(--color-muted)" fontSize={12} allowDecimals={false} />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Bar dataKey="count" fill="#F2266E" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="count" fill="var(--color-info)" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -127,7 +141,7 @@ export default function AnalyticsCharts({ statusData, employeeData, timelineData
                             <XAxis dataKey="name" interval={0} tick={angledTick} />
                             <YAxis stroke="var(--color-muted)" fontSize={12} domain={[0, 100]} />
                             <Tooltip contentStyle={tooltipStyle} />
-                            <Bar dataKey="rate" fill="#F2266E" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="rate" fill="var(--color-success)" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
