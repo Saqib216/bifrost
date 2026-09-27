@@ -1,6 +1,6 @@
 "use client";
 
-import { createTask, updateTask } from "@/app/lib/actions";
+import { createTask, updateTask, type ActionState } from "@/app/lib/actions";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -56,12 +56,14 @@ export default function TasksModal({ employees, isOpen, onClose, mode, taskToEdi
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [isOpen]);
 
-    const updateTaskWithId = taskToEdit ? updateTask.bind(null, taskToEdit.id) : null;
+    const handleAction = async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
+        if (mode === 'edit' && taskToEdit) {
+            return updateTask(taskToEdit.id, prevState, formData);
+        }
+        return createTask(prevState, formData);
+    };
 
-    const [state, formAction, isPending] = useActionState(
-        mode === 'edit' && updateTaskWithId ? updateTaskWithId : createTask,
-        { success: false, errors: {} }
-    );
+    const [state, formAction, isPending] = useActionState(handleAction, { success: false, errors: {} });
 
     useEffect(() => {
         if (state.success) {

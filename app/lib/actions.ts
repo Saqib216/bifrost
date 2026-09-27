@@ -43,21 +43,28 @@ async function isDemoAccount(userId: string | undefined) {
     return user?.isDemo ?? false;
 }
 
-export async function deleteTask(taskId: string) {
+export async function deleteTask(taskId: string): Promise<ActionState> {
     const session = await requireAdmin();
-    if (!session) return;
+    if (!session) return { success: false, message: 'Unauthorized' };
 
-    if (await isDemoAccount(session.user.id)) return;
+    if (await isDemoAccount(session.user.id)) {
+        return { success: false, message: "Demo admin can't delete tasks." };
+    }
 
-    await prisma.task.delete({
-        where: {
-            id: taskId,
-        },
-    });
-    revalidatePath('/admin/tasks');
-    revalidatePath('/admin');
-    revalidatePath('/employee/tasks');
-    revalidatePath('/employee');
+    try {
+        await prisma.task.delete({
+            where: {
+                id: taskId,
+            },
+        });
+        revalidatePath('/admin/tasks');
+        revalidatePath('/admin');
+        revalidatePath('/employee/tasks');
+        revalidatePath('/employee');
+        return { success: true };
+    } catch {
+        return { success: false, message: "Failed to delete task." };
+    }
 }
 
 export async function createTask(prevState: ActionState, formData: FormData): Promise<ActionState> {

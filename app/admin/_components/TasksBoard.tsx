@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { deleteTask } from "@/app/lib/actions";
 import { Task, TaskStatus } from "@prisma/client";
@@ -311,8 +311,12 @@ export default function TasksBoard({
                                     setTaskToDelete(null);
                                     startTransition(async () => {
                                         deleteOptimisticTask(id!);
-                                        await deleteTask(id!);
-                                        toast.success("Task deleted successfully.");
+                                        const res = await deleteTask(id!);
+                                        if (res?.success) {
+                                            toast.success("Task deleted successfully.");
+                                        } else {
+                                            toast.error(res?.message || "Failed to delete task.");
+                                        }
                                     });
                                 }}>
                                     Delete
@@ -337,15 +341,21 @@ export default function TasksBoard({
             )}
 
             {/* TasksModal Section */}
-            <div className="mt-10">
-                <TasksModal
-                    employees={employees}
-                    isOpen={modalOpen}
-                    onClose={() => { setModalOpen(false) }}
-                    mode={modalMode}
-                    taskToEdit={taskToEdit}
-                />
-            </div>
+            {modalOpen && (
+                <div className="mt-10">
+                    <TasksModal
+                        key={`${modalMode}-${taskToEdit?.id ?? 'create'}`}
+                        employees={employees}
+                        isOpen={modalOpen}
+                        onClose={() => {
+                            setModalOpen(false);
+                            setTaskToEdit(null);
+                        }}
+                        mode={modalMode}
+                        taskToEdit={taskToEdit}
+                    />
+                </div>
+            )}
         </>
     );
 }
