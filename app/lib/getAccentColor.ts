@@ -15,7 +15,7 @@ export async function getAccentColor() {
     const cookieStore = await cookies();
     const stored = cookieStore.get('accent')?.value?.toUpperCase();
 
-    if (stored === 'MAGENTA' || stored === 'BLUE' || stored === 'AMBER') {
+    if (stored === 'MAGENTA' || stored === 'BLUE' || stored === 'AMBER' || stored === 'VIOLET') {
         return stored;
     }
     return 'MAGENTA';

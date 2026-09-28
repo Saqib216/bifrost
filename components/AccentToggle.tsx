@@ -7,7 +7,8 @@ import { AccentColor } from "@prisma/client";
 const accents: { value: AccentColor; label: string; hex: string }[] = [
     { value: "MAGENTA", label: "Magenta", hex: "#F2266E" },
     { value: "BLUE", label: "Blue", hex: "#0070F3" },
-    { value: "AMBER", label: "Amber", hex: "#F97316" },
+    { value: "AMBER", label: "Orange", hex: "#F97316" },
+    { value: "VIOLET", label: "Violet", hex: "#7C3AED" },
 ];
 
 export default function AccentToggle({ currentAccent }: { currentAccent: AccentColor }) {

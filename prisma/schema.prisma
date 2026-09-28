@@ -27,6 +27,7 @@ enum AccentColor {
   MAGENTA
   BLUE
   AMBER
+  VIOLET
 }
 
 model User {
