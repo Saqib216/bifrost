@@ -20,7 +20,7 @@
   /* Status colors */
   --status-success: #22D67A;
   --status-danger: #FF3860;
-  --status-warning: #FACC15;
+  --status-warning: #FFB020;
   --status-info: #06B6D4;
 
   --background: oklch(1 0 0);
@@ -111,10 +111,10 @@
 }
 
 :root[data-accent="amber"] {
-  --accent: #F59E0B;
-  --accent-hover: #FFB238;
-  --accent-rgb: 245, 158, 11;
-  --accent-gradient-end: #F97316;
+  --accent: #F97316;
+  --accent-hover: #FB923C;
+  --accent-rgb: 249, 115, 22;
+  --accent-gradient-end: #EF4444;
 }
 
 @theme inline {
