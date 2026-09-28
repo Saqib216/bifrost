@@ -20,8 +20,8 @@
   /* Status colors */
   --status-success: #22D67A;
   --status-danger: #FF3860;
-  --status-warning: #FFB020;
-  --status-info: #3291ff;
+  --status-warning: #FACC15;
+  --status-info: #06B6D4;
 
   --background: oklch(1 0 0);
 

@@ -9,6 +9,7 @@ import { AccentColor, Prisma, TaskStatus } from "@prisma/client";
 import { allowedTransitions } from "./taskTransitions";
 import { del, put } from "@vercel/blob";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 
 const taskSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -517,6 +518,12 @@ export async function updateAccentColor(color: AccentColor) {
     if (!Object.values(AccentColor).includes(color)) {
         return { success: false, message: 'Invalid color' };
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set('accent', color.toLowerCase(), {
+        maxAge: 60 * 60 * 24 * 365,
+        path: '/',
+    });
 
     try {
         await prisma.user.update({
