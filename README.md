@@ -83,17 +83,29 @@ I built it as a portfolio project and as a way to learn Next.js properly: the Ap
 
 ## Screenshots
 
-| Landing page | Login |
-| --- | --- |
-| ![Landing](./docs/landing.png) | ![Login](./docs/login.png) |
+### Landing Page
 
-| Admin tasks board | Analytics |
-| --- | --- |
-| ![Tasks](./docs/tasks.png) | ![Analytics](./docs/analytics.png) |
+![Landing Page](./docs/landing.png)
 
-| Employee dashboard | Profile settings |
-| --- | --- |
-| ![Employee](./docs/employee.png) | ![Profile](./docs/profile.png) |
+### Login
+
+![Login](./docs/login.png)
+
+### Admin Tasks Board
+
+![Admin Tasks Board](./docs/tasks.png)
+
+### Analytics
+
+![Analytics](./docs/analytics.png)
+
+### Employee Dashboard
+
+![Employee Dashboard](./docs/employee.png)
+
+### Profile Settings
+
+![Profile Settings](./docs/profile.png)
 
 ---
 
