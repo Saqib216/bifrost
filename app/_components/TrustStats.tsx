@@ -1,12 +1,12 @@
-﻿"use client";
+"use client";
 
 import { motion } from 'motion/react';
 import AnimatedNumber from '../../components/AnimatedNumber';
 
 const stats = [
-    { value: 500, suffix: "+", label: "Tasks Managed" },
-    { value: 100, suffix: "%", label: "Role-Based Security" },
-    { value: 24, suffix: "/7", label: "Real-time Sync" },
+    { value: 500, suffix: "+", label: "Tasks Orchestrated" },
+    { value: 100, suffix: "%", label: "Server-Enforced RBAC" },
+    { value: 4, suffix: " Accents", label: "Dynamic Theme Engine" },
 ];
 
 export default function TrustStats() {

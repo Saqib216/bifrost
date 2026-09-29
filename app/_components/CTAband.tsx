@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -24,10 +24,10 @@ export default function CTAband() {
                 />
 
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-primary max-w-lg relative z-10">
-                    Ready to get your team organized?
+                    Experience Bifrost in action.
                 </h2>
                 <p className="text-secondary text-base max-w-md relative z-10">
-                    Jump in and see how effortless role-based task management can be.
+                    Explore admin delegation, strict task transitions, and team analytics with instant 1-click demo access.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-3.5 mt-2 relative z-10">
                     <Link
@@ -41,7 +41,7 @@ export default function CTAband() {
                         href="/login"
                         className="inline-flex items-center justify-center px-6 py-3 rounded-md font-semibold text-primary border border-border bg-surface/50 transition-all duration-200 hover:border-border-hover hover:bg-surface active:scale-95 text-sm tracking-tight"
                     >
-                        Try Demo
+                        Try Live Demo
                     </Link>
                 </div>
             </motion.div>

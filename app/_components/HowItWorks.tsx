@@ -1,11 +1,23 @@
-﻿"use client";
+"use client";
 
 import { motion, Variants } from "motion/react";
 
 const steps = [
-    { number: "01", title: "Sign In", desc: "Log in with your role-based credentials - admin or employee." },
-    { number: "02", title: "Assign or View Tasks", desc: "Admins assign tasks; employees see what's on their plate." },
-    { number: "03", title: "Track Progress", desc: "Watch tasks move from new to active to completed, in real time." },
+    {
+        number: "01",
+        title: "Role-Based Access",
+        desc: "Sign in with your account or test immediately with 1-click Admin and Employee demo credentials.",
+    },
+    {
+        number: "02",
+        title: "Delegate & Accept",
+        desc: "Admins create tasks with deadlines and categories; employees review and accept them into Active status.",
+    },
+    {
+        number: "03",
+        title: "Execute & Analyze",
+        desc: "Advance through strict status transitions to Completed or Failed, and track team velocity on visual analytics.",
+    },
 ];
 
 const containerVariants: Variants = {
@@ -35,7 +47,7 @@ export default function HowItWorks() {
                     Get started in three steps.
                 </h2>
                 <p className="text-secondary text-base max-w-md">
-                    From sign-in to task completion; no learning curve.
+                    Zero learning curve, strict lifecycles, and complete role clarity.
                 </p>
             </div>
 

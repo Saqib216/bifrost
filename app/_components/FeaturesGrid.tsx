@@ -1,18 +1,44 @@
-﻿"use client";
+"use client";
 
 import { motion, Variants } from "motion/react";
 
 const features = [
-    { icon: "fa-users-gear", title: "Role-Based Dashboards", desc: "Separate admin & employee views, tailored to each role's needs." },
-    { icon: "fa-list-check", title: "Task Management", desc: "Assign, edit, and track tasks with real-time status updates." },
-    { icon: "fa-chart-line", title: "Live Analytics", desc: "Visual insights into team performance and completion trends." },
-    { icon: "fa-lock", title: "Secure Auth", desc: "Credential-based authentication with protected, role-aware routes." },
+    {
+        icon: "fa-users-gear",
+        title: "Role-Isolated Workspaces",
+        desc: "Tailored Admin delegation hub and Employee execution view, strictly partitioned by Next.js proxy middleware.",
+    },
+    {
+        icon: "fa-diagram-project",
+        title: "Strict Task Lifecycle",
+        desc: "Enforced state machine (NEW → ACTIVE → COMPLETED/FAILED) guaranteeing zero out-of-order execution.",
+    },
+    {
+        icon: "fa-chart-pie",
+        title: "Interactive Analytics",
+        desc: "Visual team metrics powered by Recharts (Area, Bar, Pie) tracking completion rates and category distributions.",
+    },
+    {
+        icon: "fa-palette",
+        title: "4 Signature Accent Themes",
+        desc: "Zero-flicker database-persisted styling across Magenta, Blue, Amber, and Violet colorways.",
+    },
+    {
+        icon: "fa-bolt-lightning",
+        title: "Optimistic UI & Pagination",
+        desc: "Instant task deletion with React 19 useOptimistic, URL-driven server pagination, and toast feedback.",
+    },
+    {
+        icon: "fa-shield-halved",
+        title: "Server-Enforced Security",
+        desc: "Auth.js v5 session checks, bcrypt hashing, Zod validation, and atomic Prisma update constraints.",
+    },
 ];
 
 const containerVariants: Variants = {
     hidden: {},
     visible: {
-        transition: { staggerChildren: 0.12 },
+        transition: { staggerChildren: 0.1 },
     },
 };
 
@@ -31,10 +57,10 @@ export default function FeaturesGrid() {
 
             <div className="flex flex-col items-center text-center gap-2 mb-14">
                 <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-primary">
-                    Everything you need, built in.
+                    Engineered for full-stack excellence.
                 </h2>
-                <p className="text-secondary text-base max-w-md">
-                    No clutter, no extra setup, just the tools your team actually uses.
+                <p className="text-secondary text-base max-w-lg">
+                    Every feature is backed by real server validations, strict PostgreSQL schemas, and modern Next.js 16 architecture.
                 </p>
             </div>
 
@@ -43,7 +69,7 @@ export default function FeaturesGrid() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
                 {features.map((feature) => (
                     <motion.div
