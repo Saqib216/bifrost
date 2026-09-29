@@ -126,7 +126,7 @@ export default function LoginPage() {
 
                     <div className="flex flex-col gap-1">
                         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">Welcome back</h2>
-                        <p className="text-sm text-muted">Let's get started, sign in to continue.</p>
+                        <p className="text-sm text-muted">Let&apos;s get started, sign in to continue.</p>
                     </div>
 
 
@@ -167,9 +167,10 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="mt-2 px-4 py-2.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm"
+                            className="mt-2 px-4 py-2.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-accent disabled:active:scale-100"
                         >
-                            {isPending ? 'Signing in...' : 'Continue'}
+                            {isPending && <i className="fa-solid fa-circle-notch fa-spin text-xs" />}
+                            <span>{isPending ? 'Signing in...' : 'Continue'}</span>
                         </button>
                     </form>
 
@@ -181,7 +182,7 @@ export default function LoginPage() {
                         </span>
                     </div>
 
-                    <DemoAdminCredentials />
+                    <DemoAdminCredentials disabled={isPending} />
 
                     {/* Link to signup */}
                     <p className="text-sm text-center text-muted">

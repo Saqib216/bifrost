@@ -5,11 +5,12 @@ import { useState } from "react";
 const DEMO_EMAIL = "admin@ems.com";
 const DEMO_PASSWORD = "Admin@123";
 
-export default function DemoAdminCredentials() {
+export default function DemoAdminCredentials({ disabled = false }: { disabled?: boolean }) {
     const [filled, setFilled] = useState(false);
     const [ripple, setRipple] = useState(false);
 
     const handleFill = () => {
+        if (disabled) return;
         // Programmatically fill the form inputs
         const emailInput = document.getElementById("email") as HTMLInputElement | null;
         const passwordInput = document.getElementById("password") as HTMLInputElement | null;
@@ -39,7 +40,8 @@ export default function DemoAdminCredentials() {
             <button
                 type="button"
                 onClick={handleFill}
-                className="group relative w-full overflow-hidden rounded-md border border-amber-500/35 bg-gradient-to-r from-amber-500/[0.04] via-orange-500/[0.06] to-amber-500/[0.04] px-4 py-2.5 text-sm font-semibold text-amber-400 transition-all duration-300 hover:border-amber-400/80 hover:bg-amber-500/10 hover:text-amber-300 hover:shadow-[0_0_24px_rgba(245,158,11,0.20)] active:scale-[0.98] cursor-pointer"
+                disabled={disabled}
+                className="group relative w-full overflow-hidden rounded-md border border-amber-500/35 bg-gradient-to-r from-amber-500/[0.04] via-orange-500/[0.06] to-amber-500/[0.04] px-4 py-2.5 text-sm font-semibold text-amber-400 transition-all duration-300 hover:border-amber-400/80 hover:bg-amber-500/10 hover:text-amber-300 hover:shadow-[0_0_24px_rgba(245,158,11,0.20)] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
                 aria-label="Try as Admin - auto-fill demo credentials"
             >
                 {/* Shimmer sweep */}

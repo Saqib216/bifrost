@@ -260,9 +260,10 @@ export default function SignupPage() {
                         <button
                             type="submit"
                             disabled={isPending}
-                            className="mt-2 px-4 py-2.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm"
+                            className="mt-2 px-4 py-2.5 bg-accent rounded-md font-semibold text-surface cursor-pointer transition-all duration-250 ease-in-out hover:bg-accent-hover active:scale-95 tracking-tight text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-accent disabled:active:scale-100"
                         >
-                            {isPending ? 'Creating your account…' : 'Create account'}
+                            {isPending && <i className="fa-solid fa-circle-notch fa-spin text-xs" />}
+                            <span>{isPending ? 'Creating your account…' : 'Create account'}</span>
                         </button>
                     </form>
 
