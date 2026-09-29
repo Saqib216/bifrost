@@ -4,6 +4,7 @@ import "./globals.css";
 import { Space_Grotesk } from "next/font/google";
 import { getAccentColor } from "./lib/getAccentColor";
 import { Toaster } from "sonner";
+import ClarityInit from "./_components/ClarityInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col"
         spellCheck={false}>
+        <ClarityInit />
         <main>{children}</main>
         <Toaster position="top-right" theme="dark" />
       </body>
