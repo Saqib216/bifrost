@@ -4,8 +4,10 @@ import Logo from "./Logo";
 import SidebarStats from "./SidebarStats";
 import { AccentColor } from "@prisma/client";
 import AccentToggle from "./AccentToggle";
+import { getTheme } from "@/app/lib/getTheme";
+import ThemeToggle from "./ThemeToggle";
 
-export default function Sidebar({
+export default async function Sidebar({
     role,
     isMobile = false,
     accentColor,
@@ -14,6 +16,8 @@ export default function Sidebar({
     isMobile?: boolean;
     accentColor: AccentColor;
 }) {
+    const theme = await getTheme();
+
     return (
         <div className={`flex flex-col gap-1 ${isMobile ? 'h-full w-full' : 'border-r border-border h-full shrink-0 w-56 px-3 py-5'}`}>
 
@@ -32,6 +36,7 @@ export default function Sidebar({
 
             {/* Stats + Logout */}
             <div className="mt-auto flex flex-col gap-3 pt-4">
+                <ThemeToggle currentTheme={theme} />
                 <AccentToggle currentAccent={accentColor} />
                 <SidebarStats role={role} />
                 <form action={

@@ -5,6 +5,7 @@ import { Space_Grotesk } from "next/font/google";
 import { getAccentColor } from "./lib/getAccentColor";
 import { Toaster } from "sonner";
 import ClarityInit from "./_components/ClarityInit";
+import { getTheme } from "./lib/getTheme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,11 +36,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const accentColor = await getAccentColor();
+  const theme = await getTheme();
 
   return (
     <html
       lang="en"
       data-scroll-behavior="smooth"
+      data-theme={theme}
       data-accent={accentColor.toLowerCase()}
       className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
@@ -53,7 +56,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         spellCheck={false}>
         <ClarityInit />
         <main>{children}</main>
-        <Toaster position="top-right" theme="dark" />
+        <Toaster position="top-right" theme={theme} />
       </body>
     </html>
   );
