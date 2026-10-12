@@ -519,3 +519,10 @@ textarea {
 .demo-admin-strip-text {
   color: var(--demo-strip-text);
 }
+
+/* Subtle, calm view transition - understated luxury */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
