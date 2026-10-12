@@ -1,7 +1,7 @@
 export default function Logo({
     size = "text-lg",
     showVersion = true,
-    version = "v1.0",
+    version = "v1.1",
 }: {
     size?: string;
     showVersion?: boolean;
