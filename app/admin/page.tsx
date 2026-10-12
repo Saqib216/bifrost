@@ -124,7 +124,7 @@ export default async function AdminDashboardPage() {
                     {recentTasks.map((task) => {
                         const statusStyle = getStatusStyle(task.status);
                         return (
-                            <div key={task.id} className="flex items-center gap-3 px-4 py-3">
+                            <div key={task.id} className="flex items-center gap-3 px-4 py-3 hover:bg-surface/50 transition-colors">
                                 <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusStyle.dot}`} />
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium text-primary truncate">{task.title}</p>

@@ -59,7 +59,7 @@ export default function MobileHeader({
                 <button
                     type="button"
                     onClick={() => setIsOpen(true)}
-                    className="w-9 h-9 rounded-md flex items-center justify-center text-secondary hover:text-primary hover:bg-card border border-border transition-colors cursor-pointer"
+                    className="w-9 h-9 rounded-md flex items-center justify-center text-secondary hover:text-primary hover:bg-sidebar-hover border border-border transition-colors cursor-pointer"
                     aria-label="Open navigation menu"
                 >
                     <i className="fa-solid fa-bars text-sm"></i>
@@ -86,7 +86,7 @@ export default function MobileHeader({
                             <button
                                 type="button"
                                 onClick={() => setIsOpen(false)}
-                                className="w-8 h-8 rounded-md flex items-center justify-center text-muted hover:text-primary hover:bg-card transition-colors cursor-pointer"
+                                className="w-8 h-8 rounded-md flex items-center justify-center text-muted hover:text-primary hover:bg-sidebar-hover transition-colors cursor-pointer"
                                 aria-label="Close menu"
                             >
                                 <i className="fa-solid fa-xmark text-sm"></i>

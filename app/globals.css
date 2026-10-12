@@ -17,6 +17,9 @@
   --gray-300: #9A9BA8;
   --gray-500: #6E6F7B;
 
+  /* Sidebar nav item hover */
+  --sidebar-hover: rgba(255, 255, 255, 0.05);
+
   /* Status colors */
   --status-success: #22D67A;
   --status-danger: #FF3860;
@@ -165,18 +168,20 @@
 }
 
 :root[data-theme="light"] {
-  /* Base */
-  --black: #F6F7F9;          /* surface */
+  /* Base - refined calm architectural canvas so cards pop naturally */
+  --black: #EEF0F4;          /* surface / canvas */
   --card-bg: #FFFFFF;
-  --border-gray: #E3E5EA;
-  --border-gray-hover: #CDD0D8;
+  --border-gray: #E0E3EB;
+  --border-gray-hover: #CBD0DC;
 
-  /* Text */
-  --white: #11131A;          /* primary text */
-  --gray-300: #4B4F5C;       /* secondary */
-  --gray-500: #6B6F7B;       /* muted */
+  /* Text - deep crisp ink black & readable slate tones */
+  --white: #0F1117;          /* primary text */
+  --gray-300: #464A57;       /* secondary text */
+  --gray-500: #686D7D;       /* muted text */
 
-  
+  /* Sidebar nav item hover - soft subtle neutral wash, no harsh white highlight */
+  --sidebar-hover: rgba(15, 23, 42, 0.055);
+
   --status-success: #15803D;
   --status-danger: #DC2626;
   --status-warning: #A16207;
@@ -239,6 +244,7 @@
   --color-card: var(--card-bg);
   --color-border: var(--border-gray);
   --color-border-hover: var(--border-gray-hover);
+  --color-sidebar-hover: var(--sidebar-hover);
 
   --color-primary: var(--white);
   --color-secondary: var(--gray-300);
@@ -525,4 +531,25 @@ textarea {
 ::view-transition-new(root) {
   animation-duration: 220ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card Elevation, Depth & Hierarchy in Light Mode (scoped to containers, never form controls) */
+:root[data-theme="light"] :is(div, section, article, aside).bg-card {
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
+}
+
+:root[data-theme="light"] :is(div, section, article, aside).bg-card[class*="hover:border"]:hover,
+:root[data-theme="light"] :is(div, section, article, aside).bg-card[class*="hover:shadow"]:hover {
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.07), 0 2px 6px -2px rgba(15, 23, 42, 0.03);
+}
+
+/* Status Metric Cards Soft Gradient Tint (replaces flat white with subtle ambient depth) */
+:root[data-theme="light"] .border-info\/30 {
+  background: linear-gradient(135deg, rgba(14, 116, 144, 0.035) 0%, #FFFFFF 70%);
+  border-color: rgba(14, 116, 144, 0.25);
+}
+
+:root[data-theme="light"] .border-warning\/30 {
+  background: linear-gradient(135deg, rgba(161, 98, 7, 0.035) 0%, #FFFFFF 70%);
+  border-color: rgba(161, 98, 7, 0.25);
 }

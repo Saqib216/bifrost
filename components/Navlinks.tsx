@@ -30,7 +30,7 @@ export default function Navlinks({ role }: { role: "ADMIN" | "EMPLOYEE" }) {
                     href={link.href}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 ease-in-out ${isActive
                         ? "bg-accent/10 text-accent font-semibold"
-                        : "text-secondary hover:text-primary hover:bg-card"
+                        : "text-secondary hover:text-primary hover:bg-sidebar-hover"
                         }`}
                 >
                     <i className={`${link.icon} fa-fw text-[13px]`} />
