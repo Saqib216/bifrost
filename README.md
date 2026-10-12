@@ -12,6 +12,7 @@ Admins create and assign tasks, employees accept them and move them through a st
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white)
+![Version](https://img.shields.io/badge/version-v1.1-7C3AED)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ![Bifrost dashboard](./docs/dashboard.png)
@@ -72,8 +73,9 @@ I built it as a portfolio project and as a way to learn Next.js properly: the Ap
 
 ### General
 
+- **Light & Dark Theme (v1.1)**: Understated luxury theme toggle with a physical floating spring pill indicator (`motion/react`), calm 220ms native view transitions, glare-free architectural studio canvas, and real-time multi-instance broadcast sync. Zero-flicker SSR via cookies.
+- **Four accent colours**: Magenta, blue, amber, and violet. The choice is saved per user in the database and applied on the server, so there is no flash of the wrong colour on page load. Logged-out pages remember the last choice through a cookie.
 - Public signup that always creates an Employee account and assigns three onboarding tasks
-- Four accent colours (magenta, blue, amber, violet). The choice is saved per user in the database and applied on the server, so there is no flash of the wrong colour on page load. Logged-out pages remember the last choice through a cookie
 - Animated landing page
 - Toast notifications for every action result
 - Loading and error boundaries on the admin tasks route
@@ -436,7 +438,7 @@ The app is deployed on Vercel with a Neon PostgreSQL database.
 - [x] Profile settings and password change
 - [x] Multiple accent colours
 - [x] Public signup
-- [ ] Light theme
+- [x] Light theme (v1.1)
 - [ ] Pagination on the employee tasks page
 - [ ] Automated tests
 - [ ] Notifications when a task is assigned
