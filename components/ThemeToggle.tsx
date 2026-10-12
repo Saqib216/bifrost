@@ -11,7 +11,7 @@ export default function ThemeToggle({ currentTheme }: { currentTheme: Theme }) {
 
     const handleSelect = (next: Theme) => {
         if (next === theme) return;
-        setTheme(theme);
+        setTheme(next);
 
         document.documentElement.setAttribute('data-theme', next);
         document.cookie = `theme=${next}; path=/; max-age=31536000; samesite=lax`;

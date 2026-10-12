@@ -23,6 +23,46 @@
   --status-warning: #FFB020;
   --status-info: #06B6D4;
 
+  /* Showcase / Auth Left Panel */
+  --showcase-bg: linear-gradient(135deg, #0D0E16 0%, #12101A 40%, #14151C 100%);
+  --showcase-border: #22232D;
+  --showcase-grid-color: rgba(255, 255, 255, 0.04);
+  --showcase-card-bg: rgba(255, 255, 255, 0.04);
+  --showcase-card-border: rgba(255, 255, 255, 0.07);
+
+  /* Super Demo Button - Dark mode neon state */
+  --demo-btn-bg: linear-gradient(to right, rgba(245, 158, 11, 0.04), rgba(249, 115, 22, 0.06), rgba(245, 158, 11, 0.04));
+  --demo-btn-bg-hover: rgba(245, 158, 11, 0.10);
+  --demo-btn-border: rgba(245, 158, 11, 0.35);
+  --demo-btn-border-hover: rgba(251, 191, 36, 0.80);
+  --demo-btn-text: #FBBF24;
+  --demo-btn-text-hover: #FCD34D;
+  --demo-btn-shadow-hover: 0 0 24px rgba(245, 158, 11, 0.20);
+  --demo-btn-shimmer: rgba(252, 211, 77, 0.20);
+  --demo-btn-ripple: rgba(245, 158, 11, 0.40);
+
+  --demo-icon-bg: rgba(245, 158, 11, 0.15);
+  --demo-icon-border: rgba(245, 158, 11, 0.40);
+  --demo-icon-text: #FBBF24;
+  --demo-icon-bg-hover: rgba(245, 158, 11, 0.25);
+  --demo-icon-border-hover: #FBBF24;
+  --demo-icon-text-hover: #FCD34D;
+  --demo-icon-shadow-hover: 0 0 10px rgba(245, 158, 11, 0.25);
+
+  --demo-icon-filled-bg: rgba(245, 158, 11, 0.25);
+  --demo-icon-filled-border: rgba(251, 191, 36, 0.70);
+  --demo-icon-filled-text: #FCD34D;
+  --demo-icon-filled-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+
+  --demo-badge-text: rgba(251, 191, 36, 0.50);
+  --demo-badge-text-hover: rgba(252, 211, 77, 0.90);
+  --demo-badge-bg: transparent;
+  --demo-badge-border: transparent;
+
+  --demo-strip-bg: rgba(245, 158, 11, 0.04);
+  --demo-strip-border: rgba(245, 158, 11, 0.25);
+  --demo-strip-text: #FBBF24;
+
   --background: oklch(1 0 0);
 
   --foreground: oklch(0.145 0 0);
@@ -141,6 +181,46 @@
   --status-danger: #DC2626;
   --status-warning: #A16207;
   --status-info: #0E7490;
+
+  /* Showcase / Auth Left Panel (Light Studio Canvas) */
+  --showcase-bg: linear-gradient(135deg, #F3F4F8 0%, #EAECF2 40%, #F8F9FA 100%);
+  --showcase-border: #E3E5EA;
+  --showcase-grid-color: rgba(15, 23, 42, 0.05);
+  --showcase-card-bg: rgba(255, 255, 255, 0.75);
+  --showcase-card-border: rgba(227, 229, 234, 0.90);
+
+  /* Super Demo Button - Light mode luxury golden state */
+  --demo-btn-bg: linear-gradient(to right, #FFFBEB 0%, #FEF3C7 50%, #FFFBEB 100%);
+  --demo-btn-bg-hover: linear-gradient(to right, #FEF3C7 0%, #FDE68A 50%, #FEF3C7 100%);
+  --demo-btn-border: rgba(217, 119, 6, 0.35);
+  --demo-btn-border-hover: rgba(180, 83, 9, 0.70);
+  --demo-btn-text: #92400E;
+  --demo-btn-text-hover: #78350F;
+  --demo-btn-shadow-hover: 0 4px 18px rgba(217, 119, 6, 0.18), 0 1px 3px rgba(0, 0, 0, 0.05);
+  --demo-btn-shimmer: rgba(255, 255, 255, 0.75);
+  --demo-btn-ripple: rgba(217, 119, 6, 0.35);
+
+  --demo-icon-bg: rgba(245, 158, 11, 0.18);
+  --demo-icon-border: rgba(180, 83, 9, 0.35);
+  --demo-icon-text: #92400E;
+  --demo-icon-bg-hover: rgba(245, 158, 11, 0.28);
+  --demo-icon-border-hover: #B45309;
+  --demo-icon-text-hover: #78350F;
+  --demo-icon-shadow-hover: 0 0 10px rgba(217, 119, 6, 0.20);
+
+  --demo-icon-filled-bg: #FDE68A;
+  --demo-icon-filled-border: #D97706;
+  --demo-icon-filled-text: #78350F;
+  --demo-icon-filled-shadow: 0 0 8px rgba(217, 119, 6, 0.25);
+
+  --demo-badge-text: #92400E;
+  --demo-badge-text-hover: #78350F;
+  --demo-badge-bg: rgba(253, 230, 138, 0.70);
+  --demo-badge-border: rgba(217, 119, 6, 0.30);
+
+  --demo-strip-bg: #FFFBEB;
+  --demo-strip-border: #FCD34D;
+  --demo-strip-text: #92400E;
 }
 
 :root[data-theme="light"][data-accent="amber"] {
@@ -366,4 +446,76 @@ textarea {
   html {
     @apply font-sans;
   }
+}
+
+/* Showcase Panels for Auth Pages */
+.showcase-panel {
+  background: var(--showcase-bg) !important;
+  border-right: 1px solid var(--showcase-border) !important;
+}
+
+.showcase-card {
+  background: var(--showcase-card-bg) !important;
+  border: 1px solid var(--showcase-card-border) !important;
+  backdrop-filter: blur(8px);
+}
+
+/* Super Demo Admin Button Component */
+.demo-admin-btn {
+  background: var(--demo-btn-bg);
+  border: 1px solid var(--demo-btn-border);
+  color: var(--demo-btn-text);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.demo-admin-btn:hover:not(:disabled) {
+  background: var(--demo-btn-bg-hover);
+  border-color: var(--demo-btn-border-hover);
+  color: var(--demo-btn-text-hover);
+  box-shadow: var(--demo-btn-shadow-hover);
+}
+
+.demo-admin-shimmer {
+  background: linear-gradient(90deg, transparent, var(--demo-btn-shimmer), transparent);
+}
+
+.demo-admin-icon {
+  background: var(--demo-icon-bg);
+  border: 1px solid var(--demo-icon-border);
+  color: var(--demo-icon-text);
+  transition: all 0.3s ease;
+}
+
+.group:hover .demo-admin-icon {
+  background: var(--demo-icon-bg-hover);
+  border-color: var(--demo-icon-border-hover);
+  color: var(--demo-icon-text-hover);
+  box-shadow: var(--demo-icon-shadow-hover);
+}
+
+.demo-admin-icon.is-filled {
+  background: var(--demo-icon-filled-bg) !important;
+  border-color: var(--demo-icon-filled-border) !important;
+  color: var(--demo-icon-filled-text) !important;
+  box-shadow: var(--demo-icon-filled-shadow) !important;
+}
+
+.demo-admin-badge {
+  color: var(--demo-badge-text);
+  background-color: var(--demo-badge-bg);
+  border: 1px solid var(--demo-badge-border);
+  transition: all 0.3s ease;
+}
+
+.group:hover .demo-admin-badge {
+  color: var(--demo-badge-text-hover);
+}
+
+.demo-admin-strip {
+  background: var(--demo-strip-bg);
+  border: 1px solid var(--demo-strip-border);
+}
+
+.demo-admin-strip-text {
+  color: var(--demo-strip-text);
 }

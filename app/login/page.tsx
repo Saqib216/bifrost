@@ -14,19 +14,15 @@ export default function LoginPage() {
         <div className="min-h-screen flex">
 
             {/* Left Panel */}
-            <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden flex-col justify-between p-10"
-                style={{
-                    background: "linear-gradient(135deg, #0D0E16 0%, #12101A 40%, #14151C 100%)",
-                    borderRight: "1px solid #22232D",
-                }}>
+            <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden flex-col justify-between p-10 showcase-panel">
 
                 {/* Grid pattern - faint structural lines, fading at edges */}
                 <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
                         backgroundImage: `
-                            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+                            linear-gradient(var(--showcase-grid-color) 1px, transparent 1px),
+                            linear-gradient(90deg, var(--showcase-grid-color) 1px, transparent 1px)
                         `,
                         backgroundSize: '52px 52px',
                         maskImage: 'radial-gradient(ellipse 85% 75% at 50% 50%, black 25%, transparent 85%)',

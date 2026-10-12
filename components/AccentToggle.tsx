@@ -47,7 +47,7 @@ export default function AccentToggle({ currentAccent }: { currentAccent: AccentC
                         onClick={() => handleSelect(a.value)}
                         style={{ backgroundColor: a.hex }}
                         className={`w-6 h-6 rounded-full cursor-pointer transition-all duration-150 disabled:opacity-50 ${optimisticAccent === a.value
-                                ? "ring-2 ring-offset-2 ring-offset-surface ring-white/40"
+                                ? "ring-2 ring-offset-2 ring-offset-surface ring-accent/40"
                                 : ""
                             }`}
                     />
